@@ -1,15 +1,29 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { formatEuro } from '../../utils/format';
-import { clamp } from '../../utils/number';
 import { calculateMonthlyPayment } from '../../utils/finance';
 import { MetricCard } from '../common/MetricCard';
 
-export function LoanCalcPage() {
-  const [price, setPrice] = useState(20000);
-  const [downPayment, setDownPayment] = useState(0);
-  const [months, setMonths] = useState(48);
-  const [apr, setApr] = useState(7.5);
+interface LoanCalcPageProps {
+  price: number;
+  downPayment: number;
+  months: number;
+  apr: number;
+  onPriceChange: (value: number) => void;
+  onDownPaymentChange: (value: number) => void;
+  onMonthsChange: (value: number) => void;
+  onAprChange: (value: number) => void;
+}
 
+export function LoanCalcPage({
+  price,
+  downPayment,
+  months,
+  apr,
+  onPriceChange,
+  onDownPaymentChange,
+  onMonthsChange,
+  onAprChange,
+}: LoanCalcPageProps) {
   const principal = Math.max(price - downPayment, 0);
 
   const monthlyPayment = useMemo(() => {
@@ -43,7 +57,7 @@ export function LoanCalcPage() {
                 type="number"
                 step="500"
                 value={price}
-                onChange={(e) => setPrice(clamp(Number(e.target.value), 0, 250000))}
+                onChange={(e) => onPriceChange(Number(e.target.value))}
               />
 
               <label className="control-label" htmlFor="downPayment">Down payment</label>
@@ -53,7 +67,7 @@ export function LoanCalcPage() {
                 type="number"
                 step="500"
                 value={downPayment}
-                onChange={(e) => setDownPayment(clamp(Number(e.target.value), 0, price))}
+                onChange={(e) => onDownPaymentChange(Number(e.target.value))}
               />
 
               <div className="metric-card">
@@ -75,7 +89,7 @@ export function LoanCalcPage() {
                 id="loanTerm"
                 className="select-input"
                 value={months}
-                onChange={(e) => setMonths(clamp(Number(e.target.value), 12, 120))}
+                onChange={(e) => onMonthsChange(Number(e.target.value))}
               >
                 {[24, 36, 48, 60, 72, 84, 96].map((term) => (
                   <option key={term} value={term}>{term}</option>
@@ -89,7 +103,7 @@ export function LoanCalcPage() {
                 type="number"
                 step="0.1"
                 value={apr}
-                onChange={(e) => setApr(clamp(Number(e.target.value), 0, 30))}
+                onChange={(e) => onAprChange(Number(e.target.value))}
               />
 
               <div className="loan-note">

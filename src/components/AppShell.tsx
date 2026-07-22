@@ -1,11 +1,11 @@
 import { useEffect, useState, type ReactNode } from 'react';
 
-type TabKey = 'voltcalc' | 'loancalc';
+type AppView = 'voltcalc' | 'loancalc';
 type ThemeMode = 'light' | 'dark';
 
 interface AppShellProps {
-  activeTab: TabKey;
-  onTabChange: (tab: TabKey) => void;
+  activeView: AppView;
+  onSwitchView: () => void;
   children: ReactNode;
 }
 
@@ -13,10 +13,10 @@ function getInitialTheme(): ThemeMode {
   if (typeof window === 'undefined') return 'dark';
   const saved = window.localStorage.getItem('theme');
   if (saved === 'light' || saved === 'dark') return saved;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'dark';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-export function AppShell({ activeTab, onTabChange, children }: AppShellProps) {
+export function AppShell({ activeView, onSwitchView, children }: AppShellProps) {
   const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
 
   useEffect(() => {
@@ -27,6 +27,9 @@ export function AppShell({ activeTab, onTabChange, children }: AppShellProps) {
   function toggleTheme() {
     setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
   }
+
+  const switchLabel = activeView === 'voltcalc' ? 'Financing' : 'Compare';
+  const isForward = activeView === 'voltcalc';
 
   return (
     <main className="app-shell">
@@ -53,26 +56,30 @@ export function AppShell({ activeTab, onTabChange, children }: AppShellProps) {
         </div>
 
         <div className="header-actions">
-          <div className="tab-row" role="tablist" aria-label="Calculator tabs">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === 'voltcalc'}
-              className={`tab-button ${activeTab === 'voltcalc' ? 'active' : ''}`}
-              onClick={() => onTabChange('voltcalc')}
-            >
-              VoltCalc
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === 'loancalc'}
-              className={`tab-button ${activeTab === 'loancalc' ? 'active' : ''}`}
-              onClick={() => onTabChange('loancalc')}
-            >
-              LoanCalc
-            </button>
-          </div>
+          <button
+            type="button"
+            className="view-switch"
+            onClick={onSwitchView}
+            aria-label={activeView === 'voltcalc' ? 'Switch to financing calculator' : 'Switch to EV comparison calculator'}
+          >
+            {isForward ? (
+              <>
+                <span>{switchLabel}</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2}>
+                  <path d="M5 12h14" />
+                  <path d="m13 5 7 7-7 7" />
+                </svg>
+              </>
+            ) : (
+              <>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2}>
+                  <path d="M19 12H5" />
+                  <path d="m11 5-7 7 7 7" />
+                </svg>
+                <span>{switchLabel}</span>
+              </>
+            )}
+          </button>
 
           <button
             type="button"

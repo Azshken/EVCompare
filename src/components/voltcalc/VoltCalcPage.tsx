@@ -1,10 +1,6 @@
-import { useMemo, useState } from 'react';
-import {
-  calculateVoltCalc,
-  type FuelType,
-} from '../../utils/voltcalc';
+import { useMemo } from 'react';
+import { calculateVoltCalc, type FuelType } from '../../utils/voltcalc';
 import { formatEuro } from '../../utils/format';
-import { clamp } from '../../utils/number';
 
 type FuelConfig = {
   label: string;
@@ -14,31 +10,31 @@ type FuelConfig = {
 
 type FuelSettings = Record<FuelType, FuelConfig>;
 
-export function VoltCalcPage() {
-  const [distance, setDistance] = useState(18000);
-  const [fuelType, setFuelType] = useState<FuelType>('petrol');
-  const [electricityPrice, setElectricityPrice] = useState(0.173);
-  
+interface VoltCalcPageProps {
+  distance: number;
+  fuelType: FuelType;
+  fuelSettings: FuelSettings;
+  evConsumption: number;
+  electricityPrice: number;
+  onDistanceChange: (value: number) => void;
+  onFuelTypeChange: (value: FuelType) => void;
+  onFuelSettingChange: (type: FuelType, field: 'consumption' | 'price', value: number) => void;
+  onEvConsumptionChange: (value: number) => void;
+  onElectricityPriceChange: (value: number) => void;
+}
 
-  const [fuelSettings, setFuelSettings] = useState<FuelSettings>({
-    petrol: { label: 'Petrol', consumption: 4.5, price: 1.75 },
-    diesel: { label: 'Diesel', consumption: 4.1, price: 1.61 },
-    hybrid: { label: 'Hybrid', consumption: 3.9, price: 1.75 },
-  });
-
-  const [evConsumption, setEvConsumption] = useState(17.0);
-
-  function updateFuelSetting(type: FuelType, field: 'consumption' | 'price', value: number) {
-    const max = field === 'consumption' ? 30 : 10;
-    setFuelSettings((prev) => ({
-      ...prev,
-      [type]: {
-        ...prev[type],
-        [field]: clamp(value, 0, max),
-      },
-    }));
-  }
-
+export function VoltCalcPage({
+  distance,
+  fuelType,
+  fuelSettings,
+  evConsumption,
+  electricityPrice,
+  onDistanceChange,
+  onFuelTypeChange,
+  onFuelSettingChange,
+  onEvConsumptionChange,
+  onElectricityPriceChange,
+}: VoltCalcPageProps) {
   const selectedFuel = fuelSettings[fuelType];
 
   const results = useMemo(() => {
@@ -80,7 +76,7 @@ export function VoltCalcPage() {
               max={50000}
               step={500}
               value={distance}
-              onChange={(e) => setDistance(Number(e.target.value))}
+              onChange={(e) => onDistanceChange(Number(e.target.value))}
               aria-label="Annual distance driven"
             />
           </div>
@@ -102,7 +98,7 @@ export function VoltCalcPage() {
                   key={type}
                   type="button"
                   className={`inline-tab ${fuelType === type ? 'active' : ''}`}
-                  onClick={() => setFuelType(type)}
+                  onClick={() => onFuelTypeChange(type)}
                   aria-pressed={fuelType === type}
                 >
                   {fuelSettings[type].label}
@@ -118,7 +114,7 @@ export function VoltCalcPage() {
                 <div className="stepper" aria-label="Fuel consumption adjuster">
                   <button
                     type="button"
-                    onClick={() => updateFuelSetting(fuelType, 'consumption', selectedFuel.consumption - 0.1)}
+                    onClick={() => onFuelSettingChange(fuelType, 'consumption', selectedFuel.consumption - 0.1)}
                     aria-label="Decrease combustion consumption"
                   >
                     −
@@ -126,7 +122,7 @@ export function VoltCalcPage() {
                   <span className="stepper-value">{selectedFuel.consumption.toFixed(1)}</span>
                   <button
                     type="button"
-                    onClick={() => updateFuelSetting(fuelType, 'consumption', selectedFuel.consumption + 0.1)}
+                    onClick={() => onFuelSettingChange(fuelType, 'consumption', selectedFuel.consumption + 0.1)}
                     aria-label="Increase combustion consumption"
                   >
                     +
@@ -143,7 +139,7 @@ export function VoltCalcPage() {
                     type="number"
                     step="0.01"
                     value={selectedFuel.price}
-                    onChange={(e) => updateFuelSetting(fuelType, 'price', Number(e.target.value))}
+                    onChange={(e) => onFuelSettingChange(fuelType, 'price', Number(e.target.value))}
                     aria-label="Fuel price"
                   />
                   <span className="price-unit">EUR/L</span>
@@ -181,7 +177,7 @@ export function VoltCalcPage() {
                 <div className="stepper" aria-label="EV consumption adjuster">
                   <button
                     type="button"
-                    onClick={() => setEvConsumption((v) => clamp(Math.max(7, v - 0.5), 7, 40))}
+                    onClick={() => onEvConsumptionChange(evConsumption - 0.5)}
                     aria-label="Decrease EV consumption"
                   >
                     −
@@ -189,7 +185,7 @@ export function VoltCalcPage() {
                   <span className="stepper-value">{evConsumption.toFixed(1)}</span>
                   <button
                     type="button"
-                    onClick={() => setEvConsumption((v) => clamp(Math.min(40, v + 0.5), 7, 40))}
+                    onClick={() => onEvConsumptionChange(evConsumption + 0.5)}
                     aria-label="Increase EV consumption"
                   >
                     +
@@ -206,7 +202,7 @@ export function VoltCalcPage() {
                     type="number"
                     step="0.001"
                     value={electricityPrice}
-                    onChange={(e) => setElectricityPrice(clamp(Number(e.target.value), 0, 5))}
+                    onChange={(e) => onElectricityPriceChange(Number(e.target.value))}
                     aria-label="Electricity price"
                   />
                   <span className="price-unit">EUR/kWh</span>
