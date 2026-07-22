@@ -1,0 +1,49 @@
+/* LoanCalc-specific styling (kept minimal, tokens live in app.css) */
+
+.loan-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.loan-results { gap: var(--space-6); }
+
+.loan-highlight {
+  display: grid;
+  gap: 0.35rem;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-ev));
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-lg);
+}
+
+.loan-highlight-label {
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 600;
+}
+
+.loan-highlight-value {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.5rem + 1.5vw, 3.25rem);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.loan-highlight-value span {
+  margin-left: 0.5rem;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.loan-note {
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-3);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  border: 1px solid var(--color-border);
+}
