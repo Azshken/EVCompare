@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
-import { MetricCard } from '../common/MetricCard';
 import { formatEuro } from '../../utils/format';
 import { clamp } from '../../utils/number';
 import { calculateMonthlyPayment } from '../../utils/finance';
+import { MetricCard } from '../common/MetricCard';
 
 export function LoanCalcPage() {
   const [price, setPrice] = useState(20000);
@@ -20,105 +20,87 @@ export function LoanCalcPage() {
   const totalInterest = monthlyPayment * months - principal;
 
   return (
-    <div className="page-section">
-      <section className="hero-card loan-hero">
-        <span className="badge primary">Financing calculator</span>
+    <div className="page-section loancalc-page">
+      <section className="hero">
         <h2>Estimate your monthly EV loan cost</h2>
         <p>
-          Compare loan size, interest, and repayment term to see what your next
-          EV really costs each month and over the full financing period.
+          Compare loan size, interest, and repayment term to see what your next EV
+          really costs each month and over the full financing period.
         </p>
       </section>
 
-      <div className="card-grid">
-        <section className="card card-subtle">
-          <div className="stack">
-            <div className="row">
-              <h3>Vehicle & deposit</h3>
-              <span className="badge">Loan setup</span>
-            </div>
-
-            <div className="field">
-              <label htmlFor="vehiclePrice">Vehicle price</label>
+      <section className="loan-grid">
+        <article className="vehicle-card">
+          <div className="vehicle-header">
+            <span className="mini-chip primary">Loan setup</span>
+          </div>
+          <div className="vehicle-body">
+            <div className="control-stack">
+              <label className="control-label" htmlFor="vehiclePrice">Vehicle price</label>
               <input
                 id="vehiclePrice"
+                className="text-input"
                 type="number"
                 step="500"
                 value={price}
-                onChange={(e) =>
-                  setPrice(clamp(Number(e.target.value), 0, 250000))
-                }
+                onChange={(e) => setPrice(clamp(Number(e.target.value), 0, 250000))}
               />
-            </div>
 
-            <div className="field">
-              <label htmlFor="downPayment">Down payment</label>
+              <label className="control-label" htmlFor="downPayment">Down payment</label>
               <input
                 id="downPayment"
+                className="text-input"
                 type="number"
                 step="500"
                 value={downPayment}
-                onChange={(e) =>
-                  setDownPayment(clamp(Number(e.target.value), 0, price))
-                }
+                onChange={(e) => setDownPayment(clamp(Number(e.target.value), 0, price))}
               />
-            </div>
 
-            <MetricCard
-              label="Amount financed"
-              value={formatEuro(principal, 0)}
-              tone="primary"
-            />
+              <div className="metric-card">
+                <div className="metric-label">Amount financed</div>
+                <div className="metric-value primary">{formatEuro(principal, 0)}</div>
+              </div>
+            </div>
           </div>
-        </section>
+        </article>
 
-        <section className="card card-subtle">
-          <div className="stack">
-            <div className="row">
-              <h3>Loan terms</h3>
-              <span className="badge ev">Monthly plan</span>
-            </div>
-
-            <div className="field">
-              <label htmlFor="loanTerm">Loan term (months)</label>
-              <input
+        <article className="vehicle-card ev-card">
+          <div className="vehicle-header">
+            <span className="ev-chip">Monthly plan</span>
+          </div>
+          <div className="vehicle-body">
+            <div className="control-stack">
+              <label className="control-label" htmlFor="loanTerm">Loan term (months)</label>
+              <select
                 id="loanTerm"
-                type="number"
-                step="12"
+                className="select-input"
                 value={months}
-                onChange={(e) =>
-                  setMonths(clamp(Number(e.target.value), 12, 120))
-                }
-              />
-            </div>
+                onChange={(e) => setMonths(clamp(Number(e.target.value), 12, 120))}
+              >
+                {[24, 36, 48, 60, 72, 84, 96].map((term) => (
+                  <option key={term} value={term}>{term}</option>
+                ))}
+              </select>
 
-            <div className="field">
-              <label htmlFor="apr">APR (%)</label>
+              <label className="control-label" htmlFor="apr">APR (%)</label>
               <input
                 id="apr"
+                className="text-input"
                 type="number"
                 step="0.1"
                 value={apr}
                 onChange={(e) => setApr(clamp(Number(e.target.value), 0, 30))}
               />
-            </div>
 
-            <div className="loan-note">
-              Loan payment is calculated using a standard amortizing loan model.
+              <div className="loan-note">
+                Loan payment is calculated using a standard amortizing loan model.
+              </div>
             </div>
           </div>
-        </section>
-      </div>
+        </article>
+      </section>
 
-      <section className="results-card loan-results">
-        <div className="row">
-          <div>
-            <span className="badge ev">Results</span>
-            <h3 className="results-title">Loan cost breakdown</h3>
-          </div>
-          <div className="slider-value">{months} months</div>
-        </div>
-
+      <section className="surface-card loan-results-card">
         <div className="loan-highlight">
           <div className="loan-highlight-label">Estimated monthly payment</div>
           <div className="loan-highlight-value">
@@ -126,6 +108,8 @@ export function LoanCalcPage() {
             <span>/ month</span>
           </div>
         </div>
+
+        <div style={{ height: '0.9rem' }} />
 
         <div className="metrics-grid">
           <MetricCard
