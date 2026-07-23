@@ -50,14 +50,6 @@ export function VoltCalcPage({
 
   return (
     <div className="page-section voltcalc-page">
-      <section className="hero">
-        <h1>How much will you save yearly with an EV?</h1>
-        <p>
-          Compare annual running costs of an electric vehicle vs a petrol or diesel car
-          based on your actual driving distance and local energy prices.
-        </p>
-      </section>
-
       <section className="surface-card distance-card">
         <div className="distance-header">
           <div className="distance-copy">

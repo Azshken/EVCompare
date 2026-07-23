@@ -1,11 +1,8 @@
 import { useEffect, useState, type ReactNode } from 'react';
 
-type AppView = 'voltcalc' | 'loancalc';
 type ThemeMode = 'light' | 'dark';
 
 interface AppShellProps {
-  activeView: AppView;
-  onSwitchView: () => void;
   children: ReactNode;
 }
 
@@ -16,7 +13,7 @@ function getInitialTheme(): ThemeMode {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-export function AppShell({ activeView, onSwitchView, children }: AppShellProps) {
+export function AppShell({ children }: AppShellProps) {
   const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
 
   useEffect(() => {
@@ -27,9 +24,6 @@ export function AppShell({ activeView, onSwitchView, children }: AppShellProps) 
   function toggleTheme() {
     setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
   }
-
-  const switchLabel = activeView === 'voltcalc' ? 'Financing' : 'Compare';
-  const isForward = activeView === 'voltcalc';
 
   return (
     <main className="app-shell">
@@ -58,31 +52,6 @@ export function AppShell({ activeView, onSwitchView, children }: AppShellProps) 
         <div className="header-actions">
           <button
             type="button"
-            className="view-switch"
-            onClick={onSwitchView}
-            aria-label={activeView === 'voltcalc' ? 'Switch to financing calculator' : 'Switch to EV comparison calculator'}
-          >
-            {isForward ? (
-              <>
-                <span>{switchLabel}</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2}>
-                  <path d="M5 12h14" />
-                  <path d="m13 5 7 7-7 7" />
-                </svg>
-              </>
-            ) : (
-              <>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2}>
-                  <path d="M19 12H5" />
-                  <path d="m11 5-7 7 7 7" />
-                </svg>
-                <span>{switchLabel}</span>
-              </>
-            )}
-          </button>
-
-          <button
-            type="button"
             className="theme-toggle"
             onClick={toggleTheme}
             aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
@@ -100,6 +69,14 @@ export function AppShell({ activeView, onSwitchView, children }: AppShellProps) 
           </button>
         </div>
       </header>
+
+      <section className="hero hero-static">
+        <h1>Compare EV savings and monthly cost in one place</h1>
+        <p>
+          Use the same result flow to compare yearly EV running costs, then switch into financing
+          without losing your numbers or leaving the page.
+        </p>
+      </section>
 
       <section className="page-section">{children}</section>
     </main>

@@ -35,14 +35,6 @@ export function LoanCalcPage({
 
   return (
     <div className="page-section loancalc-page">
-      <section className="hero">
-        <h2>Estimate your monthly EV loan cost</h2>
-        <p>
-          Compare loan size, interest, and repayment term to see what your next EV
-          really costs each month and over the full financing period.
-        </p>
-      </section>
-
       <section className="loan-grid">
         <article className="vehicle-card">
           <div className="vehicle-header">
@@ -123,7 +115,7 @@ export function LoanCalcPage({
           </div>
         </div>
 
-        <div style={{ height: '0.9rem' }} />
+        <div className="loan-results-spacer" />
 
         <div className="metrics-grid">
           <MetricCard

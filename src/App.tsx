@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { AppShell } from './components/AppShell';
 import { LeadCaptureSection } from './components/common/LeadCaptureSection';
 import { LoanCalcPage } from './components/loancalc/LoanCalcPage';
@@ -9,6 +9,7 @@ import { clamp } from './utils/number';
 import { calculateVoltCalc, type FuelType } from './utils/voltcalc';
 
 type AppView = 'voltcalc' | 'loancalc';
+type SwitchDirection = 'forward' | 'backward';
 
 type FuelConfig = {
   label: string;
@@ -117,6 +118,8 @@ function App() {
   );
   const [leadForm, setLeadForm] = useState<LeadFormState>(defaultLeadFormState);
   const [leadSubmitted, setLeadSubmitted] = useState(false);
+  const [switchDirection, setSwitchDirection] = useState<SwitchDirection>('forward');
+  const [stageKey, setStageKey] = useState(0);
 
   useEffect(() => {
     window.localStorage.setItem('evcompare-active-view', JSON.stringify(activeView));
@@ -153,9 +156,12 @@ function App() {
     };
   }, [loanCalc]);
 
-  function handleSwitchView() {
-    setActiveView((current) => (current === 'voltcalc' ? 'loancalc' : 'voltcalc'));
+  function switchTo(view: AppView, direction: SwitchDirection) {
+    if (view === activeView) return;
+    setSwitchDirection(direction);
+    setActiveView(view);
     setLeadSubmitted(false);
+    setStageKey((current) => current + 1);
   }
 
   function handleDistanceChange(value: number) {
@@ -172,11 +178,7 @@ function App() {
     }));
   }
 
-  function handleFuelSettingChange(
-    type: FuelType,
-    field: 'consumption' | 'price',
-    value: number
-  ) {
+  function handleFuelSettingChange(type: FuelType, field: 'consumption' | 'price', value: number) {
     const max = field === 'consumption' ? 30 : 10;
 
     setVoltCalc((prev) => ({
@@ -252,7 +254,7 @@ function App() {
     setLeadSubmitted(false);
   }
 
-  function handleLeadSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleLeadSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!leadForm.consent) return;
@@ -290,84 +292,92 @@ function App() {
     setLeadForm(defaultLeadFormState);
   }
 
-  const leadSectionProps =
-    activeView === 'voltcalc'
-      ? {
-          source: 'voltcalc' as const,
-          title: 'Get EV offers matched to your savings result',
-          intro: 'Leave your details and capture this result before comparing dealership offers.',
-          submitLabel: 'Get EV offers',
-          summaryItems: [
-            {
-              label: 'Annual distance',
-              value: `${voltCalc.distance.toLocaleString('en-US')} km/year`,
-            },
-            {
-              label: 'Compared against',
-              value: voltCalc.fuelSettings[voltCalc.fuelType].label,
-            },
-            {
-              label: 'Annual EV savings',
-              value: formatEuro(voltResults.annualSavings, 2),
-            },
-            {
-              label: 'Monthly EV savings',
-              value: formatEuro(voltResults.monthlySavings, 2),
-            },
+  const leadSectionProps = {
+    source: activeView,
+    title: 'Get matched offers',
+    intro:
+      'Leave your details and we will connect you with relevant EV or financing options based on your calculation.',
+    submitLabel: 'Send my result',
+    summaryItems:
+      activeView === 'voltcalc'
+        ? [
+            { label: 'Annual distance', value: `${voltCalc.distance.toLocaleString('en-US')} km/year` },
+            { label: 'Compared against', value: voltCalc.fuelSettings[voltCalc.fuelType].label },
+            { label: 'Annual EV savings', value: formatEuro(voltResults.annualSavings, 2) },
+            { label: 'Monthly EV savings', value: formatEuro(voltResults.monthlySavings, 2) },
+          ]
+        : [
+            { label: 'Vehicle price', value: formatEuro(loanCalc.price, 0) },
+            { label: 'Down payment', value: formatEuro(loanCalc.downPayment, 0) },
+            { label: 'Loan term', value: `${loanCalc.months} months` },
+            { label: 'Estimated monthly payment', value: formatEuro(loanSummary.monthlyPayment, 0) },
           ],
-        }
-      : {
-          source: 'loancalc' as const,
-          title: 'Get financing options for this monthly budget',
-          intro: 'Leave your details and use this loan setup as your starting point for finance offers.',
-          submitLabel: 'Get financing options',
-          summaryItems: [
-            {
-              label: 'Vehicle price',
-              value: formatEuro(loanCalc.price, 0),
-            },
-            {
-              label: 'Down payment',
-              value: formatEuro(loanCalc.downPayment, 0),
-            },
-            {
-              label: 'Loan term',
-              value: `${loanCalc.months} months`,
-            },
-            {
-              label: 'Estimated monthly payment',
-              value: formatEuro(loanSummary.monthlyPayment, 0),
-            },
-          ],
-        };
+  };
 
   return (
-    <AppShell activeView={activeView} onSwitchView={handleSwitchView}>
-      {activeView === 'voltcalc' ? (
-        <VoltCalcPage
-          distance={voltCalc.distance}
-          fuelType={voltCalc.fuelType}
-          fuelSettings={voltCalc.fuelSettings}
-          evConsumption={voltCalc.evConsumption}
-          electricityPrice={voltCalc.electricityPrice}
-          onDistanceChange={handleDistanceChange}
-          onFuelTypeChange={handleFuelTypeChange}
-          onFuelSettingChange={handleFuelSettingChange}
-          onEvConsumptionChange={handleEvConsumptionChange}
-          onElectricityPriceChange={handleElectricityPriceChange}
-        />
-      ) : (
-        <LoanCalcPage
-          price={loanCalc.price}
-          downPayment={loanCalc.downPayment}
-          months={loanCalc.months}
-          apr={loanCalc.apr}
-          onPriceChange={handlePriceChange}
-          onDownPaymentChange={handleDownPaymentChange}
-          onMonthsChange={handleMonthsChange}
-          onAprChange={handleAprChange}
-        />
-      )}
+    <AppShell>
+      <section className="calculator-stage-shell" aria-live="polite">
+        <div className="calculator-stage-frame">
+          {activeView === 'voltcalc' ? (
+            <button
+              type="button"
+              className="stage-switch stage-switch-right"
+              onClick={() => switchTo('loancalc', 'forward')}
+              aria-label="Switch to financing calculator"
+            >
+              <span className="stage-switch-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="stage-switch stage-switch-left"
+              onClick={() => switchTo('voltcalc', 'backward')}
+              aria-label="Switch to EV comparison calculator"
+            >
+              <span className="stage-switch-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M15 5l-7 7 7 7" />
+                </svg>
+              </span>
+            </button>
+          )}
+
+          <div
+            key={`${activeView}-${stageKey}`}
+            className={`calculator-stage ${switchDirection === 'forward' ? 'enter-from-right' : 'enter-from-left'}`}
+          >
+            {activeView === 'voltcalc' ? (
+              <VoltCalcPage
+                distance={voltCalc.distance}
+                fuelType={voltCalc.fuelType}
+                fuelSettings={voltCalc.fuelSettings}
+                evConsumption={voltCalc.evConsumption}
+                electricityPrice={voltCalc.electricityPrice}
+                onDistanceChange={handleDistanceChange}
+                onFuelTypeChange={handleFuelTypeChange}
+                onFuelSettingChange={handleFuelSettingChange}
+                onEvConsumptionChange={handleEvConsumptionChange}
+                onElectricityPriceChange={handleElectricityPriceChange}
+              />
+            ) : (
+              <LoanCalcPage
+                price={loanCalc.price}
+                downPayment={loanCalc.downPayment}
+                months={loanCalc.months}
+                apr={loanCalc.apr}
+                onPriceChange={handlePriceChange}
+                onDownPaymentChange={handleDownPaymentChange}
+                onMonthsChange={handleMonthsChange}
+                onAprChange={handleAprChange}
+              />
+            )}
+          </div>
+        </div>
+      </section>
 
       <LeadCaptureSection
         source={leadSectionProps.source}
