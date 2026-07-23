@@ -1,13 +1,14 @@
-import { useMemo } from 'react';
-import { formatEuro } from '../../utils/format';
-import { calculateMonthlyPayment } from '../../utils/finance';
-import { MetricCard } from '../common/MetricCard';
+import { useMemo } from "react";
+import { formatEuro } from "../../utils/format";
+import { calculateMonthlyPayment } from "../../utils/finance";
+import { MetricCard } from "../common/MetricCard";
 
 interface LoanCalcPageProps {
   price: number;
   downPayment: number;
   months: number;
   apr: number;
+  monthlySavings?: number;
   onPriceChange: (value: number) => void;
   onDownPaymentChange: (value: number) => void;
   onMonthsChange: (value: number) => void;
@@ -19,6 +20,7 @@ export function LoanCalcPage({
   downPayment,
   months,
   apr,
+  monthlySavings = 0,
   onPriceChange,
   onDownPaymentChange,
   onMonthsChange,
@@ -32,6 +34,7 @@ export function LoanCalcPage({
 
   const totalPaid = monthlyPayment * months + downPayment;
   const totalInterest = monthlyPayment * months - principal;
+  const monthlyCostAfterSavings = Math.max(monthlyPayment - monthlySavings, 0);
 
   return (
     <div className="page-section loancalc-page">
@@ -42,7 +45,9 @@ export function LoanCalcPage({
           </div>
           <div className="vehicle-body">
             <div className="control-stack">
-              <label className="control-label" htmlFor="vehiclePrice">Vehicle price</label>
+              <label className="control-label" htmlFor="vehiclePrice">
+                Vehicle price
+              </label>
               <input
                 id="vehiclePrice"
                 className="text-input"
@@ -52,7 +57,9 @@ export function LoanCalcPage({
                 onChange={(e) => onPriceChange(Number(e.target.value))}
               />
 
-              <label className="control-label" htmlFor="downPayment">Down payment</label>
+              <label className="control-label" htmlFor="downPayment">
+                Down payment
+              </label>
               <input
                 id="downPayment"
                 className="text-input"
@@ -61,11 +68,6 @@ export function LoanCalcPage({
                 value={downPayment}
                 onChange={(e) => onDownPaymentChange(Number(e.target.value))}
               />
-
-              <div className="metric-card">
-                <div className="metric-label">Amount financed</div>
-                <div className="metric-value primary">{formatEuro(principal, 0)}</div>
-              </div>
             </div>
           </div>
         </article>
@@ -76,7 +78,9 @@ export function LoanCalcPage({
           </div>
           <div className="vehicle-body">
             <div className="control-stack">
-              <label className="control-label" htmlFor="loanTerm">Loan term (months)</label>
+              <label className="control-label" htmlFor="loanTerm">
+                Loan term (months)
+              </label>
               <select
                 id="loanTerm"
                 className="select-input"
@@ -84,11 +88,15 @@ export function LoanCalcPage({
                 onChange={(e) => onMonthsChange(Number(e.target.value))}
               >
                 {[24, 36, 48, 60, 72, 84, 96].map((term) => (
-                  <option key={term} value={term}>{term}</option>
+                  <option key={term} value={term}>
+                    {term}
+                  </option>
                 ))}
               </select>
 
-              <label className="control-label" htmlFor="apr">APR (%)</label>
+              <label className="control-label" htmlFor="apr">
+                APR (%)
+              </label>
               <input
                 id="apr"
                 className="text-input"
@@ -99,7 +107,8 @@ export function LoanCalcPage({
               />
 
               <div className="loan-note">
-                Loan payment is calculated using a standard amortizing loan model.
+                Loan payment is calculated using a standard amortizing loan
+                model.
               </div>
             </div>
           </div>
@@ -108,7 +117,10 @@ export function LoanCalcPage({
 
       <section className="surface-card loan-results-card">
         <div className="loan-highlight">
-          <div className="loan-highlight-label">Estimated monthly payment</div>
+          <div className="loan-highlight-copy">
+            <div className="loan-highlight-label">Estimated loan payment</div>
+          </div>
+
           <div className="loan-highlight-value">
             {formatEuro(monthlyPayment, 0)}
             <span>/ month</span>
@@ -119,14 +131,14 @@ export function LoanCalcPage({
 
         <div className="metrics-grid">
           <MetricCard
+            label="Net monthly cost after EV savings"
+            value={formatEuro(monthlyCostAfterSavings, 0)}
+            tone="ev"
+          />
+          <MetricCard
             label="Amount financed"
             value={formatEuro(principal, 0)}
             tone="primary"
-          />
-          <MetricCard
-            label="Monthly payment"
-            value={formatEuro(monthlyPayment, 0)}
-            tone="ev"
           />
           <MetricCard
             label="Total interest"

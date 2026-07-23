@@ -1,15 +1,15 @@
-import { useEffect, useMemo, useState, type FormEvent } from 'react';
-import { AppShell } from './components/AppShell';
-import { LeadCaptureSection } from './components/common/LeadCaptureSection';
-import { LoanCalcPage } from './components/loancalc/LoanCalcPage';
-import { VoltCalcPage } from './components/voltcalc/VoltCalcPage';
-import { calculateMonthlyPayment } from './utils/finance';
-import { formatEuro } from './utils/format';
-import { clamp } from './utils/number';
-import { calculateVoltCalc, type FuelType } from './utils/voltcalc';
+import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { AppShell } from "./components/AppShell";
+import { LeadCaptureSection } from "./components/common/LeadCaptureSection";
+import { LoanCalcPage } from "./components/loancalc/LoanCalcPage";
+import { VoltCalcPage } from "./components/voltcalc/VoltCalcPage";
+import { calculateMonthlyPayment } from "./utils/finance";
+import { formatEuro } from "./utils/format";
+import { clamp } from "./utils/number";
+import { calculateVoltCalc, type FuelType } from "./utils/voltcalc";
 
-type AppView = 'voltcalc' | 'loancalc';
-type SwitchDirection = 'forward' | 'backward';
+type AppView = "voltcalc" | "loancalc";
+type SwitchDirection = "forward" | "backward";
 
 type FuelConfig = {
   label: string;
@@ -70,12 +70,12 @@ interface LeadSubmission {
 
 const defaultVoltCalcState: VoltCalcState = {
   distance: 18000,
-  fuelType: 'petrol',
+  fuelType: "petrol",
   electricityPrice: 0.173,
   fuelSettings: {
-    petrol: { label: 'Petrol', consumption: 4.5, price: 1.75 },
-    diesel: { label: 'Diesel', consumption: 4.1, price: 1.61 },
-    hybrid: { label: 'Hybrid', consumption: 3.9, price: 1.75 },
+    petrol: { label: "Petrol", consumption: 4.5, price: 1.75 },
+    diesel: { label: "Diesel", consumption: 4.1, price: 1.61 },
+    hybrid: { label: "Hybrid", consumption: 3.9, price: 1.75 },
   },
   evConsumption: 17,
 };
@@ -88,14 +88,14 @@ const defaultLoanCalcState: LoanCalcState = {
 };
 
 const defaultLeadFormState: LeadFormState = {
-  name: '',
-  email: '',
-  phone: '',
+  name: "",
+  email: "",
+  phone: "",
   consent: false,
 };
 
 function readStorage<T>(key: string, fallback: T): T {
-  if (typeof window === 'undefined') return fallback;
+  if (typeof window === "undefined") return fallback;
 
   try {
     const raw = window.localStorage.getItem(key);
@@ -108,29 +108,33 @@ function readStorage<T>(key: string, fallback: T): T {
 
 function App() {
   const [activeView, setActiveView] = useState<AppView>(() =>
-    readStorage<AppView>('evcompare-active-view', 'voltcalc')
+    readStorage<AppView>("evcompare-active-view", "voltcalc"),
   );
   const [voltCalc, setVoltCalc] = useState<VoltCalcState>(() =>
-    readStorage<VoltCalcState>('evcompare-voltcalc', defaultVoltCalcState)
+    readStorage<VoltCalcState>("evcompare-voltcalc", defaultVoltCalcState),
   );
   const [loanCalc, setLoanCalc] = useState<LoanCalcState>(() =>
-    readStorage<LoanCalcState>('evcompare-loancalc', defaultLoanCalcState)
+    readStorage<LoanCalcState>("evcompare-loancalc", defaultLoanCalcState),
   );
   const [leadForm, setLeadForm] = useState<LeadFormState>(defaultLeadFormState);
   const [leadSubmitted, setLeadSubmitted] = useState(false);
-  const [switchDirection, setSwitchDirection] = useState<SwitchDirection>('forward');
+  const [switchDirection, setSwitchDirection] =
+    useState<SwitchDirection>("forward");
   const [stageKey, setStageKey] = useState(0);
 
   useEffect(() => {
-    window.localStorage.setItem('evcompare-active-view', JSON.stringify(activeView));
+    window.localStorage.setItem(
+      "evcompare-active-view",
+      JSON.stringify(activeView),
+    );
   }, [activeView]);
 
   useEffect(() => {
-    window.localStorage.setItem('evcompare-voltcalc', JSON.stringify(voltCalc));
+    window.localStorage.setItem("evcompare-voltcalc", JSON.stringify(voltCalc));
   }, [voltCalc]);
 
   useEffect(() => {
-    window.localStorage.setItem('evcompare-loancalc', JSON.stringify(loanCalc));
+    window.localStorage.setItem("evcompare-loancalc", JSON.stringify(loanCalc));
   }, [loanCalc]);
 
   const voltResults = useMemo(() => {
@@ -144,7 +148,11 @@ function App() {
 
   const loanSummary = useMemo(() => {
     const principal = Math.max(loanCalc.price - loanCalc.downPayment, 0);
-    const monthlyPayment = calculateMonthlyPayment(principal, loanCalc.apr, loanCalc.months);
+    const monthlyPayment = calculateMonthlyPayment(
+      principal,
+      loanCalc.apr,
+      loanCalc.months,
+    );
     const totalInterest = monthlyPayment * loanCalc.months - principal;
     const totalPaid = monthlyPayment * loanCalc.months + loanCalc.downPayment;
 
@@ -178,8 +186,12 @@ function App() {
     }));
   }
 
-  function handleFuelSettingChange(type: FuelType, field: 'consumption' | 'price', value: number) {
-    const max = field === 'consumption' ? 30 : 10;
+  function handleFuelSettingChange(
+    type: FuelType,
+    field: "consumption" | "price",
+    value: number,
+  ) {
+    const max = field === "consumption" ? 30 : 10;
 
     setVoltCalc((prev) => ({
       ...prev,
@@ -238,7 +250,10 @@ function App() {
     }));
   }
 
-  function handleLeadFieldChange(field: 'name' | 'email' | 'phone', value: string) {
+  function handleLeadFieldChange(
+    field: "name" | "email" | "phone",
+    value: string,
+  ) {
     setLeadForm((prev) => ({
       ...prev,
       [field]: value,
@@ -264,11 +279,12 @@ function App() {
       source: activeView,
       contact: leadForm,
       snapshot:
-        activeView === 'voltcalc'
+        activeView === "voltcalc"
           ? {
               distance: voltCalc.distance,
               fuelType: voltCalc.fuelType,
-              fuelConsumption: voltCalc.fuelSettings[voltCalc.fuelType].consumption,
+              fuelConsumption:
+                voltCalc.fuelSettings[voltCalc.fuelType].consumption,
               fuelPrice: voltCalc.fuelSettings[voltCalc.fuelType].price,
               evConsumption: voltCalc.evConsumption,
               electricityPrice: voltCalc.electricityPrice,
@@ -285,8 +301,11 @@ function App() {
             },
     };
 
-    const existing = readStorage<LeadSubmission[]>('evcompare-leads', []);
-    window.localStorage.setItem('evcompare-leads', JSON.stringify([payload, ...existing]));
+    const existing = readStorage<LeadSubmission[]>("evcompare-leads", []);
+    window.localStorage.setItem(
+      "evcompare-leads",
+      JSON.stringify([payload, ...existing]),
+    );
 
     setLeadSubmitted(true);
     setLeadForm(defaultLeadFormState);
@@ -294,23 +313,41 @@ function App() {
 
   const leadSectionProps = {
     source: activeView,
-    title: 'Get matched offers',
+    title: "Get matched offers",
     intro:
-      'Leave your details and we will connect you with relevant EV or financing options based on your calculation.',
-    submitLabel: 'Send my result',
+      "Leave your details and we will connect you with relevant EV or financing options based on your calculation.",
+    submitLabel: "Send my result",
     summaryItems:
-      activeView === 'voltcalc'
+      activeView === "voltcalc"
         ? [
-            { label: 'Annual distance', value: `${voltCalc.distance.toLocaleString('en-US')} km/year` },
-            { label: 'Compared against', value: voltCalc.fuelSettings[voltCalc.fuelType].label },
-            { label: 'Annual EV savings', value: formatEuro(voltResults.annualSavings, 2) },
-            { label: 'Monthly EV savings', value: formatEuro(voltResults.monthlySavings, 2) },
+            {
+              label: "Annual distance",
+              value: `${voltCalc.distance.toLocaleString("en-US")} km/year`,
+            },
+            {
+              label: "Compared against",
+              value: voltCalc.fuelSettings[voltCalc.fuelType].label,
+            },
+            {
+              label: "Annual EV savings",
+              value: formatEuro(voltResults.annualSavings, 2),
+            },
+            {
+              label: "Monthly EV savings",
+              value: formatEuro(voltResults.monthlySavings, 2),
+            },
           ]
         : [
-            { label: 'Vehicle price', value: formatEuro(loanCalc.price, 0) },
-            { label: 'Down payment', value: formatEuro(loanCalc.downPayment, 0) },
-            { label: 'Loan term', value: `${loanCalc.months} months` },
-            { label: 'Estimated monthly payment', value: formatEuro(loanSummary.monthlyPayment, 0) },
+            { label: "Vehicle price", value: formatEuro(loanCalc.price, 0) },
+            {
+              label: "Down payment",
+              value: formatEuro(loanCalc.downPayment, 0),
+            },
+            { label: "Loan term", value: `${loanCalc.months} months` },
+            {
+              label: "Estimated monthly payment",
+              value: formatEuro(loanSummary.monthlyPayment, 0),
+            },
           ],
   };
 
@@ -318,15 +355,22 @@ function App() {
     <AppShell>
       <section className="calculator-stage-shell" aria-live="polite">
         <div className="calculator-stage-frame">
-          {activeView === 'voltcalc' ? (
+          {activeView === "voltcalc" ? (
             <button
               type="button"
               className="stage-switch stage-switch-right"
-              onClick={() => switchTo('loancalc', 'forward')}
+              onClick={() => switchTo("loancalc", "forward")}
               aria-label="Switch to financing calculator"
             >
               <span className="stage-switch-arrow" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M9 5l7 7-7 7" />
                 </svg>
               </span>
@@ -335,11 +379,18 @@ function App() {
             <button
               type="button"
               className="stage-switch stage-switch-left"
-              onClick={() => switchTo('voltcalc', 'backward')}
+              onClick={() => switchTo("voltcalc", "backward")}
               aria-label="Switch to EV comparison calculator"
             >
               <span className="stage-switch-arrow" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M15 5l-7 7 7 7" />
                 </svg>
               </span>
@@ -348,9 +399,9 @@ function App() {
 
           <div
             key={`${activeView}-${stageKey}`}
-            className={`calculator-stage ${switchDirection === 'forward' ? 'enter-from-right' : 'enter-from-left'}`}
+            className={`calculator-stage ${switchDirection === "forward" ? "enter-from-right" : "enter-from-left"}`}
           >
-            {activeView === 'voltcalc' ? (
+            {activeView === "voltcalc" ? (
               <VoltCalcPage
                 distance={voltCalc.distance}
                 fuelType={voltCalc.fuelType}
@@ -369,6 +420,7 @@ function App() {
                 downPayment={loanCalc.downPayment}
                 months={loanCalc.months}
                 apr={loanCalc.apr}
+                monthlySavings={voltResults.monthlySavings}
                 onPriceChange={handlePriceChange}
                 onDownPaymentChange={handleDownPaymentChange}
                 onMonthsChange={handleMonthsChange}
