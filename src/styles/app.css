@@ -235,7 +235,7 @@ p {
 
 .calculator-stage-frame {
   position: relative;
-  min-height: 806px;
+  min-height: 838px;
 }
 
 .calculator-stage {
@@ -278,8 +278,8 @@ p {
 }
 
 .stage-switch-arrow svg {
-  width: 42px;
-  height: 42px;
+  width: 52px;
+  height: 52px;
   overflow: visible;
 }
 
@@ -323,24 +323,6 @@ p {
     top: 1rem;
     transform: none;
     opacity: 0.82;
-  }
-
-  .stage-switch-right {
-    right: -4px;
-  }
-
-  .stage-switch-left {
-    left: -4px;
-  }
-
-  .stage-switch-right:hover,
-  .stage-switch-left:hover {
-    transform: none;
-  }
-
-  .stage-switch-arrow svg {
-    width: 20px;
-    height: 20px;
   }
 }
 
