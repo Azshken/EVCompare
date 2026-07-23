@@ -47,7 +47,6 @@ export function VoltCalcPage({
     });
   }, [distance, selectedFuel, evConsumption, electricityPrice]);
 
-  const sliderPercent = ((distance - 5000) / (50000 - 50000 + 5000)) * 100;
   const safeSliderPercent = ((distance - 5000) / (50000 - 5000)) * 100;
 
   return (
