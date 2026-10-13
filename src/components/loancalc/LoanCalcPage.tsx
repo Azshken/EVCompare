@@ -34,6 +34,8 @@ export function LoanCalcPage({
 
   const totalPaid = monthlyPayment * months + downPayment;
   const totalInterest = monthlyPayment * months - principal;
+  const totalEvSavings = monthlySavings * months;
+  const trueCost = totalPaid - totalEvSavings;
   const monthlyCostAfterSavings = Math.max(monthlyPayment - monthlySavings, 0);
 
   return (
@@ -119,6 +121,9 @@ export function LoanCalcPage({
         <div className="loan-highlight">
           <div className="loan-highlight-copy">
             <div className="loan-highlight-label">Estimated loan payment</div>
+            <div className="loan-highlight-note">
+              {formatEuro(monthlyCostAfterSavings, 0)} / month after EV savings
+            </div>
           </div>
 
           <div className="loan-highlight-value">
@@ -131,16 +136,6 @@ export function LoanCalcPage({
 
         <div className="metrics-grid">
           <MetricCard
-            label="Net monthly cost after EV savings"
-            value={formatEuro(monthlyCostAfterSavings, 0)}
-            tone="ev"
-          />
-          <MetricCard
-            label="Amount financed"
-            value={formatEuro(principal, 0)}
-            tone="primary"
-          />
-          <MetricCard
             label="Total interest"
             value={formatEuro(totalInterest, 0)}
             tone="fuel"
@@ -149,6 +144,11 @@ export function LoanCalcPage({
             label="Total paid"
             value={formatEuro(totalPaid, 0)}
             tone="primary"
+          />
+          <MetricCard
+            label="True cost after EV savings"
+            value={formatEuro(trueCost, 0)}
+            tone="ev"
           />
         </div>
       </section>

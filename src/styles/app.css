@@ -532,7 +532,7 @@ p {
 }
 
 .metrics-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: stretch;
 }
 
@@ -928,6 +928,14 @@ p {
   color: rgba(255, 255, 255, 0.82);
   font-size: 0.8rem;
   font-weight: 700;
+}
+
+.loan-highlight-note {
+  margin-top: 0.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.35;
 }
 
 .loan-highlight-value {
