@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent, type TouchEvent } from "react";
 import { AppShell } from "./components/AppShell";
 import { LeadCaptureSection } from "./components/common/LeadCaptureSection";
 import { LoanCalcPage } from "./components/loancalc/LoanCalcPage";
@@ -121,6 +121,7 @@ function App() {
   const [switchDirection, setSwitchDirection] =
     useState<SwitchDirection>("forward");
   const [stageKey, setStageKey] = useState(0);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     window.localStorage.setItem(
@@ -170,6 +171,22 @@ function App() {
     setActiveView(view);
     setLeadSubmitted(false);
     setStageKey((current) => current + 1);
+  }
+
+  function handleTouchStart(e: TouchEvent) {
+    touchStartX.current = e.touches[0].clientX;
+  }
+
+  function handleTouchEnd(e: TouchEvent) {
+    if (touchStartX.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    const threshold = 50;
+    if (deltaX > threshold && activeView === "loancalc") {
+      switchTo("voltcalc", "backward");
+    } else if (deltaX < -threshold && activeView === "voltcalc") {
+      switchTo("loancalc", "forward");
+    }
+    touchStartX.current = null;
   }
 
   function handleDistanceChange(value: number) {
@@ -354,7 +371,7 @@ function App() {
   return (
     <AppShell>
       <section className="calculator-stage-shell" aria-live="polite">
-        <div className="calculator-stage-frame">
+        <div className="stage-nav">
           <button
             type="button"
             className={`stage-switch stage-switch-left ${activeView === "voltcalc" ? "is-disabled" : ""}`}
@@ -377,6 +394,10 @@ function App() {
             </span>
           </button>
 
+          <span className="stage-nav-label">
+            {activeView === "voltcalc" ? "Running costs" : "Financing"}
+          </span>
+
           <button
             type="button"
             className={`stage-switch stage-switch-right ${activeView === "loancalc" ? "is-disabled" : ""}`}
@@ -398,7 +419,13 @@ function App() {
               </svg>
             </span>
           </button>
+        </div>
 
+        <div
+          className="calculator-stage-frame"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           <div
             key={`${activeView}-${stageKey}`}
             className={`calculator-stage ${switchDirection === "forward" ? "enter-from-right" : "enter-from-left"}`}
