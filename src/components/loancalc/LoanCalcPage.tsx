@@ -121,14 +121,16 @@ export function LoanCalcPage({
         <div className="loan-highlight">
           <div className="loan-highlight-copy">
             <div className="loan-highlight-label">Estimated loan payment</div>
-            <div className="loan-highlight-note">
-              {formatEuro(monthlyCostAfterSavings, 0)} / month after EV savings
-            </div>
           </div>
 
           <div className="loan-highlight-value">
-            {formatEuro(monthlyPayment, 0)}
-            <span>/ month</span>
+            <div className="loan-highlight-amount">
+              {formatEuro(monthlyPayment, 0)}
+              <span>/ month</span>
+            </div>
+            <div className="loan-highlight-note">
+              {formatEuro(monthlyCostAfterSavings, 0)} after EV savings
+            </div>
           </div>
         </div>
 
