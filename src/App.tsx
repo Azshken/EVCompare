@@ -355,47 +355,49 @@ function App() {
     <AppShell>
       <section className="calculator-stage-shell" aria-live="polite">
         <div className="calculator-stage-frame">
-          {activeView === "voltcalc" ? (
-            <button
-              type="button"
-              className="stage-switch stage-switch-right"
-              onClick={() => switchTo("loancalc", "forward")}
-              aria-label="Switch to financing calculator"
-            >
-              <span className="stage-switch-arrow" aria-hidden="true">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M9 5l7 7-7 7" />
-                </svg>
-              </span>
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="stage-switch stage-switch-left"
-              onClick={() => switchTo("voltcalc", "backward")}
-              aria-label="Switch to EV comparison calculator"
-            >
-              <span className="stage-switch-arrow" aria-hidden="true">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M15 5l-7 7 7 7" />
-                </svg>
-              </span>
-            </button>
-          )}
+          <button
+            type="button"
+            className={`stage-switch stage-switch-left ${activeView === "voltcalc" ? "is-disabled" : ""}`}
+            onClick={() => switchTo("voltcalc", "backward")}
+            disabled={activeView === "voltcalc"}
+            aria-label="Switch to EV comparison calculator"
+            title="Running costs"
+          >
+            <span className="stage-switch-arrow" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M15 5l-7 7 7 7" />
+              </svg>
+            </span>
+          </button>
+
+          <button
+            type="button"
+            className={`stage-switch stage-switch-right ${activeView === "loancalc" ? "is-disabled" : ""}`}
+            onClick={() => switchTo("loancalc", "forward")}
+            disabled={activeView === "loancalc"}
+            aria-label="Switch to financing calculator"
+            title="Financing"
+          >
+            <span className="stage-switch-arrow" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
+          </button>
 
           <div
             key={`${activeView}-${stageKey}`}
