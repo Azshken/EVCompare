@@ -971,6 +971,141 @@ p {
   height: 0.9rem;
 }
 
+.loan-setup-card {
+  padding: 1.15rem 1.2rem 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.loan-setup-header {
+  margin-bottom: 1.1rem;
+}
+
+.loan-setup-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.loan-setup-subtitle {
+  margin-top: 0.2rem;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+}
+
+.loan-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.loan-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.loan-control-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.loan-control-value {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.loan-option-group {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.loan-option-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.12rem;
+  min-height: 58px;
+  padding: 0.45rem 0.35rem;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.loan-option-btn:hover:not(.is-active) {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-3);
+}
+
+.loan-option-btn.is-active {
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 14%, var(--color-surface));
+  color: var(--color-primary);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-primary) 35%, transparent);
+}
+
+.loan-option-percent {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.loan-option-amount {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  line-height: 1.2;
+}
+
+.loan-option-btn.is-active .loan-option-amount {
+  color: color-mix(in srgb, var(--color-primary) 80%, var(--color-text-muted));
+}
+
+.loan-option-btn-year .loan-option-percent {
+  font-size: 1.05rem;
+}
+
+.loan-apr-group {
+  max-width: 180px;
+}
+
+.loan-apr-input {
+  width: 100%;
+}
+
+@media (max-width: 680px) {
+  .loan-option-group {
+    gap: 0.35rem;
+  }
+
+  .loan-option-btn {
+    min-height: 54px;
+    padding: 0.4rem 0.25rem;
+  }
+
+  .loan-option-percent {
+    font-size: 0.88rem;
+  }
+
+  .loan-option-amount {
+    font-size: 0.62rem;
+  }
+
+  .loan-apr-group {
+    max-width: none;
+  }
+}
+
 .lead-card {
   margin-top: 0.35rem;
 }

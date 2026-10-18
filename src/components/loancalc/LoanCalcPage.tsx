@@ -15,6 +15,9 @@ interface LoanCalcPageProps {
   onAprChange: (value: number) => void;
 }
 
+const DOWN_PAYMENT_OPTIONS = [0, 10, 20, 30] as const;
+const TERM_YEARS = [3, 4, 5, 6] as const;
+
 export function LoanCalcPage({
   price,
   downPayment,
@@ -38,83 +41,113 @@ export function LoanCalcPage({
   const trueCost = totalPaid - totalEvSavings;
   const monthlyCostAfterSavings = Math.max(monthlyPayment - monthlySavings, 0);
 
+  const activeDownPercent = useMemo(() => {
+    if (price <= 0) return 0;
+    const pct = Math.round((downPayment / price) * 100);
+    return DOWN_PAYMENT_OPTIONS.includes(pct as (typeof DOWN_PAYMENT_OPTIONS)[number])
+      ? pct
+      : null;
+  }, [downPayment, price]);
+
+  const activeYears = months / 12;
+
+  function selectDownPercent(percent: number) {
+    onDownPaymentChange(Math.round((price * percent) / 100));
+  }
+
+  function selectYears(years: number) {
+    onMonthsChange(years * 12);
+  }
+
   return (
     <div className="page-section loancalc-page">
-      <section className="loan-grid">
-        <article className="vehicle-card">
-          <div className="vehicle-header">
-            <span className="mini-chip primary">Loan setup</span>
-          </div>
-          <div className="vehicle-body">
-            <div className="control-stack">
-              <label className="control-label" htmlFor="vehiclePrice">
-                Vehicle price
-              </label>
-              <input
-                id="vehiclePrice"
-                className="text-input"
-                type="number"
-                step="500"
-                value={price}
-                onChange={(e) => onPriceChange(Number(e.target.value))}
-              />
+      <section className="loan-setup-card surface-card">
+        <div className="loan-setup-header">
+          <h2 className="loan-setup-title">Financing</h2>
+          <p className="loan-setup-subtitle">Adjust the down payment and term</p>
+        </div>
 
-              <label className="control-label" htmlFor="downPayment">
-                Down payment
-              </label>
-              <input
-                id="downPayment"
-                className="text-input"
-                type="number"
-                step="500"
-                value={downPayment}
-                onChange={(e) => onDownPaymentChange(Number(e.target.value))}
-              />
+        <div className="loan-controls">
+          <div className="loan-control-group">
+            <label className="control-label" htmlFor="vehiclePrice">
+              Vehicle price
+            </label>
+            <input
+              id="vehiclePrice"
+              className="text-input"
+              type="number"
+              step="500"
+              min="0"
+              value={price}
+              onChange={(e) => onPriceChange(Number(e.target.value) || 0)}
+            />
+          </div>
+
+          <div className="loan-control-group">
+            <div className="loan-control-label-row">
+              <span className="control-label">Down payment</span>
+              <span className="loan-control-value">{formatEuro(downPayment, 0)}</span>
+            </div>
+            <div className="loan-option-group" role="group" aria-label="Down payment percentage">
+              {DOWN_PAYMENT_OPTIONS.map((percent) => {
+                const amount = Math.round((price * percent) / 100);
+                const isActive = activeDownPercent === percent;
+                return (
+                  <button
+                    key={percent}
+                    type="button"
+                    className={`loan-option-btn ${isActive ? "is-active" : ""}`}
+                    onClick={() => selectDownPercent(percent)}
+                    aria-pressed={isActive}
+                  >
+                    <span className="loan-option-percent">{percent}%</span>
+                    <span className="loan-option-amount">{formatEuro(amount, 0)}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
-        </article>
 
-        <article className="vehicle-card ev-card">
-          <div className="vehicle-header">
-            <span className="ev-chip">Monthly plan</span>
-          </div>
-          <div className="vehicle-body">
-            <div className="control-stack">
-              <label className="control-label" htmlFor="loanTerm">
-                Loan term (months)
-              </label>
-              <select
-                id="loanTerm"
-                className="select-input"
-                value={months}
-                onChange={(e) => onMonthsChange(Number(e.target.value))}
-              >
-                {[24, 36, 48, 60, 72, 84, 96].map((term) => (
-                  <option key={term} value={term}>
-                    {term}
-                  </option>
-                ))}
-              </select>
-
-              <label className="control-label" htmlFor="apr">
-                APR (%)
-              </label>
-              <input
-                id="apr"
-                className="text-input"
-                type="number"
-                step="0.1"
-                value={apr}
-                onChange={(e) => onAprChange(Number(e.target.value))}
-              />
-
-              <div className="loan-note">
-                Loan payment is calculated using a standard amortizing loan
-                model.
-              </div>
+          <div className="loan-control-group">
+            <span className="control-label">Loan term</span>
+            <div className="loan-option-group" role="group" aria-label="Loan term in years">
+              {TERM_YEARS.map((years) => {
+                const isActive = activeYears === years;
+                return (
+                  <button
+                    key={years}
+                    type="button"
+                    className={`loan-option-btn loan-option-btn-year ${isActive ? "is-active" : ""}`}
+                    onClick={() => selectYears(years)}
+                    aria-pressed={isActive}
+                  >
+                    <span className="loan-option-percent">{years}</span>
+                    <span className="loan-option-amount">{years === 1 ? "year" : "years"}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
-        </article>
+
+          <div className="loan-control-group loan-apr-group">
+            <label className="control-label" htmlFor="apr">
+              APR (%)
+            </label>
+            <input
+              id="apr"
+              className="text-input loan-apr-input"
+              type="number"
+              step="0.1"
+              min="0"
+              value={apr}
+              onChange={(e) => onAprChange(Number(e.target.value) || 0)}
+            />
+          </div>
+        </div>
+
+        <div className="loan-note">
+          Loan payment is calculated using a standard amortizing loan model.
+        </div>
       </section>
 
       <section className="surface-card loan-results-card">
