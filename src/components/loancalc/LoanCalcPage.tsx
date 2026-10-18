@@ -122,7 +122,7 @@ export function LoanCalcPage({
                     aria-pressed={isActive}
                   >
                     <span className="loan-option-percent">{years}</span>
-                    <span className="loan-option-amount">{years === 1 ? "year" : "years"}</span>
+                    <span className="loan-option-amount">years</span>
                   </button>
                 );
               })}
