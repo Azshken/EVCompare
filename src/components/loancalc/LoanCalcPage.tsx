@@ -75,19 +75,21 @@ export function LoanCalcPage({
             <input
               id="vehiclePrice"
               className="text-input"
-              type="number"
-              step="500"
-              min="0"
-              value={price}
-              onChange={(e) => onPriceChange(Number(e.target.value) || 0)}
+              type="text"
+              inputMode="numeric"
+              value={price === 0 ? "" : String(price)}
+              placeholder="0"
+              onChange={(e) => {
+                const cleaned = e.target.value
+                  .replace(/[^\d]/g, "")
+                  .replace(/^0+(?=\d)/, "");
+                onPriceChange(cleaned === "" ? 0 : Number(cleaned));
+              }}
             />
           </div>
 
           <div className="loan-control-group">
-            <div className="loan-control-label-row">
-              <span className="control-label">Down payment</span>
-              <span className="loan-control-value">{formatEuro(downPayment, 0)}</span>
-            </div>
+            <span className="control-label">Down payment</span>
             <div className="loan-option-group" role="group" aria-label="Down payment percentage">
               {DOWN_PAYMENT_OPTIONS.map((percent) => {
                 const amount = Math.round((price * percent) / 100);
@@ -136,11 +138,19 @@ export function LoanCalcPage({
             <input
               id="apr"
               className="text-input loan-apr-input"
-              type="number"
-              step="0.1"
-              min="0"
-              value={apr}
-              onChange={(e) => onAprChange(Number(e.target.value) || 0)}
+              type="text"
+              inputMode="decimal"
+              value={apr === 0 ? "" : String(apr)}
+              placeholder="0"
+              onChange={(e) => {
+                let cleaned = e.target.value.replace(/[^\d.]/g, "");
+                const parts = cleaned.split(".");
+                if (parts.length > 2) {
+                  cleaned = `${parts[0]}.${parts.slice(1).join("")}`;
+                }
+                cleaned = cleaned.replace(/^0+(?=\d)/, "");
+                onAprChange(cleaned === "" || cleaned === "." ? 0 : Number(cleaned));
+              }}
             />
           </div>
         </div>
