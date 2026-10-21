@@ -23,6 +23,17 @@ export type EvModel = {
 const cars = evModels as EvModel[];
 
 type ViewMode = "tiles" | "list";
+type SortKey = "range" | "efficiency" | "price";
+
+function getEfficiency(car: EvModel): number {
+  if (car.range && car.battery && car.battery > 0) {
+    return car.range / car.battery;
+  }
+  if (car.wltp && car.wltp > 0) {
+    return 100 / car.wltp;
+  }
+  return 0;
+}
 
 export function CarSelectPage() {
   const [brand, setBrand] = useState<string>("all");
@@ -30,6 +41,7 @@ export function CarSelectPage() {
   const [ecoMin, setEcoMin] = useState<number>(0);
   const [view, setView] = useState<ViewMode>("tiles");
   const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState<SortKey>("price");
 
   const brands = useMemo(
     () => ["all", ...Array.from(new Set(cars.map((c) => c.brand))).sort()],
@@ -41,7 +53,7 @@ export function CarSelectPage() {
   );
 
   const filtered = useMemo(() => {
-    return cars.filter((c) => {
+    const result = cars.filter((c) => {
       if (brand !== "all" && c.brand !== brand) return false;
       if (type !== "all" && c.type !== type) return false;
       if (c.eco < ecoMin) return false;
@@ -52,7 +64,20 @@ export function CarSelectPage() {
       }
       return true;
     });
-  }, [brand, type, ecoMin, search]);
+
+    result.sort((a, b) => {
+      if (sortBy === "range") {
+        return (b.range ?? 0) - (a.range ?? 0);
+      }
+      if (sortBy === "efficiency") {
+        return getEfficiency(b) - getEfficiency(a);
+      }
+      // price: cheapest first
+      return (a.price ?? Infinity) - (b.price ?? Infinity);
+    });
+
+    return result;
+  }, [brand, type, ecoMin, search, sortBy]);
 
   return (
     <div className="car-select-page">
@@ -95,14 +120,42 @@ export function CarSelectPage() {
             onChange={(e) => setEcoMin(Number(e.target.value))}
           />
         </label>
+      </div>
+
+      <div className="car-toolbar">
+        <div className="sort-buttons">
+          <button
+            type="button"
+            className={sortBy === "range" ? "active" : ""}
+            onClick={() => setSortBy("range")}
+          >
+            Range
+          </button>
+          <button
+            type="button"
+            className={sortBy === "efficiency" ? "active" : ""}
+            onClick={() => setSortBy("efficiency")}
+          >
+            Efficiency
+          </button>
+          <button
+            type="button"
+            className={sortBy === "price" ? "active" : ""}
+            onClick={() => setSortBy("price")}
+          >
+            Price
+          </button>
+        </div>
         <div className="view-toggle">
           <button
+            type="button"
             className={view === "tiles" ? "active" : ""}
             onClick={() => setView("tiles")}
           >
             Tiles
           </button>
           <button
+            type="button"
             className={view === "list" ? "active" : ""}
             onClick={() => setView("list")}
           >
@@ -116,29 +169,30 @@ export function CarSelectPage() {
       <div className={view === "tiles" ? "car-tiles" : "car-list"}>
         {filtered.map((car) => (
           <article key={car.id} className="car-card">
-            {view === "tiles" && (
-              <div className="car-image-placeholder">
-                {car.imageUrl ? (
-                  <img src={car.imageUrl} alt="" />
-                ) : (
-                  <span>{car.brand}</span>
-                )}
-              </div>
-            )}
+            <div className="car-image-placeholder">
+              {car.imageUrl ? (
+                <img src={car.imageUrl} alt="" />
+              ) : (
+                <span>{car.brand}</span>
+              )}
+            </div>
             <div className="car-info">
               <h3>
                 {car.brand} {car.model}
                 {car.variant ? ` ${car.variant}` : ""}
               </h3>
+              <div className="car-meta">
+                <span className="car-type">{car.type}</span>
+                <span className="eco-badge">Eco {car.eco}</span>
+              </div>
               <div className="car-stats">
                 <span>{car.range ?? "–"} km</span>
                 <span>{car.battery ?? "–"} kWh</span>
                 <span>{car.power ?? "–"} kW</span>
                 <span>{car.topSpeed ?? "–"} km/h</span>
-                <span className="eco-badge">Eco {car.eco}</span>
               </div>
               <div className="car-price">
-                from €{car.price?.toLocaleString("en-EU") ?? "–"}
+                €{car.price?.toLocaleString("en-EU") ?? "–"}
               </div>
               {car.affiliateUrl && (
                 <a
