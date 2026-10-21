@@ -1,4 +1,4 @@
-type LeadSource = 'voltcalc' | 'loancalc';
+type LeadSource = 'voltcalc' | 'loancalc' | 'carselect';
 
 interface LeadSummaryItem {
   label: string;
@@ -25,6 +25,18 @@ interface LeadCaptureSectionProps {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
+function getSourceLabel(source: LeadSource): string {
+  if (source === 'voltcalc') return 'EV offers';
+  if (source === 'loancalc') return 'Financing leads';
+  return 'EV models';
+}
+
+function getSourceClass(source: LeadSource): string {
+  if (source === 'voltcalc') return 'ev';
+  if (source === 'loancalc') return 'primary';
+  return 'primary';
+}
+
 export function LeadCaptureSection({
   source,
   title,
@@ -45,8 +57,8 @@ export function LeadCaptureSection({
           <h3 className="lead-title">{title}</h3>
           <p className="lead-intro">{intro}</p>
         </div>
-        <span className={`mini-chip ${source === 'voltcalc' ? 'ev' : 'primary'}`}>
-          {source === 'voltcalc' ? 'EV offers' : 'Financing leads'}
+        <span className={`mini-chip ${getSourceClass(source)}`}>
+          {getSourceLabel(source)}
         </span>
       </div>
 
