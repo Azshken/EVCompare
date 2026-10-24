@@ -125,6 +125,7 @@ function App() {
     useState<SwitchDirection>("forward");
   const [stageKey, setStageKey] = useState(0);
   const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
 
   useEffect(() => {
     window.localStorage.setItem(
@@ -189,19 +190,35 @@ function App() {
   }
 
   function handleTouchStart(e: TouchEvent) {
+    if (e.touches.length !== 1) {
+      touchStartX.current = null;
+      touchStartY.current = null;
+      return;
+    }
     touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
   }
 
   function handleTouchEnd(e: TouchEvent) {
-    if (touchStartX.current === null) return;
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    if (e.changedTouches.length !== 1) {
+      touchStartX.current = null;
+      touchStartY.current = null;
+      return;
+    }
     const deltaX = e.changedTouches[0].clientX - touchStartX.current;
-    const threshold = 50;
-    if (deltaX > threshold) {
-      goPrev();
-    } else if (deltaX < -threshold) {
-      goNext();
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+    const threshold = 120;
+    const isMostlyHorizontal = Math.abs(deltaX) > Math.abs(deltaY) * 1.8;
+    if (isMostlyHorizontal && Math.abs(deltaX) > threshold) {
+      if (deltaX > 0) {
+        goPrev();
+      } else {
+        goNext();
+      }
     }
     touchStartX.current = null;
+    touchStartY.current = null;
   }
 
   function handleDistanceChange(value: number) {

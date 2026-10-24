@@ -97,7 +97,7 @@
 }
 
 .car-tiles .car-image-placeholder {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 10;
   background: var(--color-surface-2);
   display: flex;
   align-items: center;
@@ -208,7 +208,8 @@
 
 .car-list .car-image-placeholder {
   width: 88px;
-  height: 56px;
+  height: 55px;
+  aspect-ratio: 16 / 10;
   border-radius: 8px;
   background: var(--color-surface-2);
   display: flex;
