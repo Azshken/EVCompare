@@ -177,7 +177,7 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/vw-id-polo.jpg"
+    "imageUrl": "/cars/vw-id-polo.webp"
   },
   {
     "id": "volkswagen-id.tiguan",
@@ -1953,7 +1953,7 @@
     "battery": 53,
     "power": 145,
     "topSpeed": 160,
-    "price": 234900,
+    "price": 22490,
     "eco": 9,
     "wltp": 15.7,
     "kwh90": null,
