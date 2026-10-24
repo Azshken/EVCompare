@@ -381,37 +381,37 @@
     "id": "hyundai-inster",
     "brand": "Hyundai",
     "model": "Inster",
-    "variant": "Long Range",
+    "variant": "Family MY27",
     "type": "Hatchback",
     "range": 370,
     "battery": 49,
-    "power": 85,
+    "power": 84.5,
     "topSpeed": 150,
-    "price": 25900,
+    "price": 28430,
     "eco": 8,
     "wltp": 13.24,
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": "/cars/hyundai-inster.webp"
   },
   {
     "id": "kia-ev3",
     "brand": "Kia",
     "model": "EV3",
-    "variant": "Long Range",
+    "variant": "AIR",
     "type": "SUV",
     "range": 605,
     "battery": 81,
     "power": 150,
     "topSpeed": 170,
-    "price": 45990,
+    "price": 44380,
     "eco": 6,
-    "wltp": 13.39,
+    "wltp": 14.9,
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": "/cars/kia-ev3.webp"
   },
   {
     "id": "kia-ev6",
@@ -561,7 +561,7 @@
     "id": "renault-5-e-tech",
     "brand": "Renault",
     "model": "5 E-Tech",
-    "variant": "40 kWh",
+    "variant": "techno 150k",
     "type": "Hatchback",
     "range": 410,
     "battery": 52,
@@ -573,7 +573,7 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/renault-5-e-tech.webp"
+    "imageUrl": "/cars/renault-5.webp"
   },
   {
     "id": "renault-megane-e-tech",
