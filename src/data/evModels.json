@@ -33,7 +33,7 @@
     "kwh90": 11.6,
     "kwh120": 16,
     "affiliateUrl": null,
-    "imageUrl": "/cars/tesla-model-3.jpg"
+    "imageUrl": "/cars/tesla-model-3.webp"
   },
   {
     "id": "tesla-model-3-3",
@@ -69,7 +69,7 @@
     "kwh90": 12.4,
     "kwh120": 17.2,
     "affiliateUrl": null,
-    "imageUrl": "/cars/tesla-model-y-rwd.jpg"
+    "imageUrl": "/cars/tesla-model-y-rwd.webp"
   },
   {
     "id": "tesla-model-y-2",
