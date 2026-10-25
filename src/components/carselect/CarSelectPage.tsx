@@ -24,7 +24,7 @@ export type EvModel = {
   recommended: boolean;
 };
 
-const cars = evModels as EvModel[];
+export const cars = evModels as EvModel[];
 
 type ViewMode = "tiles" | "list";
 type SortKey = "range" | "efficiency" | "price";

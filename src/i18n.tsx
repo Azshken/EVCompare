@@ -31,6 +31,13 @@ const DICT = {
   recommended: { en: "Recommended", sk: "Odporúčam" },
   priceList: { en: "Price list", sk: "Cenník" },
   configurator: { en: "Configurator", sk: "Konfigurátor" },
+  info: { en: "Info", sk: "Informácie" },
+  carDetails: { en: "Car details", sk: "Detaily vozidla" },
+  backToModels: { en: "Back to models", sk: "Späť na modely" },
+  detailsComingSoon: {
+    en: "Detailed information about this model is coming soon.",
+    sk: "Podrobné informácie o tomto modeli budú čoskoro dostupné.",
+  },
   financingTitle: { en: "Financing", sk: "Financovanie" },
   financingSubtitle: { en: "Adjust the down payment and term", sk: "Upravte akontáciu a dobu splácania" },
   vehiclePrice: { en: "Vehicle price", sk: "Cena vozidla" },

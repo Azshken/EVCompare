@@ -1,5 +1,5 @@
 import { useI18n } from "../../i18n";
-import evModels, { type EvModel } from "./CarSelectPage";
+import { cars, type EvModel } from "./CarSelectPage";
 
 interface CarDetailsPageProps {
   carId: string | null;
@@ -8,8 +8,7 @@ interface CarDetailsPageProps {
 
 export function CarDetailsPage({ carId, onBack }: CarDetailsPageProps) {
   const { t } = useI18n();
-  const cars = evModels as EvModel[];
-  const car = cars.find((item) => item.id === carId) ?? null;
+  const car = cars.find((item: EvModel) => item.id === carId) ?? null;
 
   return (
     <div className="car-details-page">

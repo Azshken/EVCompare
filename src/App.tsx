@@ -11,8 +11,9 @@ import { clamp } from "./utils/number";
 import { calculateVoltCalc, type FuelType } from "./utils/voltcalc";
 import { useI18n } from "./i18n";
 
-type AppView = "voltcalc" | "loancalc" | "carselect" | "cardetails";
+type AppView = "voltcalc" | "loancalc" | "carselect";
 type SwitchDirection = "forward" | "backward";
+type LeadSource = "voltcalc" | "loancalc" | "carselect";
 
 type FuelConfig = {
   labelKey: "petrol" | "diesel" | "hybrid";
@@ -66,7 +67,7 @@ interface LoanLeadSnapshot {
 
 interface LeadSubmission {
   submittedAt: string;
-  source: AppView;
+  source: LeadSource;
   contact: LeadFormState;
   snapshot: VoltLeadSnapshot | LoanLeadSnapshot;
 }
