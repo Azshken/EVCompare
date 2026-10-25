@@ -4,13 +4,14 @@ import { LeadCaptureSection } from "./components/common/LeadCaptureSection";
 import { LoanCalcPage } from "./components/loancalc/LoanCalcPage";
 import { VoltCalcPage } from "./components/voltcalc/VoltCalcPage";
 import { CarSelectPage } from "./components/carselect/CarSelectPage";
+import { CarDetailsPage } from "./components/carselect/CarDetailsPage";
 import { calculateMonthlyPayment } from "./utils/finance";
 import { formatEuro } from "./utils/format";
 import { clamp } from "./utils/number";
 import { calculateVoltCalc, type FuelType } from "./utils/voltcalc";
 import { useI18n } from "./i18n";
 
-type AppView = "voltcalc" | "loancalc" | "carselect";
+type AppView = "voltcalc" | "loancalc" | "carselect" | "cardetails";
 type SwitchDirection = "forward" | "backward";
 
 type FuelConfig = {
@@ -148,6 +149,12 @@ function normaliseVoltCalcState(value: unknown): VoltCalcState {
   };
 }
 
+function getCarIdFromPath(): string | null {
+  if (typeof window === "undefined") return null;
+  const match = window.location.pathname.match(/^\/car\/([^/]+)$/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
 function App() {
   const { t, locale } = useI18n();
   const [activeView, setActiveView] = useState<AppView>(() =>
@@ -166,8 +173,18 @@ function App() {
   const [switchDirection, setSwitchDirection] =
     useState<SwitchDirection>("forward");
   const [stageKey, setStageKey] = useState(0);
+  const [carId, setCarId] = useState<string | null>(() => getCarIdFromPath());
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
+
+  useEffect(() => {
+    function handlePopState() {
+      setCarId(getCarIdFromPath());
+    }
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   useEffect(() => {
     window.localStorage.setItem(
@@ -223,6 +240,17 @@ function App() {
     setActiveView(view);
     setLeadSubmitted(false);
     setStageKey((current) => current + 1);
+  }
+
+  function openCar(nextCarId: string) {
+    setCarId(nextCarId);
+    window.history.pushState({}, "", `/car/${encodeURIComponent(nextCarId)}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function closeCar() {
+    setCarId(null);
+    window.history.pushState({}, "", "/");
   }
 
   function goNext() {
@@ -334,7 +362,6 @@ function App() {
   }
 
   function handleMonthsChange(value: number) {
-    setVoltCalc; // no-op guard for lint consistency
     setLoanCalc((prev) => ({
       ...prev,
       months: clamp(value, 12, 120),
@@ -459,85 +486,92 @@ function App() {
 
   return (
     <AppShell>
-      <section className="calculator-stage-shell" aria-live="polite">
-        <div className="stage-tabs" role="tablist">
-          {viewTabs.map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              role="tab"
-              aria-selected={activeView === tab.id}
-              className={`stage-tab ${activeView === tab.id ? "is-active" : ""}`}
-              onClick={() =>
-                switchTo(
-                  tab.id,
-                  VIEW_ORDER.indexOf(tab.id) > VIEW_ORDER.indexOf(activeView)
-                    ? "forward"
-                    : "backward",
-                )
-              }
+      {carId ? (
+        <CarDetailsPage carId={carId} onBack={closeCar} />
+      ) : (
+        <>
+          <section className="calculator-stage-shell" aria-live="polite">
+            <div className="stage-tabs" role="tablist">
+              {viewTabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeView === tab.id}
+                  className={`stage-tab ${activeView === tab.id ? "is-active" : ""}`}
+                  onClick={() =>
+                    switchTo(
+                      tab.id,
+                      VIEW_ORDER.indexOf(tab.id) > VIEW_ORDER.indexOf(activeView)
+                        ? "forward"
+                        : "backward",
+                    )
+                  }
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            <div
+              className="calculator-stage-frame"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
             >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+              <div
+                key={`${activeView}-${stageKey}`}
+                className={`calculator-stage ${switchDirection === "forward" ? "enter-from-right" : "enter-from-left"}`}
+              >
+                {activeView === "voltcalc" && (
+                  <VoltCalcPage
+                    distance={voltCalc.distance}
+                    fuelType={voltCalc.fuelType}
+                    fuelSettings={voltCalc.fuelSettings}
+                    evConsumption={voltCalc.evConsumption}
+                    electricityPrice={voltCalc.electricityPrice}
+                    onDistanceChange={handleDistanceChange}
+                    onFuelTypeChange={handleFuelTypeChange}
+                    onFuelSettingChange={handleFuelSettingChange}
+                    onEvConsumptionChange={handleEvConsumptionChange}
+                    onElectricityPriceChange={handleElectricityPriceChange}
+                  />
+                )}
+                {activeView === "loancalc" && (
+                  <LoanCalcPage
+                    price={loanCalc.price}
+                    downPayment={loanCalc.downPayment}
+                    months={loanCalc.months}
+                    apr={loanCalc.apr}
+                    monthlySavings={voltResults.monthlySavings}
+                    onPriceChange={handlePriceChange}
+                    onDownPaymentChange={handleDownPaymentChange}
+                    onMonthsChange={handleMonthsChange}
+                    onAprChange={handleAprChange}
+                  />
+                )}
+                {activeView === "carselect" && (
+                  <CarSelectPage
+                    onSelectConsumption={(kwh) => handleEvConsumptionChange(kwh)}
+                    onOpenCar={openCar}
+                  />
+                )}
+              </div>
+            </div>
+          </section>
 
-        <div
-          className="calculator-stage-frame"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          <div
-            key={`${activeView}-${stageKey}`}
-            className={`calculator-stage ${switchDirection === "forward" ? "enter-from-right" : "enter-from-left"}`}
-          >
-            {activeView === "voltcalc" && (
-              <VoltCalcPage
-                distance={voltCalc.distance}
-                fuelType={voltCalc.fuelType}
-                fuelSettings={voltCalc.fuelSettings}
-                evConsumption={voltCalc.evConsumption}
-                electricityPrice={voltCalc.electricityPrice}
-                onDistanceChange={handleDistanceChange}
-                onFuelTypeChange={handleFuelTypeChange}
-                onFuelSettingChange={handleFuelSettingChange}
-                onEvConsumptionChange={handleEvConsumptionChange}
-                onElectricityPriceChange={handleElectricityPriceChange}
-              />
-            )}
-            {activeView === "loancalc" && (
-              <LoanCalcPage
-                price={loanCalc.price}
-                downPayment={loanCalc.downPayment}
-                months={loanCalc.months}
-                apr={loanCalc.apr}
-                monthlySavings={voltResults.monthlySavings}
-                onPriceChange={handlePriceChange}
-                onDownPaymentChange={handleDownPaymentChange}
-                onMonthsChange={handleMonthsChange}
-                onAprChange={handleAprChange}
-              />
-            )}
-            {activeView === "carselect" && (
-              <CarSelectPage
-                onSelectConsumption={(kwh) => handleEvConsumptionChange(kwh)}
-              />
-            )}
-          </div>
-        </div>
-      </section>
-
-      <LeadCaptureSection
-        source={leadSectionProps.source}
-        title={leadSectionProps.title}
-        intro={leadSectionProps.intro}
-        summaryItems={leadSectionProps.summaryItems}
-        form={leadForm}
-        submitted={leadSubmitted}
-        onFieldChange={handleLeadFieldChange}
-        onConsentChange={handleLeadConsentChange}
-        onSubmit={handleLeadSubmit}
-      />
+          <LeadCaptureSection
+            source={leadSectionProps.source}
+            title={leadSectionProps.title}
+            intro={leadSectionProps.intro}
+            summaryItems={leadSectionProps.summaryItems}
+            form={leadForm}
+            submitted={leadSubmitted}
+            onFieldChange={handleLeadFieldChange}
+            onConsentChange={handleLeadConsentChange}
+            onSubmit={handleLeadSubmit}
+          />
+        </>
+      )}
     </AppShell>
   );
 }

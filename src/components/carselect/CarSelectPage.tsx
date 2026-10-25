@@ -75,9 +75,10 @@ function computeScores(list: EvModel[]) {
 
 interface CarSelectPageProps {
   onSelectConsumption: (kwh: number) => void;
+  onOpenCar: (carId: string) => void;
 }
 
-export function CarSelectPage({ onSelectConsumption }: CarSelectPageProps) {
+export function CarSelectPage({ onSelectConsumption, onOpenCar }: CarSelectPageProps) {
   const { t, locale } = useI18n();
   const [brand, setBrand] = useState("all");
   const [type, setType] = useState("all");
@@ -139,6 +140,15 @@ export function CarSelectPage({ onSelectConsumption }: CarSelectPageProps) {
     }
     setSelectedId(car.id);
     if (car.wltp && car.wltp > 0) onSelectConsumption(car.wltp);
+  }
+
+  function handleCardClick(car: EvModel) {
+    selectCar(car);
+  }
+
+  function handleInfoClick(event: React.MouseEvent, car: EvModel) {
+    event.stopPropagation();
+    onOpenCar(car.id);
   }
 
   function formatPrice(value: number | null) {
@@ -221,7 +231,19 @@ export function CarSelectPage({ onSelectConsumption }: CarSelectPageProps) {
           const selected = selectedId === car.id;
           const score = scores.get(car.id) ?? 0;
           return (
-            <article key={car.id} className={`car-card ${selected ? "is-selected" : ""}`}>
+            <article
+              key={car.id}
+              className={`car-card ${selected ? "is-selected" : ""}`}
+              onClick={() => handleCardClick(car)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  handleCardClick(car);
+                }
+              }}
+            >
               <div className="car-image-placeholder">
                 {car.imageUrl ? <img src={car.imageUrl} alt="" /> : <span>{car.brand}</span>}
               </div>
@@ -248,18 +270,30 @@ export function CarSelectPage({ onSelectConsumption }: CarSelectPageProps) {
                 <div className="car-actions">
                   <button
                     type="button"
-                    className={`select-car-btn ${selected ? "is-active" : ""}`}
-                    onClick={() => selectCar(car)}
+                    className="car-link-btn car-info-btn"
+                    onClick={(event) => handleInfoClick(event, car)}
                   >
-                    {selected ? t("selected") : t("select")}
+                    {t("info")}
                   </button>
-                  {selected && car.priceListUrl && (
-                    <a className="car-link-btn" href={car.priceListUrl} target="_blank" rel="noopener noreferrer">
+                  {car.priceListUrl && (
+                    <a
+                      className="car-link-btn"
+                      href={car.priceListUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(event) => event.stopPropagation()}
+                    >
                       {t("priceList")}
                     </a>
                   )}
-                  {selected && car.affiliateUrl && (
-                    <a className="car-link-btn" href={car.affiliateUrl} target="_blank" rel="noopener noreferrer">
+                  {car.affiliateUrl && (
+                    <a
+                      className="car-link-btn"
+                      href={car.affiliateUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(event) => event.stopPropagation()}
+                    >
                       {t("configurator")}
                     </a>
                   )}

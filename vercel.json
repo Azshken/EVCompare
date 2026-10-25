@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/car/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/index.html"
+    }
+  ]
+}
