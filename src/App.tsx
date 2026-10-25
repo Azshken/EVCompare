@@ -110,13 +110,53 @@ function readStorage<T>(key: string, fallback: T): T {
   }
 }
 
+function normaliseVoltCalcState(value: unknown): VoltCalcState {
+  const fallback = defaultVoltCalcState;
+  if (!value || typeof value !== "object") return fallback;
+
+  const input = value as Partial<VoltCalcState>;
+  const fuelType: FuelType =
+    input.fuelType === "diesel" || input.fuelType === "hybrid"
+      ? input.fuelType
+      : "petrol";
+
+  const source = input.fuelSettings;
+  const fuelSettings: FuelSettings = {
+    petrol: {
+      labelKey: "petrol",
+      consumption: Number(source?.petrol?.consumption ?? fallback.fuelSettings.petrol.consumption),
+      price: Number(source?.petrol?.price ?? fallback.fuelSettings.petrol.price),
+    },
+    diesel: {
+      labelKey: "diesel",
+      consumption: Number(source?.diesel?.consumption ?? fallback.fuelSettings.diesel.consumption),
+      price: Number(source?.diesel?.price ?? fallback.fuelSettings.diesel.price),
+    },
+    hybrid: {
+      labelKey: "hybrid",
+      consumption: Number(source?.hybrid?.consumption ?? fallback.fuelSettings.hybrid.consumption),
+      price: Number(source?.hybrid?.price ?? fallback.fuelSettings.hybrid.price),
+    },
+  };
+
+  return {
+    distance: Number(input.distance ?? fallback.distance),
+    fuelType,
+    electricityPrice: Number(input.electricityPrice ?? fallback.electricityPrice),
+    fuelSettings,
+    evConsumption: Number(input.evConsumption ?? fallback.evConsumption),
+  };
+}
+
 function App() {
   const { t, locale } = useI18n();
   const [activeView, setActiveView] = useState<AppView>(() =>
     readStorage<AppView>("evcompare-active-view", "voltcalc"),
   );
   const [voltCalc, setVoltCalc] = useState<VoltCalcState>(() =>
-    readStorage<VoltCalcState>("evcompare-voltcalc", defaultVoltCalcState),
+    normaliseVoltCalcState(
+      readStorage<unknown>("evcompare-voltcalc", defaultVoltCalcState),
+    ),
   );
   const [loanCalc, setLoanCalc] = useState<LoanCalcState>(() =>
     readStorage<LoanCalcState>("evcompare-loancalc", defaultLoanCalcState),
@@ -144,18 +184,20 @@ function App() {
     window.localStorage.setItem("evcompare-loancalc", JSON.stringify(loanCalc));
   }, [loanCalc]);
 
+  const selectedFuel = voltCalc.fuelSettings[voltCalc.fuelType];
+
   const voltResults = useMemo(() => {
     return calculateVoltCalc({
       distance: voltCalc.distance,
       selectedFuel: {
-        label: t(voltCalc.fuelSettings[voltCalc.fuelType].labelKey),
-        consumption: voltCalc.fuelSettings[voltCalc.fuelType].consumption,
-        price: voltCalc.fuelSettings[voltCalc.fuelType].price,
+        label: t(selectedFuel.labelKey),
+        consumption: selectedFuel.consumption,
+        price: selectedFuel.price,
       },
       evConsumption: voltCalc.evConsumption,
       electricityPrice: voltCalc.electricityPrice,
     });
-  }, [voltCalc, t]);
+  }, [voltCalc, selectedFuel, t]);
 
   const loanSummary = useMemo(() => {
     const principal = Math.max(loanCalc.price - loanCalc.downPayment, 0);
@@ -292,6 +334,7 @@ function App() {
   }
 
   function handleMonthsChange(value: number) {
+    setVoltCalc; // no-op guard for lint consistency
     setLoanCalc((prev) => ({
       ...prev,
       months: clamp(value, 12, 120),
@@ -338,9 +381,8 @@ function App() {
           ? {
               distance: voltCalc.distance,
               fuelType: voltCalc.fuelType,
-              fuelConsumption:
-                voltCalc.fuelSettings[voltCalc.fuelType].consumption,
-              fuelPrice: voltCalc.fuelSettings[voltCalc.fuelType].price,
+              fuelConsumption: selectedFuel.consumption,
+              fuelPrice: selectedFuel.price,
               evConsumption: voltCalc.evConsumption,
               electricityPrice: voltCalc.electricityPrice,
               annualSavings: voltResults.annualSavings,
@@ -385,7 +427,7 @@ function App() {
             },
             {
               label: t("comparedAgainst"),
-              value: t(voltCalc.fuelSettings[voltCalc.fuelType].labelKey),
+              value: t(selectedFuel.labelKey),
             },
             {
               label: t("annualEvSavings"),
