@@ -834,7 +834,7 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/mg-mg4-urban.jpg",
+    "imageUrl": "/cars/mg-mg4-urban.webp",
     "priceListUrl": null,
     "heatPump": false,
     "recommended": true
@@ -1190,9 +1190,9 @@
     "wltp": 12.7,
     "kwh90": null,
     "kwh120": null,
-    "affiliateUrl": null,
-    "imageUrl": "/cars/dacia-spring.jpg",
-    "priceListUrl": null,
+    "affiliateUrl": "https://www.dacia.sk/hybridne-elektricke-vozidla/spring-mestske-vozidlo.html",
+    "imageUrl": "/cars/dacia-spring.webp",
+    "priceListUrl": "https://cdn.group.renault.com/dac/sk/pdf/pricelists/spring-cennik.pdf.asset.pdf/20c974d2f7.pdf",
     "heatPump": false,
     "recommended": false
   },
@@ -2283,7 +2283,7 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/leapmotor-b03x.jpg",
+    "imageUrl": "/cars/leapmotor-b03x.webp",
     "priceListUrl": null,
     "heatPump": false,
     "recommended": false
