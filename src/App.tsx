@@ -14,7 +14,7 @@ type AppView = "voltcalc" | "loancalc" | "carselect";
 type SwitchDirection = "forward" | "backward";
 
 type FuelConfig = {
-  label: string;
+  labelKey: "petrol" | "diesel" | "hybrid";
   consumption: number;
   price: number;
 };
@@ -75,9 +75,9 @@ const defaultVoltCalcState: VoltCalcState = {
   fuelType: "petrol",
   electricityPrice: 0.173,
   fuelSettings: {
-    petrol: { label: "Petrol", consumption: 4.5, price: 1.75 },
-    diesel: { label: "Diesel", consumption: 4.1, price: 1.61 },
-    hybrid: { label: "Hybrid", consumption: 3.9, price: 1.75 },
+    petrol: { labelKey: "petrol", consumption: 4.5, price: 1.75 },
+    diesel: { labelKey: "diesel", consumption: 4.1, price: 1.61 },
+    hybrid: { labelKey: "hybrid", consumption: 3.9, price: 1.75 },
   },
   evConsumption: 17,
 };
@@ -111,7 +111,7 @@ function readStorage<T>(key: string, fallback: T): T {
 }
 
 function App() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [activeView, setActiveView] = useState<AppView>(() =>
     readStorage<AppView>("evcompare-active-view", "voltcalc"),
   );
@@ -377,25 +377,25 @@ function App() {
       activeView === "voltcalc"
         ? [
             {
-              label: "Annual distance",
-              value: `${voltCalc.distance.toLocaleString("en-US")} km/year`,
+              label: t("annualDistance"),
+              value: `${voltCalc.distance.toLocaleString(locale)} ${t("kmPerYear")}`,
             },
             {
-              label: "Compared against",
-              value: voltCalc.fuelSettings[voltCalc.fuelType].label,
+              label: t("comparedAgainst"),
+              value: t(voltCalc.fuelSettings[voltCalc.fuelType].labelKey),
             },
             {
-              label: "Annual EV savings",
+              label: t("annualEvSavings"),
               value: formatEuro(voltResults.annualSavings, 2),
             },
             {
-              label: "Monthly EV savings",
+              label: t("monthlyEvSavings"),
               value: formatEuro(voltResults.monthlySavings, 2),
             },
           ]
         : activeView === "loancalc"
           ? [
-              { label: "Vehicle price", value: formatEuro(loanCalc.price, 0) },
+              { label: t("vehiclePrice"), value: formatEuro(loanCalc.price, 0) },
               {
                 label: t("downPayment"),
                 value: formatEuro(loanCalc.downPayment, 0),

@@ -4,7 +4,7 @@ import { formatEuro } from "../../utils/format";
 import { useI18n } from "../../i18n";
 
 type FuelConfig = {
-  label: string;
+  labelKey: "petrol" | "diesel" | "hybrid";
   consumption: number;
   price: number;
 };
@@ -77,7 +77,7 @@ export function VoltCalcPage({
               step={500}
               value={distance}
               onChange={(e) => onDistanceChange(Number(e.target.value))}
-              aria-label="Annual distance driven"
+              aria-label={t("annualDistance")}
             />
           </div>
           <div className="slider-labels">
@@ -99,7 +99,7 @@ export function VoltCalcPage({
             <div className="control-stack">
               <div className="control-row">
                 <span className="control-label">{t("avgConsumption")}</span>
-                <div className="stepper" aria-label="Fuel consumption adjuster">
+                <div className="stepper" aria-label={t("fuelConsumptionAdjuster")}>
                   <button
                     type="button"
                     onClick={() =>
@@ -109,7 +109,7 @@ export function VoltCalcPage({
                         selectedFuel.consumption - 0.1,
                       )
                     }
-                    aria-label="Decrease combustion consumption"
+                    aria-label={t("decreaseFuelConsumption")}
                   >
                     −
                   </button>
@@ -125,7 +125,7 @@ export function VoltCalcPage({
                         selectedFuel.consumption + 0.1,
                       )
                     }
-                    aria-label="Increase combustion consumption"
+                    aria-label={t("increaseFuelConsumption")}
                   >
                     +
                   </button>
@@ -148,7 +148,7 @@ export function VoltCalcPage({
                         Number(e.target.value),
                       )
                     }
-                    aria-label="Fuel price"
+                    aria-label={t("fuelPrice")}
                   />
                   <span className="price-unit">EUR/L</span>
                 </div>
@@ -165,7 +165,7 @@ export function VoltCalcPage({
                 <span className="total-amount fuel">
                   {formatEuro(results.annualFuelCost, 2)}
                 </span>
-                <span className="total-unit">EUR/year</span>
+                <span className="total-unit">{t("perYear")}</span>
               </div>
 
               <div className="subcost-row">
@@ -193,18 +193,18 @@ export function VoltCalcPage({
               </svg>
               {t("electric")}
             </span>
-            <span className="recommended-label">✦ Recommended</span>
+            <span className="recommended-label">✦ {t("recommendedChip")}</span>
           </div>
 
           <div className="vehicle-body">
             <div className="control-stack">
               <div className="control-row">
                 <span className="control-label">{t("avgConsumption")}</span>
-                <div className="stepper" aria-label="EV consumption adjuster">
+                <div className="stepper" aria-label={t("evConsumptionAdjuster")}>
                   <button
                     type="button"
                     onClick={() => onEvConsumptionChange(evConsumption - 0.5)}
-                    aria-label="Decrease EV consumption"
+                    aria-label={t("decreaseEvConsumption")}
                   >
                     −
                   </button>
@@ -214,7 +214,7 @@ export function VoltCalcPage({
                   <button
                     type="button"
                     onClick={() => onEvConsumptionChange(evConsumption + 0.5)}
-                    aria-label="Increase EV consumption"
+                    aria-label={t("increaseEvConsumption")}
                   >
                     +
                   </button>
@@ -233,7 +233,7 @@ export function VoltCalcPage({
                     onChange={(e) =>
                       onElectricityPriceChange(Number(e.target.value))
                     }
-                    aria-label="Electricity price"
+                    aria-label={t("electricityPrice")}
                   />
                   <span className="price-unit">EUR/kWh</span>
                 </div>
@@ -250,7 +250,7 @@ export function VoltCalcPage({
                 <span className="total-amount ev">
                   {formatEuro(results.annualEvCost, 2)}
                 </span>
-                <span className="total-unit">EUR/year</span>
+                <span className="total-unit">{t("perYear")}</span>
               </div>
             </div>
           </div>
@@ -273,12 +273,10 @@ export function VoltCalcPage({
             </svg>
           </div>
           <div>
-            <div className="banner-label">
-              Annual savings with an electric vehicle
-            </div>
+            <div className="banner-label">{t("annualEvSavingsBanner")}</div>
             <div className="banner-sub">
-              vs. combustion vehicle · {distance.toLocaleString("en-US")}{" "}
-              km/year
+              {t("versusCombustion")} · {distance.toLocaleString(locale)}{" "}
+              {t("kmPerYear")}
             </div>
           </div>
         </div>
@@ -287,7 +285,7 @@ export function VoltCalcPage({
         </div>
       </section>
 
-      <div className="section-kicker">Running cost stats</div>
+      <div className="section-kicker">{t("runningCostStats")}</div>
 
       <section className="surface-card stats-card">
         <div className="stats-grid">
@@ -295,19 +293,19 @@ export function VoltCalcPage({
             <div className="metric-value ev">
               {formatEuro(results.monthlySavings, 2)}
             </div>
-            <div className="metric-label">Monthly EV saving</div>
+            <div className="metric-label">{t("monthlyEvSaving")}</div>
           </div>
           <div className="stat-box">
             <div className="metric-value primary">
-              {results.annualEvEnergy.toLocaleString("en-US")} kWh
+              {results.annualEvEnergy.toLocaleString(locale)} kWh
             </div>
-            <div className="metric-label">Total kWh used/year</div>
+            <div className="metric-label">{t("totalKwhPerYear")}</div>
           </div>
           <div className="stat-box">
             <div className="metric-value ev">
               {formatEuro(results.savingsFiveYears, 2)}
             </div>
-            <div className="metric-label">5-year total savings</div>
+            <div className="metric-label">{t("fiveYearSavings")}</div>
           </div>
         </div>
       </section>

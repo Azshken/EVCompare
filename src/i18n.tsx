@@ -60,6 +60,60 @@ const DICT = {
   costPer100: { en: "Cost per 100 km", sk: "Náklad na 100 km" },
   perYear: { en: "EUR/year", sk: "EUR/rok" },
   includesOil: { en: "Includes oil service", sk: "Vrátane výmeny oleja" },
+  petrol: { en: "Petrol", sk: "Benzín" },
+  diesel: { en: "Diesel", sk: "Nafta" },
+  hybrid: { en: "Hybrid", sk: "Hybrid" },
+  comparedAgainst: { en: "Compared against", sk: "Porovnané s" },
+  annualEvSavings: { en: "Annual EV savings", sk: "Ročné úspory EV" },
+  monthlyEvSavings: { en: "Monthly EV savings", sk: "Mesačné úspory EV" },
+  annualEvSavingsBanner: {
+    en: "Annual savings with an electric vehicle",
+    sk: "Ročné úspory s elektrickým vozidlom",
+  },
+  versusCombustion: {
+    en: "vs. combustion vehicle",
+    sk: "oproti spaľovaciemu vozidlu",
+  },
+  runningCostStats: {
+    en: "Running cost stats",
+    sk: "Štatistiky prevádzkových nákladov",
+  },
+  monthlyEvSaving: {
+    en: "Monthly EV saving",
+    sk: "Mesačná úspora EV",
+  },
+  totalKwhPerYear: {
+    en: "Total kWh used/year",
+    sk: "Celková spotreba kWh/rok",
+  },
+  fiveYearSavings: {
+    en: "5-year total savings",
+    sk: "Úspory za 5 rokov",
+  },
+  fuelConsumptionAdjuster: {
+    en: "Fuel consumption adjuster",
+    sk: "Nastavenie spotreby paliva",
+  },
+  decreaseFuelConsumption: {
+    en: "Decrease combustion consumption",
+    sk: "Znížiť spotrebu spaľovacieho vozidla",
+  },
+  increaseFuelConsumption: {
+    en: "Increase combustion consumption",
+    sk: "Zvýšiť spotrebu spaľovacieho vozidla",
+  },
+  evConsumptionAdjuster: {
+    en: "EV consumption adjuster",
+    sk: "Nastavenie spotreby EV",
+  },
+  decreaseEvConsumption: {
+    en: "Decrease EV consumption",
+    sk: "Znížiť spotrebu EV",
+  },
+  increaseEvConsumption: {
+    en: "Increase EV consumption",
+    sk: "Zvýšiť spotrebu EV",
+  },
   nextStep: { en: "Next step", sk: "Ďalší krok" },
   getMatched: { en: "Get matched offers", sk: "Získať ponuky" },
   leadIntro: {
@@ -108,14 +162,11 @@ const DICT = {
   browse: { en: "Browse", sk: "Prehliadať" },
   filterBy: { en: "Filter by", sk: "Filtrovať podľa" },
   filterHint: { en: "brand, type, eco rating", sk: "značka, typ, eko hodnotenie" },
-  euModels: { en: "EU EV models", sk: "EU EV modely" },
+  euModels: { en: "EU EV models", sk: "EV modely v EÚ" },
   months: { en: "months", sk: "mesiacov" },
   estimatedMonthly: { en: "Estimated monthly payment", sk: "Odhadovaná mesačná splátka" },
   annualSavings: { en: "Annual savings", sk: "Ročné úspory" },
   monthlySavings: { en: "Monthly savings", sk: "Mesačné úspory" },
-  petrol: { en: "Petrol", sk: "Benzín" },
-  diesel: { en: "Diesel", sk: "Nafta" },
-  hybrid: { en: "Hybrid", sk: "Hybrid" },
 } as const;
 
 export type DictKey = keyof typeof DICT;
