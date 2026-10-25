@@ -69,11 +69,38 @@ const DICT = {
   sendResult: { en: "Send my result", sk: "Odoslať výsledok" },
   capturedResult: { en: "Captured result", sk: "Zachytený výsledok" },
   fullName: { en: "Full name", sk: "Celé meno" },
+  fullNamePlaceholder: { en: "Ján Novák", sk: "Ján Novák" },
+  fullNameHint: {
+    en: "So a dealer or lender knows who to contact.",
+    sk: "Aby predajca alebo poskytovateľ financovania vedel, koho kontaktovať.",
+  },
   email: { en: "Email", sk: "E-mail" },
+  emailHint: {
+    en: "We send your result and relevant offers here.",
+    sk: "Sem vám pošleme výsledok a relevantné ponuky.",
+  },
   phone: { en: "Phone", sk: "Telefón" },
+  phoneOptional: { en: "(optional)", sk: "(nepovinné)" },
+  phonePlaceholder: { en: "+421 …", sk: "+421 …" },
+  phoneHint: {
+    en: "Optional, but helps arrange a test drive or financing call faster.",
+    sk: "Nepovinné, ale urýchli dohodnutie skúšobnej jazdy alebo financovania.",
+  },
   consent: {
-    en: "I agree to be contacted about EV and financing offers.",
-    sk: "Súhlasím s kontaktovaním ohľadom EV a finančných ponúk.",
+    en: "I agree that EVCompare may share my details with selected EV dealers and financing providers so they can contact me about relevant offers.",
+    sk: "Súhlasím, že EVCompare môže poskytnúť moje údaje vybraným predajcom EV a poskytovateľom financovania, aby ma mohli kontaktovať ohľadom relevantných ponúk.",
+  },
+  consentPrivacy: {
+    en: "Privacy policy",
+    sk: "Zásady ochrany súkromia",
+  },
+  getPersonalisedOffers: {
+    en: "Get my personalised EV offers",
+    sk: "Získať personalizované EV ponuky",
+  },
+  leadSuccess: {
+    en: "Thanks — your result has been saved and we will be in touch.",
+    sk: "Ďakujeme — váš výsledok bol uložený a ozveme sa vám.",
   },
   thanks: { en: "Thanks — we will be in touch.", sk: "Ďakujeme — ozveme sa." },
   evOffers: { en: "EV offers", sk: "EV ponuky" },

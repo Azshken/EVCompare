@@ -79,37 +79,51 @@ export function LeadCaptureSection({
         </aside>
 
         <form className="lead-form" onSubmit={onSubmit}>
-          <label className="control-label" htmlFor="leadName">{t('fullName')}</label>
-          <input
-            id="leadName"
-            className="text-input"
-            type="text"
-            value={form.name}
-            onChange={(e) => onFieldChange('name', e.target.value)}
-            placeholder="Your name"
-            required
-          />
+          <div className="lead-field">
+            <label className="control-label" htmlFor="leadName">{t('fullName')}</label>
+            <input
+              id="leadName"
+              className="text-input"
+              type="text"
+              autoComplete="name"
+              value={form.name}
+              onChange={(e) => onFieldChange('name', e.target.value)}
+              placeholder={t('fullNamePlaceholder')}
+              required
+            />
+            <p className="field-hint">{t('fullNameHint')}</p>
+          </div>
 
-          <label className="control-label" htmlFor="leadEmail">{t('email')}</label>
-          <input
-            id="leadEmail"
-            className="text-input"
-            type="email"
-            value={form.email}
-            onChange={(e) => onFieldChange('email', e.target.value)}
-            placeholder="name@example.com"
-            required
-          />
+          <div className="lead-field">
+            <label className="control-label" htmlFor="leadEmail">{t('email')}</label>
+            <input
+              id="leadEmail"
+              className="text-input"
+              type="email"
+              autoComplete="email"
+              value={form.email}
+              onChange={(e) => onFieldChange('email', e.target.value)}
+              placeholder="name@example.com"
+              required
+            />
+            <p className="field-hint">{t('emailHint')}</p>
+          </div>
 
-          <label className="control-label" htmlFor="leadPhone">{t('phone')}</label>
-          <input
-            id="leadPhone"
-            className="text-input"
-            type="tel"
-            value={form.phone}
-            onChange={(e) => onFieldChange('phone', e.target.value)}
-            placeholder="Optional but recommended"
-          />
+          <div className="lead-field">
+            <label className="control-label" htmlFor="leadPhone">
+              {t('phone')} <span className="optional-label">{t('phoneOptional')}</span>
+            </label>
+            <input
+              id="leadPhone"
+              className="text-input"
+              type="tel"
+              autoComplete="tel"
+              value={form.phone}
+              onChange={(e) => onFieldChange('phone', e.target.value)}
+              placeholder={t('phonePlaceholder')}
+            />
+            <p className="field-hint">{t('phoneHint')}</p>
+          </div>
 
           <label className="lead-checkbox">
             <input
@@ -118,17 +132,17 @@ export function LeadCaptureSection({
               onChange={(e) => onConsentChange(e.target.checked)}
               required
             />
-            <span>{t('consent')}</span>
+            <span>
+              {t('consent')} <a href="/privacy" className="privacy-link">{t('consentPrivacy')}</a>
+            </span>
           </label>
 
           <button type="submit" className="lead-submit">
-            {submitLabel}
+            {t('getPersonalisedOffers')}
           </button>
 
           {submitted && (
-            <div className="lead-success">
-              Lead captured successfully in this prototype.
-            </div>
+            <div className="lead-success">{t('leadSuccess')}</div>
           )}
         </form>
       </div>
