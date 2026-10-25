@@ -40,14 +40,20 @@ export function VoltCalcPage({
   const { t, locale } = useI18n();
   const selectedFuel = fuelSettings[fuelType];
 
+  const calculationFuel = useMemo(() => ({
+    label: t(selectedFuel.labelKey),
+    consumption: selectedFuel.consumption,
+    price: selectedFuel.price,
+  }), [selectedFuel, t]);
+
   const results = useMemo(() => {
     return calculateVoltCalc({
       distance,
-      selectedFuel,
+      selectedFuel: calculationFuel,
       evConsumption,
       electricityPrice,
     });
-  }, [distance, selectedFuel, evConsumption, electricityPrice]);
+  }, [distance, calculationFuel, evConsumption, electricityPrice]);
 
   const safeSliderPercent = ((distance - 5000) / (50000 - 5000)) * 100;
 

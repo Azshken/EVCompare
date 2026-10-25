@@ -147,11 +147,15 @@ function App() {
   const voltResults = useMemo(() => {
     return calculateVoltCalc({
       distance: voltCalc.distance,
-      selectedFuel: voltCalc.fuelSettings[voltCalc.fuelType],
+      selectedFuel: {
+        label: t(voltCalc.fuelSettings[voltCalc.fuelType].labelKey),
+        consumption: voltCalc.fuelSettings[voltCalc.fuelType].consumption,
+        price: voltCalc.fuelSettings[voltCalc.fuelType].price,
+      },
       evConsumption: voltCalc.evConsumption,
       electricityPrice: voltCalc.electricityPrice,
     });
-  }, [voltCalc]);
+  }, [voltCalc, t]);
 
   const loanSummary = useMemo(() => {
     const principal = Math.max(loanCalc.price - loanCalc.downPayment, 0);
@@ -372,7 +376,6 @@ function App() {
     source: activeView,
     title: t("getMatched"),
     intro: t("leadIntro"),
-    submitLabel: t("sendResult"),
     summaryItems:
       activeView === "voltcalc"
         ? [
@@ -486,7 +489,6 @@ function App() {
         source={leadSectionProps.source}
         title={leadSectionProps.title}
         intro={leadSectionProps.intro}
-        submitLabel={leadSectionProps.submitLabel}
         summaryItems={leadSectionProps.summaryItems}
         form={leadForm}
         submitted={leadSubmitted}

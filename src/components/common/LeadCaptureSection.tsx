@@ -18,7 +18,6 @@ interface LeadCaptureSectionProps {
   source: LeadSource;
   title: string;
   intro: string;
-  submitLabel: string;
   summaryItems: LeadSummaryItem[];
   form: LeadCaptureForm;
   submitted: boolean;
@@ -43,7 +42,6 @@ export function LeadCaptureSection({
   source,
   title,
   intro,
-  submitLabel,
   summaryItems,
   form,
   submitted,
