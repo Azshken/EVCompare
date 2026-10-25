@@ -1,3 +1,5 @@
+import { useI18n } from '../../i18n';
+
 type LeadSource = 'voltcalc' | 'loancalc' | 'carselect';
 
 interface LeadSummaryItem {
@@ -25,10 +27,10 @@ interface LeadCaptureSectionProps {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-function getSourceLabel(source: LeadSource): string {
-  if (source === 'voltcalc') return 'EV offers';
-  if (source === 'loancalc') return 'Financing leads';
-  return 'EV models';
+function getSourceLabel(source: LeadSource, t: (key: 'evOffers' | 'financingLeads' | 'tabModels') => string): string {
+  if (source === 'voltcalc') return t('evOffers');
+  if (source === 'loancalc') return t('financingLeads');
+  return t('tabModels');
 }
 
 function getSourceClass(source: LeadSource): string {
@@ -49,22 +51,23 @@ export function LeadCaptureSection({
   onConsentChange,
   onSubmit,
 }: LeadCaptureSectionProps) {
+  const { t } = useI18n();
   return (
     <section className="surface-card lead-card" id="lead-capture">
       <div className="lead-card-header">
         <div>
-          <div className="section-kicker lead-kicker">Next step</div>
+          <div className="section-kicker lead-kicker">{t('nextStep')}</div>
           <h3 className="lead-title">{title}</h3>
           <p className="lead-intro">{intro}</p>
         </div>
         <span className={`mini-chip ${getSourceClass(source)}`}>
-          {getSourceLabel(source)}
+          {getSourceLabel(source, t)}
         </span>
       </div>
 
       <div className="lead-grid">
         <aside className="lead-summary">
-          <div className="lead-summary-title">Captured result</div>
+          <div className="lead-summary-title">{t('capturedResult')}</div>
           <div className="lead-summary-list">
             {summaryItems.map((item) => (
               <div key={item.label} className="lead-summary-row">
@@ -76,7 +79,7 @@ export function LeadCaptureSection({
         </aside>
 
         <form className="lead-form" onSubmit={onSubmit}>
-          <label className="control-label" htmlFor="leadName">Full name</label>
+          <label className="control-label" htmlFor="leadName">{t('fullName')}</label>
           <input
             id="leadName"
             className="text-input"
@@ -87,7 +90,7 @@ export function LeadCaptureSection({
             required
           />
 
-          <label className="control-label" htmlFor="leadEmail">Email</label>
+          <label className="control-label" htmlFor="leadEmail">{t('email')}</label>
           <input
             id="leadEmail"
             className="text-input"
@@ -98,7 +101,7 @@ export function LeadCaptureSection({
             required
           />
 
-          <label className="control-label" htmlFor="leadPhone">Phone</label>
+          <label className="control-label" htmlFor="leadPhone">{t('phone')}</label>
           <input
             id="leadPhone"
             className="text-input"
@@ -115,7 +118,7 @@ export function LeadCaptureSection({
               onChange={(e) => onConsentChange(e.target.checked)}
               required
             />
-            <span>I agree to be contacted about offers related to my calculation.</span>
+            <span>{t('consent')}</span>
           </label>
 
           <button type="submit" className="lead-submit">

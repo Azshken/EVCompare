@@ -15,7 +15,10 @@
     "kwh90": 11.3,
     "kwh120": 15.4,
     "affiliateUrl": null,
-    "imageUrl": "/cars/tesla-model-3.webp"
+    "imageUrl": "/cars/tesla-model-3.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "tesla-model-3-2",
@@ -33,7 +36,10 @@
     "kwh90": 11.6,
     "kwh120": 16,
     "affiliateUrl": null,
-    "imageUrl": "/cars/tesla-model-3.webp"
+    "imageUrl": "/cars/tesla-model-3.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": true
   },
   {
     "id": "tesla-model-3-3",
@@ -51,7 +57,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/tesla-model-3.webp"
+    "imageUrl": "/cars/tesla-model-3.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "tesla-model-y",
@@ -69,7 +78,10 @@
     "kwh90": 12.4,
     "kwh120": 17.2,
     "affiliateUrl": null,
-    "imageUrl": "/cars/tesla-model-y-rwd.webp"
+    "imageUrl": "/cars/tesla-model-y-rwd.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "tesla-model-y-2",
@@ -87,7 +99,10 @@
     "kwh90": 12.4,
     "kwh120": 17.2,
     "affiliateUrl": null,
-    "imageUrl": "/cars/tesla-model-y-lr.webp"
+    "imageUrl": "/cars/tesla-model-y-lr.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": true
   },
   {
     "id": "volkswagen-id.3-old",
@@ -105,7 +120,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/vw-id.3-old.webp"
+    "imageUrl": "/cars/vw-id.3-old.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": true
   },
   {
     "id": "volkswagen-id.3",
@@ -123,7 +141,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/vw-id.3-neo.webp"
+    "imageUrl": "/cars/vw-id.3-neo.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "volkswagen-id.4",
@@ -141,7 +162,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "volkswagen-id.7",
@@ -159,7 +183,10 @@
     "kwh90": 15.5,
     "kwh120": 20,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "volkswagen-id.polo",
@@ -177,7 +204,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/vw-id-polo.webp"
+    "imageUrl": "/cars/vw-id-polo.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "volkswagen-id.tiguan",
@@ -195,7 +225,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "bmw-i3",
@@ -213,7 +246,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "bmw-i4",
@@ -231,7 +267,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "bmw-ix3",
@@ -249,7 +288,10 @@
     "kwh90": 15,
     "kwh120": 21.3,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "bmw-ix",
@@ -267,7 +309,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "mercedes-benz-eqs",
@@ -285,7 +330,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "mercedes-benz-eqe",
@@ -303,7 +351,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "mercedes-benz-cla",
@@ -321,7 +372,10 @@
     "kwh90": 14.1,
     "kwh120": 18.2,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "mercedes-benz-eqa",
@@ -339,7 +393,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "hyundai-ioniq-5",
@@ -357,7 +414,10 @@
     "kwh90": 17.4,
     "kwh120": 24.8,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "hyundai-ioniq-6",
@@ -375,7 +435,10 @@
     "kwh90": 14.9,
     "kwh120": 19.7,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "hyundai-inster",
@@ -393,7 +456,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/hyundai-inster.webp"
+    "imageUrl": "/cars/hyundai-inster.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "kia-ev3",
@@ -411,7 +477,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/kia-ev3.webp"
+    "imageUrl": "/cars/kia-ev3.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "kia-ev6",
@@ -429,7 +498,10 @@
     "kwh90": 18.7,
     "kwh120": 25.6,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "kia-ev9",
@@ -447,7 +519,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "byd-dolphin-surf",
@@ -465,7 +540,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/byd-ds.webp"
+    "imageUrl": "/cars/byd-ds.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "byd-dolphin",
@@ -483,7 +561,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "byd-seal",
@@ -501,7 +582,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "byd-atto-2",
@@ -519,7 +603,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "byd-atto-3",
@@ -537,7 +624,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "byd-sealion-7",
@@ -555,7 +645,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "renault-5-e-tech",
@@ -573,7 +666,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/renault-5.webp"
+    "imageUrl": "/cars/renault-5.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "renault-megane-e-tech",
@@ -591,7 +687,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "renault-scenic-e-tech",
@@ -609,7 +708,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "renault-twingo-e-tech",
@@ -627,7 +729,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "volvo-ex30",
@@ -645,7 +750,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "volvo-ex40",
@@ -663,7 +771,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "volvo-ex60",
@@ -681,7 +792,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "volvo-es90",
@@ -699,7 +813,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "mg-mg4",
@@ -717,7 +834,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/mg-mg4-urban.jpg"
+    "imageUrl": "/cars/mg-mg4-urban.jpg",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": true
   },
   {
     "id": "mg-mg4-2",
@@ -735,7 +855,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "mg-zs-ev",
@@ -753,7 +876,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "cupra-born",
@@ -771,7 +897,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "cupra-tavascan",
@@ -789,7 +918,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "skoda-elroq",
@@ -807,7 +939,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "skoda-enyaq",
@@ -825,7 +960,10 @@
     "kwh90": 16.2,
     "kwh120": 21.7,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "audi-q4-e-tron",
@@ -843,7 +981,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "audi-q6-e-tron",
@@ -861,7 +1002,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "audi-a6-e-tron",
@@ -879,7 +1023,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "peugeot-e-208",
@@ -897,7 +1044,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "peugeot-e-3008",
@@ -915,7 +1065,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "citroen-e-c3",
@@ -933,7 +1086,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "citroen-e-c4",
@@ -951,7 +1107,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "opel-corsa-e",
@@ -969,7 +1128,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "fiat-500e",
@@ -987,7 +1149,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "fiat-600e",
@@ -1005,7 +1170,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "dacia-spring",
@@ -1023,7 +1191,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/dacia-spring.jpg"
+    "imageUrl": "/cars/dacia-spring.jpg",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "leapmotor-t03",
@@ -1041,7 +1212,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/leapmotor-t03.webp"
+    "imageUrl": "/cars/leapmotor-t03.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "leapmotor-c10",
@@ -1059,7 +1233,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/leapmotor-c10.webp"
+    "imageUrl": "/cars/leapmotor-c10.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "xpeng-g6",
@@ -1077,7 +1254,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "xpeng-p7+",
@@ -1095,7 +1275,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "zeekr-7x",
@@ -1113,7 +1296,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "polestar-2",
@@ -1131,7 +1317,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "polestar-4",
@@ -1149,7 +1338,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "nissan-leaf",
@@ -1167,7 +1359,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "nissan-ariya",
@@ -1185,7 +1380,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "toyota-bz4x",
@@ -1203,7 +1401,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "ford-explorer",
@@ -1221,7 +1422,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "ford-mustang-mach-e",
@@ -1239,7 +1443,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "porsche-taycan",
@@ -1257,7 +1464,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "porsche-macan",
@@ -1275,7 +1485,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "lucid-air",
@@ -1293,7 +1506,10 @@
     "kwh90": 16.1,
     "kwh120": 19.8,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "nio-et5",
@@ -1311,7 +1527,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "smart-#1",
@@ -1329,7 +1548,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "mini-cooper",
@@ -1347,7 +1569,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "jeep-avenger",
@@ -1365,7 +1590,10 @@
     "kwh90": 14.6,
     "kwh120": 22.1,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "alfa-romeo-junior",
@@ -1383,7 +1611,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "abarth-500e",
@@ -1401,7 +1632,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "alpine-a290",
@@ -1419,7 +1653,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "lancia-gamma",
@@ -1437,7 +1674,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "volkswagen-id.7-tourer",
@@ -1455,7 +1695,10 @@
     "kwh90": 15.5,
     "kwh120": 20,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "bmw-i5",
@@ -1473,7 +1716,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "bmw-i7",
@@ -1491,7 +1737,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "bmw-ix1",
@@ -1509,7 +1758,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "mercedes-benz-eqs-suv",
@@ -1527,7 +1779,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "mercedes-benz-eqb",
@@ -1545,7 +1800,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "hyundai-ioniq-9",
@@ -1563,7 +1821,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "kia-ev5",
@@ -1581,7 +1842,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "kia-ev4",
@@ -1599,7 +1863,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "byd-seal-u",
@@ -1617,7 +1884,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "byd-tang",
@@ -1635,7 +1905,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "renault-scenic-e-tech-2",
@@ -1653,7 +1926,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "volvo-ec40",
@@ -1671,7 +1947,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "volvo-ex90",
@@ -1689,7 +1968,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "mg-mg5",
@@ -1707,7 +1989,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "mg-marvel-r",
@@ -1725,7 +2010,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "cupra-raval",
@@ -1743,7 +2031,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "skoda-epiq",
@@ -1761,7 +2052,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "audi-a6-avant-e-tron",
@@ -1779,7 +2073,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "audi-q6-sportback-e-tron",
@@ -1797,7 +2094,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "peugeot-e-5008",
@@ -1815,7 +2115,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "peugeot-e-308",
@@ -1833,7 +2136,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "citroen-c5-aircross",
@@ -1851,7 +2157,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "opel-astra-electric",
@@ -1869,7 +2178,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "opel-grandland",
@@ -1887,7 +2199,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "fiat-grande-panda",
@@ -1905,7 +2220,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/fiat-grande-panda.webp"
+    "imageUrl": "/cars/fiat-grande-panda.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "ds-n°8",
@@ -1923,7 +2241,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "leapmotor-b10",
@@ -1941,7 +2262,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/leapmotor-b10.webp"
+    "imageUrl": "/cars/leapmotor-b10.webp",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "leapmotor-b03x",
@@ -1959,7 +2283,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/leapmotor-b03x.jpg"
+    "imageUrl": "/cars/leapmotor-b03x.jpg",
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "xpeng-g9",
@@ -1977,7 +2304,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "xpeng-x9",
@@ -1995,7 +2325,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "zeekr-7gt",
@@ -2013,7 +2346,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "zeekr-x",
@@ -2031,7 +2367,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "polestar-3",
@@ -2049,7 +2388,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "polestar-5",
@@ -2067,7 +2409,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "nissan-micra",
@@ -2085,7 +2430,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "ford-puma-gen-e",
@@ -2103,7 +2451,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "ford-capri",
@@ -2121,7 +2472,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "porsche-cayenne",
@@ -2139,7 +2493,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "lucid-gravity",
@@ -2157,7 +2514,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "nio-el6",
@@ -2175,7 +2535,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "smart-#3",
@@ -2193,7 +2556,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "mini-aceman",
@@ -2211,7 +2577,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "jeep-compass",
@@ -2229,7 +2598,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "alfa-romeo-stelvio",
@@ -2247,7 +2619,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "abarth-600e",
@@ -2265,7 +2640,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "alpine-a390",
@@ -2283,7 +2661,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "hongqi-eh7",
@@ -2301,7 +2682,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "geely-ex5",
@@ -2319,7 +2703,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "subaru-solterra",
@@ -2337,7 +2724,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "toyota-c-hr+",
@@ -2355,7 +2745,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "mazda-mx-30",
@@ -2373,7 +2766,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "honda-e:ny1",
@@ -2391,7 +2787,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "genesis-gv60",
@@ -2409,7 +2808,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "rivian-r1s",
@@ -2427,7 +2829,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "vinfast-vf8",
@@ -2445,7 +2850,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "omoda-e5",
@@ -2463,7 +2871,10 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   },
   {
     "id": "jaecoo-j7",
@@ -2481,6 +2892,9 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null
+    "imageUrl": null,
+    "priceListUrl": null,
+    "heatPump": false,
+    "recommended": false
   }
 ]

@@ -8,6 +8,7 @@ import { calculateMonthlyPayment } from "./utils/finance";
 import { formatEuro } from "./utils/format";
 import { clamp } from "./utils/number";
 import { calculateVoltCalc, type FuelType } from "./utils/voltcalc";
+import { useI18n } from "./i18n";
 
 type AppView = "voltcalc" | "loancalc" | "carselect";
 type SwitchDirection = "forward" | "backward";
@@ -110,6 +111,7 @@ function readStorage<T>(key: string, fallback: T): T {
 }
 
 function App() {
+  const { t } = useI18n();
   const [activeView, setActiveView] = useState<AppView>(() =>
     readStorage<AppView>("evcompare-active-view", "voltcalc"),
   );
@@ -360,19 +362,17 @@ function App() {
     setLeadForm(defaultLeadFormState);
   }
 
-  const viewLabel =
-    activeView === "voltcalc"
-      ? "Running costs"
-      : activeView === "loancalc"
-        ? "Financing"
-        : "EV models";
+  const viewTabs: { id: AppView; label: string }[] = [
+    { id: "voltcalc", label: t("tabRunning") },
+    { id: "loancalc", label: t("tabFinancing") },
+    { id: "carselect", label: t("tabModels") },
+  ];
 
   const leadSectionProps = {
     source: activeView,
-    title: "Get matched offers",
-    intro:
-      "Leave your details and we will connect you with relevant EV or financing options based on your calculation.",
-    submitLabel: "Send my result",
+    title: t("getMatched"),
+    intro: t("leadIntro"),
+    submitLabel: t("sendResult"),
     summaryItems:
       activeView === "voltcalc"
         ? [
@@ -397,68 +397,44 @@ function App() {
           ? [
               { label: "Vehicle price", value: formatEuro(loanCalc.price, 0) },
               {
-                label: "Down payment",
+                label: t("downPayment"),
                 value: formatEuro(loanCalc.downPayment, 0),
               },
-              { label: "Loan term", value: `${loanCalc.months} months` },
+              { label: t("loanTerm"), value: `${loanCalc.months} ${t("months")}` },
               {
-                label: "Estimated monthly payment",
+                label: t("estimatedMonthly"),
                 value: formatEuro(loanSummary.monthlyPayment, 0),
               },
             ]
           : [
-              { label: "Browse", value: "EU EV models" },
-              { label: "Filter by", value: "brand, type, eco rating" },
+              { label: t("browse"), value: t("euModels") },
+              { label: t("filterBy"), value: t("filterHint") },
             ],
   };
 
   return (
     <AppShell>
       <section className="calculator-stage-shell" aria-live="polite">
-        <div className="stage-nav">
-          <button
-            type="button"
-            className="stage-switch stage-switch-left"
-            onClick={goPrev}
-            aria-label="Previous view"
-            title="Previous"
-          >
-            <span className="stage-switch-arrow" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M15 5l-7 7 7 7" />
-              </svg>
-            </span>
-          </button>
-
-          <span className="stage-nav-label">{viewLabel}</span>
-
-          <button
-            type="button"
-            className="stage-switch stage-switch-right"
-            onClick={goNext}
-            aria-label="Next view"
-            title="Next"
-          >
-            <span className="stage-switch-arrow" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M9 5l7 7-7 7" />
-              </svg>
-            </span>
-          </button>
+        <div className="stage-tabs" role="tablist">
+          {viewTabs.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              role="tab"
+              aria-selected={activeView === tab.id}
+              className={`stage-tab ${activeView === tab.id ? "is-active" : ""}`}
+              onClick={() =>
+                switchTo(
+                  tab.id,
+                  VIEW_ORDER.indexOf(tab.id) > VIEW_ORDER.indexOf(activeView)
+                    ? "forward"
+                    : "backward",
+                )
+              }
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
         <div
@@ -497,7 +473,11 @@ function App() {
                 onAprChange={handleAprChange}
               />
             )}
-            {activeView === "carselect" && <CarSelectPage />}
+            {activeView === "carselect" && (
+              <CarSelectPage
+                onSelectConsumption={(kwh) => handleEvConsumptionChange(kwh)}
+              />
+            )}
           </div>
         </div>
       </section>

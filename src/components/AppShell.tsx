@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
+import { useI18n } from '../i18n';
 
 type ThemeMode = 'light' | 'dark';
 
@@ -13,7 +14,33 @@ function getInitialTheme(): ThemeMode {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
+function FlagSK() {
+  return (
+    <svg viewBox="0 0 60 40" width="22" height="15" aria-hidden="true">
+      <rect width="60" height="40" fill="#fff" />
+      <rect width="60" height="20" fill="#0b4ea2" />
+      <rect y="20" width="60" height="20" fill="#ee1c25" />
+      <path d="M0 0 L30 20 L0 40 Z" fill="#fff" />
+      <path d="M0 0 L22 20 L0 40 Z" fill="#0b4ea2" />
+      <path d="M0 8 L14 20 L0 32 Z" fill="#ee1c25" />
+    </svg>
+  );
+}
+
+function FlagUK() {
+  return (
+    <svg viewBox="0 0 60 40" width="22" height="15" aria-hidden="true">
+      <rect width="60" height="40" fill="#012169" />
+      <path d="M0 0 L60 40 M60 0 L0 40" stroke="#fff" strokeWidth="8" />
+      <path d="M0 0 L60 40 M60 0 L0 40" stroke="#C8102E" strokeWidth="4" />
+      <path d="M30 0 V40 M0 20 H60" stroke="#fff" strokeWidth="12" />
+      <path d="M30 0 V40 M0 20 H60" stroke="#C8102E" strokeWidth="6" />
+    </svg>
+  );
+}
+
 export function AppShell({ children }: AppShellProps) {
+  const { t, lang, setLang } = useI18n();
   const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
 
   useEffect(() => {
@@ -50,6 +77,26 @@ export function AppShell({ children }: AppShellProps) {
         </div>
 
         <div className="header-actions">
+          <div className="lang-switch" role="group" aria-label="Language">
+            <button
+              type="button"
+              className={`lang-flag ${lang === 'en' ? 'is-active' : ''}`}
+              onClick={() => setLang('en')}
+              aria-label={t('switchToEn')}
+              title={t('switchToEn')}
+            >
+              <FlagUK />
+            </button>
+            <button
+              type="button"
+              className={`lang-flag ${lang === 'sk' ? 'is-active' : ''}`}
+              onClick={() => setLang('sk')}
+              aria-label={t('switchToSk')}
+              title={t('switchToSk')}
+            >
+              <FlagSK />
+            </button>
+          </div>
           <button
             type="button"
             className="theme-toggle"
@@ -71,11 +118,8 @@ export function AppShell({ children }: AppShellProps) {
       </header>
 
       <section className="hero hero-static">
-        <h1>Compare EV savings and monthly cost in one place</h1>
-        <p>
-          Use the same result flow to compare yearly EV running costs, then switch into financing
-          without losing your numbers or leaving the page.
-        </p>
+        <h1>{t('heroTitle')}</h1>
+        <p>{t('heroIntro')}</p>
       </section>
 
       <section className="page-section">{children}</section>

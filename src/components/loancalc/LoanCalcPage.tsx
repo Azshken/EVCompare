@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { formatEuro } from "../../utils/format";
 import { calculateMonthlyPayment } from "../../utils/finance";
 import { MetricCard } from "../common/MetricCard";
+import { useI18n } from "../../i18n";
 
 interface LoanCalcPageProps {
   price: number;
@@ -29,6 +30,7 @@ export function LoanCalcPage({
   onMonthsChange,
   onAprChange,
 }: LoanCalcPageProps) {
+  const { t } = useI18n();
   const principal = Math.max(price - downPayment, 0);
 
   const monthlyPayment = useMemo(() => {
@@ -63,14 +65,14 @@ export function LoanCalcPage({
     <div className="page-section loancalc-page">
       <section className="loan-setup-card surface-card">
         <div className="loan-setup-header">
-          <h2 className="loan-setup-title">Financing</h2>
-          <p className="loan-setup-subtitle">Adjust the down payment and term</p>
+          <h2 className="loan-setup-title">{t("financingTitle")}</h2>
+          <p className="loan-setup-subtitle">{t("financingSubtitle")}</p>
         </div>
 
         <div className="loan-controls">
           <div className="loan-control-group">
             <label className="control-label" htmlFor="vehiclePrice">
-              Vehicle price
+              {t("vehiclePrice")}
             </label>
             <input
               id="vehiclePrice"
@@ -89,7 +91,7 @@ export function LoanCalcPage({
           </div>
 
           <div className="loan-control-group">
-            <span className="control-label">Down payment</span>
+            <span className="control-label">{t("downPayment")}</span>
             <div className="loan-option-group" role="group" aria-label="Down payment percentage">
               {DOWN_PAYMENT_OPTIONS.map((percent) => {
                 const amount = Math.round((price * percent) / 100);
@@ -111,7 +113,7 @@ export function LoanCalcPage({
           </div>
 
           <div className="loan-control-group">
-            <span className="control-label">Loan term</span>
+            <span className="control-label">{t("loanTerm")}</span>
             <div className="loan-option-group" role="group" aria-label="Loan term in years">
               {TERM_YEARS.map((years) => {
                 const isActive = activeYears === years;
@@ -124,7 +126,7 @@ export function LoanCalcPage({
                     aria-pressed={isActive}
                   >
                     <span className="loan-option-percent">{years}</span>
-                    <span className="loan-option-amount">years</span>
+                    <span className="loan-option-amount">{t("years")}</span>
                   </button>
                 );
               })}
@@ -133,7 +135,7 @@ export function LoanCalcPage({
 
           <div className="loan-control-group loan-apr-group">
             <label className="control-label" htmlFor="apr">
-              APR (%)
+              {t("apr")}
             </label>
             <input
               id="apr"
@@ -156,23 +158,23 @@ export function LoanCalcPage({
         </div>
 
         <div className="loan-note">
-          Loan payment is calculated using a standard amortizing loan model.
+          {t("loanNote")}
         </div>
       </section>
 
       <section className="surface-card loan-results-card">
         <div className="loan-highlight">
           <div className="loan-highlight-copy">
-            <div className="loan-highlight-label">Estimated loan payment</div>
+            <div className="loan-highlight-label">{t("estimatedPayment")}</div>
           </div>
 
           <div className="loan-highlight-value">
             <div className="loan-highlight-amount">
               {formatEuro(monthlyPayment, 0)}
-              <span>/ month</span>
+              <span>{t("perMonth")}</span>
             </div>
             <div className="loan-highlight-note">
-              {formatEuro(monthlyCostAfterSavings, 0)} after EV savings
+              {formatEuro(monthlyCostAfterSavings, 0)} {t("afterEvSavings")}
             </div>
           </div>
         </div>
@@ -181,17 +183,17 @@ export function LoanCalcPage({
 
         <div className="metrics-grid">
           <MetricCard
-            label="Total interest"
+            label={t("totalInterest")}
             value={formatEuro(totalInterest, 0)}
             tone="fuel"
           />
           <MetricCard
-            label="Total paid"
+            label={t("totalPaid")}
             value={formatEuro(totalPaid, 0)}
             tone="primary"
           />
           <MetricCard
-            label="True cost after EV savings"
+            label={t("trueCost")}
             value={formatEuro(trueCost, 0)}
             tone="ev"
           />

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { calculateVoltCalc } from "../../utils/voltcalc";
 import { formatEuro } from "../../utils/format";
+import { useI18n } from "../../i18n";
 
 type FuelConfig = {
   label: string;
@@ -36,6 +37,7 @@ export function VoltCalcPage({
   onEvConsumptionChange,
   onElectricityPriceChange,
 }: VoltCalcPageProps) {
+  const { t, locale } = useI18n();
   const selectedFuel = fuelSettings[fuelType];
 
   const results = useMemo(() => {
@@ -54,10 +56,10 @@ export function VoltCalcPage({
       <section className="surface-card distance-card">
         <div className="distance-header">
           <div className="distance-copy">
-            <span className="distance-label">Annual distance driven</span>
+            <span className="distance-label">{t("annualDistance")}</span>
           </div>
           <div className="distance-value">
-            {distance.toLocaleString("en-US")} km / year
+            {distance.toLocaleString(locale)} {t("kmPerYear")}
           </div>
         </div>
 
@@ -85,18 +87,18 @@ export function VoltCalcPage({
         </div>
       </section>
 
-      <div className="section-kicker">Annual cost comparison</div>
+      <div className="section-kicker">{t("annualComparison")}</div>
 
       <section className="comparison-grid">
         <article className="vehicle-card">
           <div className="vehicle-header">
-            <span className="mini-chip fuel">Combustion vehicle</span>
+            <span className="mini-chip fuel">{t("combustion")}</span>
           </div>
 
           <div className="vehicle-body">
             <div className="control-stack">
               <div className="control-row">
-                <span className="control-label">Avg. consumption</span>
+                <span className="control-label">{t("avgConsumption")}</span>
                 <div className="stepper" aria-label="Fuel consumption adjuster">
                   <button
                     type="button"
@@ -132,7 +134,7 @@ export function VoltCalcPage({
               </div>
 
               <div className="price-row">
-                <span className="price-label">Fuel price</span>
+                <span className="price-label">{t("fuelPrice")}</span>
                 <div className="price-input-wrap">
                   <input
                     className="price-input"
@@ -153,7 +155,7 @@ export function VoltCalcPage({
               </div>
 
               <div className="stat-row">
-                <span className="stat-label">Cost per 100 km</span>
+                <span className="stat-label">{t("costPer100")}</span>
                 <span className="stat-value-inline fuel">
                   {formatEuro(results.fuelCostPer100, 2)}
                 </span>
@@ -167,7 +169,7 @@ export function VoltCalcPage({
               </div>
 
               <div className="subcost-row">
-                <span className="subcost-label">Includes oil service </span>
+                <span className="subcost-label">{t("includesOil")} </span>
                 <span className="subcost-value">
                   {formatEuro(results.annualOilChangeCost, 2)}
                 </span>
@@ -189,7 +191,7 @@ export function VoltCalcPage({
               >
                 <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
               </svg>
-              Electric
+              {t("electric")}
             </span>
             <span className="recommended-label">✦ Recommended</span>
           </div>
@@ -197,7 +199,7 @@ export function VoltCalcPage({
           <div className="vehicle-body">
             <div className="control-stack">
               <div className="control-row">
-                <span className="control-label">Avg. consumption</span>
+                <span className="control-label">{t("avgConsumption")}</span>
                 <div className="stepper" aria-label="EV consumption adjuster">
                   <button
                     type="button"
@@ -221,7 +223,7 @@ export function VoltCalcPage({
               </div>
 
               <div className="price-row">
-                <span className="price-label">Electricity price</span>
+                <span className="price-label">{t("electricityPrice")}</span>
                 <div className="price-input-wrap">
                   <input
                     className="price-input"
@@ -238,7 +240,7 @@ export function VoltCalcPage({
               </div>
 
               <div className="stat-row">
-                <span className="stat-label">Cost per 100 km</span>
+                <span className="stat-label">{t("costPer100")}</span>
                 <span className="stat-value-inline ev">
                   {formatEuro(results.evCostPer100, 2)}
                 </span>
