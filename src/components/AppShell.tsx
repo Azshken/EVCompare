@@ -16,15 +16,14 @@ function getInitialTheme(): ThemeMode {
 
 function FlagSK() {
   return (
-    <svg viewBox="0 0 60 40" width="22" height="15" aria-hidden="true">
-      <rect width="60" height="40" fill="#ffffff" />
-      <rect y="13.33" width="60" height="13.33" fill="#0b4ea2" />
-      <rect y="26.66" width="60" height="13.34" fill="#ee1c25" />
-      <g transform="translate(7,10) scale(0.42)">
-        <path d="M0 0h33v24c0 10-8 16-16.5 19C8 40 0 34 0 24Z" fill="#ee1c25" stroke="#ffffff" strokeWidth="3" />
-        <path d="M16.5 8v18M9 15h15M11 11h11M11 19h11" stroke="#ffffff" strokeWidth="2.5" fill="none" />
-      </g>
-    </svg>
+    <img
+      src="/flags/sk.svg"
+      width="22"
+      height="15"
+      alt=""
+      aria-hidden="true"
+      draggable={false}
+    />
   );
 }
 
