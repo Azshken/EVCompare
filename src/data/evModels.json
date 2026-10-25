@@ -204,7 +204,7 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/vw-id-polo.webp",
+    "imageUrl": "/cars/vw-id.polo.webp",
     "priceListUrl": null,
     "heatPump": false,
     "recommended": false
@@ -1136,7 +1136,7 @@
   {
     "id": "fiat-500e",
     "brand": "Fiat",
-    "model": "500e FWD",
+    "model": "500e",
     "variant": "POP",
     "type": "Hatchback",
     "range": 320,
@@ -1170,7 +1170,7 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": null,
+    "imageUrl": "/cars/fiat-600e.webp",
     "priceListUrl": "https://www.fiat.sk/content/dam/fiat2023/sk/cenniky/2026/08/ZC_FIAT_600e_MY26_5_8_2026.pdf",
     "heatPump": true,
     "recommended": false
