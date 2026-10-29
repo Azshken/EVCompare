@@ -787,8 +787,8 @@ p {
 .price-controls {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  gap: 0.45rem;
+  flex-wrap: nowrap;
   justify-content: flex-end;
 }
 

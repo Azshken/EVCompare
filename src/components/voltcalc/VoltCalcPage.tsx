@@ -147,22 +147,6 @@ export function VoltCalcPage({
               <div className="price-row">
                 <span className="price-label">{t("fuelPrice")}</span>
                 <div className="price-controls">
-                  <div className="inline-tabs" role="group" aria-label={t("fuelPrice")}>
-                    <button
-                      type="button"
-                      className={`inline-tab ${fuelType === "petrol" ? "active" : ""}`}
-                      onClick={() => onFuelTypeChange("petrol")}
-                    >
-                      {t("petrol")}
-                    </button>
-                    <button
-                      type="button"
-                      className={`inline-tab ${fuelType === "diesel" ? "active" : ""}`}
-                      onClick={() => onFuelTypeChange("diesel")}
-                    >
-                      {t("diesel")}
-                    </button>
-                  </div>
                   <div className="price-input-wrap">
                     <input
                       className="price-input"
@@ -179,6 +163,22 @@ export function VoltCalcPage({
                       aria-label={t("fuelPrice")}
                     />
                     <span className="price-unit">EUR/L</span>
+                  </div>
+                  <div className="inline-tabs" role="group" aria-label={t("fuelPrice")}>
+                    <button
+                      type="button"
+                      className={`inline-tab ${fuelType === "petrol" ? "active" : ""}`}
+                      onClick={() => onFuelTypeChange("petrol")}
+                    >
+                      {t("petrol")}
+                    </button>
+                    <button
+                      type="button"
+                      className={`inline-tab ${fuelType === "diesel" ? "active" : ""}`}
+                      onClick={() => onFuelTypeChange("diesel")}
+                    >
+                      {t("diesel")}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -256,6 +256,19 @@ export function VoltCalcPage({
                 <div className="price-row">
                   <span className="price-label">{t("electricityPrice")}</span>
                   <div className="price-controls">
+                    <div className="price-input-wrap">
+                      <input
+                        className="price-input"
+                        type="number"
+                        step="0.001"
+                        value={electricityPrice}
+                        onChange={(e) =>
+                          onElectricityPriceChange(Number(e.target.value))
+                        }
+                        aria-label={t("electricityPrice")}
+                      />
+                      <span className="price-unit">EUR/kWh</span>
+                    </div>
                     <div className="inline-tabs" role="group" aria-label={t("charging")}>
                       <button
                         type="button"
@@ -271,19 +284,6 @@ export function VoltCalcPage({
                       >
                         {t("publicCharging")}
                       </button>
-                    </div>
-                    <div className="price-input-wrap">
-                      <input
-                        className="price-input"
-                        type="number"
-                        step="0.001"
-                        value={electricityPrice}
-                        onChange={(e) =>
-                          onElectricityPriceChange(Number(e.target.value))
-                        }
-                        aria-label={t("electricityPrice")}
-                      />
-                      <span className="price-unit">EUR/kWh</span>
                     </div>
                   </div>
                 </div>
