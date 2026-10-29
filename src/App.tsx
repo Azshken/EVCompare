@@ -14,6 +14,7 @@ import { useI18n } from "./i18n";
 type AppView = "voltcalc" | "loancalc" | "carselect";
 type SwitchDirection = "forward" | "backward";
 type LeadSource = "voltcalc" | "loancalc" | "carselect";
+type ElectricityMode = "home" | "public";
 
 type FuelConfig = {
   labelKey: "petrol" | "diesel" | "hybrid";
