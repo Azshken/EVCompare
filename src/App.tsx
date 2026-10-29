@@ -26,7 +26,8 @@ type FuelSettings = Record<FuelType, FuelConfig>;
 interface VoltCalcState {
   distance: number;
   fuelType: FuelType;
-  electricityPrice: number;
+  electricityMode: ElectricityMode;
+  electricitySettings: Record<ElectricityMode, { price: number }>;
   fuelSettings: FuelSettings;
   evConsumption: number;
 }
@@ -75,7 +76,11 @@ interface LeadSubmission {
 const defaultVoltCalcState: VoltCalcState = {
   distance: 18000,
   fuelType: "petrol",
-  electricityPrice: 0.173,
+  electricityMode: "home",
+  electricitySettings: {
+    home: { price: 0.173 },
+    public: { price: 0.40 },
+  },
   fuelSettings: {
     petrol: { labelKey: "petrol", consumption: 4.5, price: 1.75 },
     diesel: { labelKey: "diesel", consumption: 4.1, price: 1.61 },
@@ -141,10 +146,18 @@ function normaliseVoltCalcState(value: unknown): VoltCalcState {
     },
   };
 
+  const elecSource = (input as any).electricitySettings;
+  const electricitySettings: Record<ElectricityMode, { price: number }> = {
+    home: { price: Number(elecSource?.home?.price ?? fallback.electricitySettings.home.price) },
+    public: { price: Number(elecSource?.public?.price ?? fallback.electricitySettings.public.price) },
+  };
+  const electricityMode: ElectricityMode = (input as any).electricityMode === "public" ? "public" : "home";
+
   return {
     distance: Number(input.distance ?? fallback.distance),
     fuelType,
-    electricityPrice: Number(input.electricityPrice ?? fallback.electricityPrice),
+    electricityMode,
+    electricitySettings,
     fuelSettings,
     evConsumption: Number(input.evConsumption ?? fallback.evConsumption),
   };
@@ -204,6 +217,8 @@ function App() {
 
   const selectedFuel = voltCalc.fuelSettings[voltCalc.fuelType];
 
+  const selectedElectricity = voltCalc.electricitySettings[voltCalc.electricityMode];
+
   const voltResults = useMemo(() => {
     return calculateVoltCalc({
       distance: voltCalc.distance,
@@ -213,9 +228,9 @@ function App() {
         price: selectedFuel.price,
       },
       evConsumption: voltCalc.evConsumption,
-      electricityPrice: voltCalc.electricityPrice,
+      electricityPrice: selectedElectricity.price,
     });
-  }, [voltCalc, selectedFuel, t]);
+  }, [voltCalc, selectedFuel, selectedElectricity, t]);
 
   const loanSummary = useMemo(() => {
     const principal = Math.max(loanCalc.price - loanCalc.downPayment, 0);
@@ -338,10 +353,22 @@ function App() {
     }));
   }
 
+  function handleElectricityModeChange(mode: ElectricityMode) {
+    setVoltCalc((prev) => ({
+      ...prev,
+      electricityMode: mode,
+    }));
+  }
+
   function handleElectricityPriceChange(value: number) {
     setVoltCalc((prev) => ({
       ...prev,
-      electricityPrice: clamp(value, 0, 5),
+      electricitySettings: {
+        ...prev.electricitySettings,
+        [prev.electricityMode]: {
+          price: clamp(value, 0, 5),
+        },
+      },
     }));
   }
 
@@ -412,7 +439,7 @@ function App() {
               fuelConsumption: selectedFuel.consumption,
               fuelPrice: selectedFuel.price,
               evConsumption: voltCalc.evConsumption,
-              electricityPrice: voltCalc.electricityPrice,
+              electricityPrice: selectedElectricity.price,
               annualSavings: voltResults.annualSavings,
               monthlySavings: voltResults.monthlySavings,
             }
@@ -529,11 +556,13 @@ function App() {
                     fuelType={voltCalc.fuelType}
                     fuelSettings={voltCalc.fuelSettings}
                     evConsumption={voltCalc.evConsumption}
-                    electricityPrice={voltCalc.electricityPrice}
+                    electricityMode={voltCalc.electricityMode}
+                    electricityPrice={selectedElectricity.price}
                     onDistanceChange={handleDistanceChange}
                     onFuelTypeChange={handleFuelTypeChange}
                     onFuelSettingChange={handleFuelSettingChange}
                     onEvConsumptionChange={handleEvConsumptionChange}
+                    onElectricityModeChange={handleElectricityModeChange}
                     onElectricityPriceChange={handleElectricityPriceChange}
                   />
                 )}

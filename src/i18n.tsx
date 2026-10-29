@@ -170,6 +170,10 @@ const DICT = {
   filterBy: { en: "Filter by", sk: "Filtrovať podľa" },
   filterHint: { en: "brand, type, eco rating", sk: "značka, typ, eko hodnotenie" },
   euModels: { en: "EU EV models", sk: "EV modely v EÚ" },
+
+  charging: { en: "Charging", sk: "Nabíjanie" },
+  homeCharging: { en: "Home", sk: "Doma" },
+  publicCharging: { en: "Public", sk: "Verejné" },
   months: { en: "months", sk: "mesiacov" },
   estimatedMonthly: { en: "Estimated monthly payment", sk: "Odhadovaná mesačná splátka" },
   annualSavings: { en: "Annual savings", sk: "Ročné úspory" },

@@ -783,6 +783,30 @@ p {
   border-top: 1px solid var(--color-border);
 }
 
+
+.price-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.charging-section {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.charging-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-text);
+  text-align: left;
+}
+
+.price-row {
+  /* existing, but ensure it works with controls */
+}
 .price-input-wrap {
   display: inline-flex;
   align-items: center;

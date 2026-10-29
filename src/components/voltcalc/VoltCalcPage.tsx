@@ -14,6 +14,7 @@ interface VoltCalcPageProps {
   fuelType: "petrol" | "diesel" | "hybrid";
   fuelSettings: Record<"petrol" | "diesel" | "hybrid", FuelConfig>;
   evConsumption: number;
+  electricityMode: "home" | "public";
   electricityPrice: number;
   onDistanceChange: (value: number) => void;
   onFuelTypeChange: (value: "petrol" | "diesel" | "hybrid") => void;
@@ -23,6 +24,7 @@ interface VoltCalcPageProps {
     value: number,
   ) => void;
   onEvConsumptionChange: (value: number) => void;
+  onElectricityModeChange: (mode: "home" | "public") => void;
   onElectricityPriceChange: (value: number) => void;
 }
 
@@ -31,10 +33,13 @@ export function VoltCalcPage({
   fuelType,
   fuelSettings,
   evConsumption,
+  electricityMode,
   electricityPrice,
   onDistanceChange,
+  onFuelTypeChange,
   onFuelSettingChange,
   onEvConsumptionChange,
+  onElectricityModeChange,
   onElectricityPriceChange,
 }: VoltCalcPageProps) {
   const { t, locale } = useI18n();
@@ -141,22 +146,40 @@ export function VoltCalcPage({
 
               <div className="price-row">
                 <span className="price-label">{t("fuelPrice")}</span>
-                <div className="price-input-wrap">
-                  <input
-                    className="price-input"
-                    type="number"
-                    step="0.01"
-                    value={selectedFuel.price}
-                    onChange={(e) =>
-                      onFuelSettingChange(
-                        fuelType,
-                        "price",
-                        Number(e.target.value),
-                      )
-                    }
-                    aria-label={t("fuelPrice")}
-                  />
-                  <span className="price-unit">EUR/L</span>
+                <div className="price-controls">
+                  <div className="inline-tabs" role="group" aria-label={t("fuelPrice")}>
+                    <button
+                      type="button"
+                      className={`inline-tab ${fuelType === "petrol" ? "active" : ""}`}
+                      onClick={() => onFuelTypeChange("petrol")}
+                    >
+                      {t("petrol")}
+                    </button>
+                    <button
+                      type="button"
+                      className={`inline-tab ${fuelType === "diesel" ? "active" : ""}`}
+                      onClick={() => onFuelTypeChange("diesel")}
+                    >
+                      {t("diesel")}
+                    </button>
+                  </div>
+                  <div className="price-input-wrap">
+                    <input
+                      className="price-input"
+                      type="number"
+                      step="0.01"
+                      value={selectedFuel.price}
+                      onChange={(e) =>
+                        onFuelSettingChange(
+                          fuelType,
+                          "price",
+                          Number(e.target.value),
+                        )
+                      }
+                      aria-label={t("fuelPrice")}
+                    />
+                    <span className="price-unit">EUR/L</span>
+                  </div>
                 </div>
               </div>
 
@@ -228,20 +251,41 @@ export function VoltCalcPage({
                 <span className="unit-label">kWh/100km</span>
               </div>
 
-              <div className="price-row">
-                <span className="price-label">{t("electricityPrice")}</span>
-                <div className="price-input-wrap">
-                  <input
-                    className="price-input"
-                    type="number"
-                    step="0.001"
-                    value={electricityPrice}
-                    onChange={(e) =>
-                      onElectricityPriceChange(Number(e.target.value))
-                    }
-                    aria-label={t("electricityPrice")}
-                  />
-                  <span className="price-unit">EUR/kWh</span>
+              <div className="charging-section">
+                <div className="charging-title">{t("charging")}</div>
+                <div className="price-row">
+                  <span className="price-label">{t("electricityPrice")}</span>
+                  <div className="price-controls">
+                    <div className="inline-tabs" role="group" aria-label={t("charging")}>
+                      <button
+                        type="button"
+                        className={`inline-tab ${electricityMode === "home" ? "active" : ""}`}
+                        onClick={() => onElectricityModeChange("home")}
+                      >
+                        {t("homeCharging")}
+                      </button>
+                      <button
+                        type="button"
+                        className={`inline-tab ${electricityMode === "public" ? "active" : ""}`}
+                        onClick={() => onElectricityModeChange("public")}
+                      >
+                        {t("publicCharging")}
+                      </button>
+                    </div>
+                    <div className="price-input-wrap">
+                      <input
+                        className="price-input"
+                        type="number"
+                        step="0.001"
+                        value={electricityPrice}
+                        onChange={(e) =>
+                          onElectricityPriceChange(Number(e.target.value))
+                        }
+                        aria-label={t("electricityPrice")}
+                      />
+                      <span className="price-unit">EUR/kWh</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
