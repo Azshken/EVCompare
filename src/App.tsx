@@ -83,9 +83,9 @@ const defaultVoltCalcState: VoltCalcState = {
     public: { price: 0.40 },
   },
   fuelSettings: {
-    petrol: { labelKey: "petrol", consumption: 5.5, price: 1.82 },
-    diesel: { labelKey: "diesel", consumption: 4.5, price: 1.97 },
-    hybrid: { labelKey: "hybrid", consumption: 3.9, price: 1.82 },
+    petrol: { labelKey: "petrol", consumption: 5.5, price: 1.834 },
+    diesel: { labelKey: "diesel", consumption: 4.5, price: 1.988 },
+    hybrid: { labelKey: "hybrid", consumption: 3.9, price: 1.834 },
   },
   evConsumption: 17,
 };
@@ -227,7 +227,7 @@ function App() {
 
   useEffect(() => {
     let cancelled = false;
-    const cacheKey = "evcompare-fuel-prices";
+    const cacheKey = "evcompare-fuel-prices-slovnaft";
     const dayMs = 24 * 60 * 60 * 1000;
 
     async function loadFuelPrices() {
@@ -251,12 +251,12 @@ function App() {
         }
 
         const response = await fetch(
-          "https://www.fuel-prices.eu/traveler-hud/api.php?country=SK",
+          "/api/fuel-prices",
         );
         if (!response.ok) return;
         const payload = await response.json();
-        const petrol = Number(payload?.user?.euro95);
-        const diesel = Number(payload?.user?.diesel);
+        const petrol = Number(payload?.petrol);
+        const diesel = Number(payload?.diesel);
         if (!Number.isFinite(petrol) || !Number.isFinite(diesel)) return;
 
         window.localStorage.setItem(
