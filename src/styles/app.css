@@ -786,8 +786,8 @@ p {
 
 .price-controls {
   display: flex;
-  align-items: center;
-  gap: 0.45rem;
+  align-items: flex-end;
+  gap: 0.55rem;
   flex-wrap: nowrap;
   justify-content: flex-end;
 }
@@ -795,17 +795,17 @@ p {
 .charging-buttons {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 0.25rem;
+  align-items: center;
+  gap: 0.28rem;
 }
 
 .charging-title {
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: var(--color-text);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  letter-spacing: 0.01em;
   line-height: 1;
+  text-align: center;
 }
 
 .price-row {
