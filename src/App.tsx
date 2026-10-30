@@ -83,9 +83,9 @@ const defaultVoltCalcState: VoltCalcState = {
     public: { price: 0.40 },
   },
   fuelSettings: {
-    petrol: { labelKey: "petrol", consumption: 4.5, price: 1.75 },
-    diesel: { labelKey: "diesel", consumption: 4.1, price: 1.61 },
-    hybrid: { labelKey: "hybrid", consumption: 3.9, price: 1.75 },
+    petrol: { labelKey: "petrol", consumption: 5.5, price: 1.82 },
+    diesel: { labelKey: "diesel", consumption: 4.5, price: 1.97 },
+    hybrid: { labelKey: "hybrid", consumption: 3.9, price: 1.82 },
   },
   evConsumption: 17,
 };
@@ -129,15 +129,24 @@ function normaliseVoltCalcState(value: unknown): VoltCalcState {
       : "petrol";
 
   const source = input.fuelSettings;
+  const previousPetrolConsumption = 4.5;
+  const previousDieselConsumption = 4.1;
+  const petrolConsumption = Number(source?.petrol?.consumption ?? fallback.fuelSettings.petrol.consumption);
+  const dieselConsumption = Number(source?.diesel?.consumption ?? fallback.fuelSettings.diesel.consumption);
+
   const fuelSettings: FuelSettings = {
     petrol: {
       labelKey: "petrol",
-      consumption: Number(source?.petrol?.consumption ?? fallback.fuelSettings.petrol.consumption),
+      consumption: petrolConsumption === previousPetrolConsumption
+        ? fallback.fuelSettings.petrol.consumption
+        : petrolConsumption,
       price: Number(source?.petrol?.price ?? fallback.fuelSettings.petrol.price),
     },
     diesel: {
       labelKey: "diesel",
-      consumption: Number(source?.diesel?.consumption ?? fallback.fuelSettings.diesel.consumption),
+      consumption: dieselConsumption === previousDieselConsumption
+        ? fallback.fuelSettings.diesel.consumption
+        : dieselConsumption,
       price: Number(source?.diesel?.price ?? fallback.fuelSettings.diesel.price),
     },
     hybrid: {
@@ -215,6 +224,68 @@ function App() {
   useEffect(() => {
     window.localStorage.setItem("evcompare-loancalc", JSON.stringify(loanCalc));
   }, [loanCalc]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const cacheKey = "evcompare-fuel-prices";
+    const dayMs = 24 * 60 * 60 * 1000;
+
+    async function loadFuelPrices() {
+      try {
+        const cachedRaw = window.localStorage.getItem(cacheKey);
+        if (cachedRaw) {
+          const cached = JSON.parse(cachedRaw) as {
+            fetchedAt?: number;
+            petrol?: number;
+            diesel?: number;
+          };
+          if (
+            cached.fetchedAt &&
+            Date.now() - cached.fetchedAt < dayMs &&
+            typeof cached.petrol === "number" &&
+            typeof cached.diesel === "number"
+          ) {
+            applyFuelPrices(cached.petrol, cached.diesel);
+            return;
+          }
+        }
+
+        const response = await fetch(
+          "https://www.fuel-prices.eu/traveler-hud/api.php?country=SK",
+        );
+        if (!response.ok) return;
+        const payload = await response.json();
+        const petrol = Number(payload?.user?.euro95);
+        const diesel = Number(payload?.user?.diesel);
+        if (!Number.isFinite(petrol) || !Number.isFinite(diesel)) return;
+
+        window.localStorage.setItem(
+          cacheKey,
+          JSON.stringify({ fetchedAt: Date.now(), petrol, diesel }),
+        );
+        if (!cancelled) applyFuelPrices(petrol, diesel);
+      } catch {
+        // Keep the latest stored or default prices if the feed is unavailable.
+      }
+    }
+
+    function applyFuelPrices(petrol: number, diesel: number) {
+      setVoltCalc((prev) => ({
+        ...prev,
+        fuelSettings: {
+          ...prev.fuelSettings,
+          petrol: { ...prev.fuelSettings.petrol, price: petrol },
+          diesel: { ...prev.fuelSettings.diesel, price: diesel },
+          hybrid: { ...prev.fuelSettings.hybrid, price: petrol },
+        },
+      }));
+    }
+
+    void loadFuelPrices();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const selectedFuel = voltCalc.fuelSettings[voltCalc.fuelType];
 
