@@ -251,24 +251,24 @@ export function VoltCalcPage({
                 <span className="unit-label">kWh/100km</span>
               </div>
 
-              <div className="charging-section">
-                <div className="charging-title">{t("charging")}</div>
-                <div className="price-row">
-                  <span className="price-label">{t("electricityPrice")}</span>
-                  <div className="price-controls">
-                    <div className="price-input-wrap">
-                      <input
-                        className="price-input"
-                        type="number"
-                        step="0.001"
-                        value={electricityPrice}
-                        onChange={(e) =>
-                          onElectricityPriceChange(Number(e.target.value))
-                        }
-                        aria-label={t("electricityPrice")}
-                      />
-                      <span className="price-unit">EUR/kWh</span>
-                    </div>
+              <div className="price-row">
+                <span className="price-label">{t("electricityPrice")}</span>
+                <div className="price-controls">
+                  <div className="price-input-wrap">
+                    <input
+                      className="price-input"
+                      type="number"
+                      step="0.001"
+                      value={electricityPrice}
+                      onChange={(e) =>
+                        onElectricityPriceChange(Number(e.target.value))
+                      }
+                      aria-label={t("electricityPrice")}
+                    />
+                    <span className="price-unit">EUR/kWh</span>
+                  </div>
+                  <div className="charging-buttons">
+                    <div className="charging-title">{t("charging")}</div>
                     <div className="inline-tabs" role="group" aria-label={t("charging")}>
                       <button
                         type="button"

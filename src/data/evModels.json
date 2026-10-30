@@ -1359,7 +1359,7 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/nissan-leaf",
+    "imageUrl": "/cars/nissan-leaf.webp",
     "priceListUrl": null,
     "heatPump": true,
     "recommended": false
@@ -1380,7 +1380,7 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/nissan-ariya",
+    "imageUrl": "/cars/nissan-ariya.webp",
     "priceListUrl": null,
     "heatPump": true,
     "recommended": false
@@ -2409,7 +2409,7 @@
     "kwh90": null,
     "kwh120": null,
     "affiliateUrl": null,
-    "imageUrl": "/cars/nissan-micra",
+    "imageUrl": "/cars/nissan-micra.webp",
     "priceListUrl": null,
     "heatPump": true,
     "recommended": false
