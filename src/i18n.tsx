@@ -28,7 +28,7 @@ const DICT = {
   carsCount: { en: "cars", sk: "áut" },
   select: { en: "Select", sk: "Vybrať" },
   selected: { en: "Selected", sk: "Vybrané" },
-  recommended: { en: "Recommended", sk: "Odporúčam" },
+  recommended: { en: "Recommended", sk: "Odporúčame" },
   priceList: { en: "Price list", sk: "Cenník" },
   configurator: { en: "Configurator", sk: "Konfigurátor" },
   info: { en: "Info", sk: "Informácie" },
@@ -122,7 +122,7 @@ const DICT = {
     sk: "Zvýšiť spotrebu EV",
   },
   nextStep: { en: "Next step", sk: "Ďalší krok" },
-  getMatched: { en: "Get matched offers", sk: "Získať ponuky" },
+  getMatched: { en: "Get matched offer", sk: "Získať ponuku" },
   leadIntro: {
     en: "Leave your details and we will connect you with relevant EV or financing options based on your calculation.",
     sk: "Zanechajte údaje a prepojíme vás s relevantnými EV alebo finančnými ponukami podľa vášho výpočtu.",
@@ -137,8 +137,8 @@ const DICT = {
   },
   email: { en: "Email", sk: "E-mail" },
   emailHint: {
-    en: "We send your result and relevant offers here.",
-    sk: "Sem vám pošleme výsledok a relevantné ponuky.",
+    en: "We send your result and relevant offer here.",
+    sk: "Sem vám pošleme výsledok a relevantnú ponuku.",
   },
   phone: { en: "Phone", sk: "Telefón" },
   phoneOptional: { en: "(optional)", sk: "(nepovinné)" },
