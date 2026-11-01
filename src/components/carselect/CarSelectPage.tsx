@@ -76,9 +76,18 @@ function computeScores(list: EvModel[]) {
 interface CarSelectPageProps {
   onSelectConsumption: (kwh: number) => void;
   onOpenCar: (carId: string) => void;
+  onSelectCar: (car: { id: string; label: string; price: number | null } | null) => void;
+  checkedIds: string[];
+  onToggleChecked: (car: { id: string; label: string; price: number | null }) => void;
 }
 
-export function CarSelectPage({ onSelectConsumption, onOpenCar }: CarSelectPageProps) {
+export function CarSelectPage({
+  onSelectConsumption,
+  onOpenCar,
+  onSelectCar,
+  checkedIds,
+  onToggleChecked,
+}: CarSelectPageProps) {
   const { t, locale } = useI18n();
   const [brand, setBrand] = useState("all");
   const [type, setType] = useState("all");
@@ -136,10 +145,20 @@ export function CarSelectPage({ onSelectConsumption, onOpenCar }: CarSelectPageP
   function selectCar(car: EvModel) {
     if (selectedId === car.id) {
       setSelectedId(null);
+      onSelectCar(null);
       return;
     }
     setSelectedId(car.id);
     if (car.wltp && car.wltp > 0) onSelectConsumption(car.wltp);
+    onSelectCar({
+      id: car.id,
+      label: carLabel(car),
+      price: car.price,
+    });
+  }
+
+  function carLabel(car: EvModel) {
+    return `${car.brand} ${car.model}${car.variant ? ` ${car.variant}` : ""}`;
   }
 
   function handleCardClick(car: EvModel) {
@@ -229,11 +248,12 @@ export function CarSelectPage({ onSelectConsumption, onOpenCar }: CarSelectPageP
       <div className={view === "tiles" ? "car-tiles" : "car-list"}>
         {filtered.map((car) => {
           const selected = selectedId === car.id;
+          const checked = checkedIds.includes(car.id);
           const score = scores.get(car.id) ?? 0;
           return (
             <article
               key={car.id}
-              className={`car-card ${selected ? "is-selected" : ""}`}
+              className={`car-card ${selected ? "is-selected" : ""} ${checked ? "is-checked" : ""}`}
               onClick={() => handleCardClick(car)}
               role="button"
               tabIndex={0}
@@ -298,6 +318,23 @@ export function CarSelectPage({ onSelectConsumption, onOpenCar }: CarSelectPageP
                     </a>
                   )}
                 </div>
+                <label
+                  className="car-check"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() =>
+                      onToggleChecked({
+                        id: car.id,
+                        label: carLabel(car),
+                        price: car.price,
+                      })
+                    }
+                    aria-label={t("checkedCars")}
+                  />
+                </label>
               </div>
             </article>
           );

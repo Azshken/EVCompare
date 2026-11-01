@@ -44,6 +44,7 @@ interface LeadFormState {
   name: string;
   email: string;
   phone: string;
+  message: string;
   consent: boolean;
 }
 
@@ -71,7 +72,14 @@ interface LeadSubmission {
   submittedAt: string;
   source: LeadSource;
   contact: LeadFormState;
-  snapshot: VoltLeadSnapshot | LoanLeadSnapshot;
+  snapshot: {
+    running: VoltLeadSnapshot;
+    financing: LoanLeadSnapshot;
+    models: {
+      selected: string | null;
+      checked: string[];
+    };
+  };
 }
 
 const defaultVoltCalcState: VoltCalcState = {
@@ -101,6 +109,7 @@ const defaultLeadFormState: LeadFormState = {
   name: "",
   email: "",
   phone: "",
+  message: "",
   consent: false,
 };
 
@@ -193,6 +202,14 @@ function App() {
     readStorage<LoanCalcState>("evcompare-loancalc", defaultLoanCalcState),
   );
   const [leadForm, setLeadForm] = useState<LeadFormState>(defaultLeadFormState);
+  const [selectedCar, setSelectedCar] = useState<{
+    id: string;
+    label: string;
+    price: number | null;
+  } | null>(null);
+  const [checkedCars, setCheckedCars] = useState<
+    { id: string; label: string; price: number | null }[]
+  >([]);
   const [leadSubmitted, setLeadSubmitted] = useState(false);
   const [switchDirection, setSwitchDirection] =
     useState<SwitchDirection>("forward");
@@ -454,6 +471,25 @@ function App() {
     }));
   }
 
+  function handleSelectCar(
+    car: { id: string; label: string; price: number | null } | null,
+  ) {
+    setSelectedCar(car);
+    if (car?.price != null) handlePriceChange(car.price);
+  }
+
+  function handleToggleChecked(car: {
+    id: string;
+    label: string;
+    price: number | null;
+  }) {
+    setCheckedCars((prev) =>
+      prev.some((item) => item.id === car.id)
+        ? prev.filter((item) => item.id !== car.id)
+        : [...prev, car],
+    );
+  }
+
   function handleDownPaymentChange(value: number) {
     setLoanCalc((prev) => ({
       ...prev,
@@ -476,7 +512,7 @@ function App() {
   }
 
   function handleLeadFieldChange(
-    field: "name" | "email" | "phone",
+    field: "name" | "email" | "phone" | "message",
     value: string,
   ) {
     setLeadForm((prev) => ({
@@ -503,26 +539,30 @@ function App() {
       submittedAt: new Date().toISOString(),
       source: activeView,
       contact: leadForm,
-      snapshot:
-        activeView === "voltcalc"
-          ? {
-              distance: voltCalc.distance,
-              fuelType: voltCalc.fuelType,
-              fuelConsumption: selectedFuel.consumption,
-              fuelPrice: selectedFuel.price,
-              evConsumption: voltCalc.evConsumption,
-              electricityPrice: selectedElectricity.price,
-              annualSavings: voltResults.annualSavings,
-              monthlySavings: voltResults.monthlySavings,
-            }
-          : {
-              vehiclePrice: loanCalc.price,
-              downPayment: loanCalc.downPayment,
-              months: loanCalc.months,
-              apr: loanCalc.apr,
-              amountFinanced: loanSummary.principal,
-              monthlyPayment: loanSummary.monthlyPayment,
-            },
+      snapshot: {
+        running: {
+          distance: voltCalc.distance,
+          fuelType: voltCalc.fuelType,
+          fuelConsumption: selectedFuel.consumption,
+          fuelPrice: selectedFuel.price,
+          evConsumption: voltCalc.evConsumption,
+          electricityPrice: selectedElectricity.price,
+          annualSavings: voltResults.annualSavings,
+          monthlySavings: voltResults.monthlySavings,
+        },
+        financing: {
+          vehiclePrice: loanCalc.price,
+          downPayment: loanCalc.downPayment,
+          months: loanCalc.months,
+          apr: loanCalc.apr,
+          amountFinanced: loanSummary.principal,
+          monthlyPayment: loanSummary.monthlyPayment,
+        },
+        models: {
+          selected: selectedCar?.label ?? null,
+          checked: checkedCars.map((car) => car.label),
+        },
+      },
     };
 
     const existing = readStorage<LeadSubmission[]>("evcompare-leads", []);
@@ -541,48 +581,59 @@ function App() {
     { id: "carselect", label: t("tabModels") },
   ];
 
-  const leadSectionProps = {
-    source: activeView,
-    title: t("getMatched"),
-    intro: t("leadIntro"),
-    summaryItems:
-      activeView === "voltcalc"
-        ? [
-            {
-              label: t("annualDistance"),
-              value: `${voltCalc.distance.toLocaleString(locale)} ${t("kmPerYear")}`,
-            },
-            {
-              label: t("comparedAgainst"),
-              value: t(selectedFuel.labelKey),
-            },
-            {
-              label: t("annualEvSavings"),
-              value: formatEuro(voltResults.annualSavings, 2),
-            },
-            {
-              label: t("monthlyEvSavings"),
-              value: formatEuro(voltResults.monthlySavings, 2),
-            },
-          ]
-        : activeView === "loancalc"
-          ? [
-              { label: t("vehiclePrice"), value: formatEuro(loanCalc.price, 0) },
-              {
-                label: t("downPayment"),
-                value: formatEuro(loanCalc.downPayment, 0),
-              },
-              { label: t("loanTerm"), value: `${loanCalc.months} ${t("months")}` },
-              {
-                label: t("estimatedMonthly"),
-                value: formatEuro(loanSummary.monthlyPayment, 0),
-              },
-            ]
-          : [
-              { label: t("browse"), value: t("euModels") },
-              { label: t("filterBy"), value: t("filterHint") },
-            ],
-  };
+  const modelNote =
+    checkedCars.length > 0
+      ? checkedCars.map((car) => car.label).join(", ")
+      : selectedCar?.label ?? t("none");
+
+  const leadSections = [
+    {
+      id: "running",
+      title: t("runningResults"),
+      items: [
+        {
+          label: t("annualDistance"),
+          value: `${voltCalc.distance.toLocaleString(locale)} ${t("kmPerYear")}`,
+        },
+        {
+          label: t("comparedAgainst"),
+          value: t(selectedFuel.labelKey),
+        },
+        {
+          label: t("annualEvSavings"),
+          value: formatEuro(voltResults.annualSavings, 2),
+        },
+        {
+          label: t("monthlyEvSavings"),
+          value: formatEuro(voltResults.monthlySavings, 2),
+        },
+      ],
+    },
+    {
+      id: "financing",
+      title: t("financingResults"),
+      items: [
+        { label: t("vehiclePrice"), value: formatEuro(loanCalc.price, 0) },
+        { label: t("downPayment"), value: formatEuro(loanCalc.downPayment, 0) },
+        { label: t("loanTerm"), value: `${loanCalc.months} ${t("months")}` },
+        {
+          label: t("estimatedMonthly"),
+          value: formatEuro(loanSummary.monthlyPayment, 0),
+        },
+        { label: t("carModel"), value: selectedCar?.label ?? t("none") },
+      ],
+    },
+    {
+      id: "models",
+      title: t("modelResults"),
+      items: [
+        {
+          label: checkedCars.length > 0 ? t("checkedCars") : t("selectedCar"),
+          value: modelNote,
+        },
+      ],
+    },
+  ];
 
   return (
     <AppShell>
@@ -655,6 +706,9 @@ function App() {
                   <CarSelectPage
                     onSelectConsumption={(kwh) => handleEvConsumptionChange(kwh)}
                     onOpenCar={openCar}
+                    onSelectCar={handleSelectCar}
+                    checkedIds={checkedCars.map((car) => car.id)}
+                    onToggleChecked={handleToggleChecked}
                   />
                 )}
               </div>
@@ -662,15 +716,21 @@ function App() {
           </section>
 
           <LeadCaptureSection
-            source={leadSectionProps.source}
-            title={leadSectionProps.title}
-            intro={leadSectionProps.intro}
-            summaryItems={leadSectionProps.summaryItems}
+            title={t("getMatched")}
+            intro={t("leadIntro")}
+            sections={leadSections}
             form={leadForm}
             submitted={leadSubmitted}
             onFieldChange={handleLeadFieldChange}
             onConsentChange={handleLeadConsentChange}
             onSubmit={handleLeadSubmit}
+            defaultOpenId={
+              activeView === "loancalc"
+                ? "financing"
+                : activeView === "carselect"
+                  ? "models"
+                  : "running"
+            }
           />
         </>
       )}
