@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import evModels from "../../data/evModels.json";
 import { useI18n } from "../../i18n";
 
@@ -22,6 +22,23 @@ export type EvModel = {
   priceListUrl: string | null;
   heatPump: boolean;
   recommended: boolean;
+  specs?: {
+    drive?: string;
+    peakPower?: string;
+    power30min?: string;
+    batteryType?: string;
+    batteryNetGross?: string;
+    dcMax?: string;
+    dcTime?: string;
+    acTime?: string;
+    weight?: string;
+    topSpeed?: string;
+    acceleration?: string;
+    turningCircle?: string;
+    consumption?: string;
+    range?: string;
+    heatPump?: string;
+  } | null;
 };
 
 export const cars = evModels as EvModel[];
@@ -81,6 +98,16 @@ interface CarSelectPageProps {
   onToggleChecked: (car: { id: string; label: string; price: number | null }) => void;
 }
 
+function readSelectState() {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem("evcompare-carselect");
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
 export function CarSelectPage({
   onSelectConsumption,
   onOpenCar,
@@ -89,14 +116,16 @@ export function CarSelectPage({
   onToggleChecked,
 }: CarSelectPageProps) {
   const { t, locale } = useI18n();
-  const [brand, setBrand] = useState("all");
-  const [type, setType] = useState("all");
-  const [ecoMin, setEcoMin] = useState(0);
-  const [view, setView] = useState<ViewMode>("tiles");
-  const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState<SortKey>("price");
-  const [sortDir, setSortDir] = useState<SortDir>("asc");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const saved = readSelectState();
+  const [brand, setBrand] = useState(saved?.brand ?? "all");
+  const [type, setType] = useState(saved?.type ?? "all");
+  const [ecoMin, setEcoMin] = useState(saved?.ecoMin ?? 0);
+  const [view, setView] = useState<ViewMode>(saved?.view === "list" ? "list" : "tiles");
+  const [search, setSearch] = useState(saved?.search ?? "");
+  const [sortBy, setSortBy] = useState<SortKey>(saved?.sortBy ?? "price");
+  const [sortDir, setSortDir] = useState<SortDir>(saved?.sortDir === "desc" ? "desc" : "asc");
+  const [selectedId, setSelectedId] = useState<string | null>(saved?.selectedId ?? null);
+  const [compareOnly, setCompareOnly] = useState(false);
 
   const scores = useMemo(() => computeScores(cars), []);
 
@@ -109,8 +138,16 @@ export function CarSelectPage({
     [],
   );
 
+  useEffect(() => {
+    window.localStorage.setItem(
+      "evcompare-carselect",
+      JSON.stringify({ brand, type, ecoMin, view, search, sortBy, sortDir, selectedId }),
+    );
+  }, [brand, type, ecoMin, view, search, sortBy, sortDir, selectedId]);
+
   const filtered = useMemo(() => {
     const result = cars.filter((c) => {
+      if (compareOnly && !checkedIds.includes(c.id)) return false;
       if (brand !== "all" && c.brand !== brand) return false;
       if (type !== "all" && c.type !== type) return false;
       if ((scores.get(c.id) ?? 0) < ecoMin) return false;
@@ -131,7 +168,7 @@ export function CarSelectPage({
       return ((a.price ?? Infinity) - (b.price ?? Infinity)) * dir;
     });
     return result;
-  }, [brand, type, ecoMin, search, sortBy, sortDir, scores]);
+  }, [brand, type, ecoMin, search, sortBy, sortDir, scores, compareOnly, checkedIds]);
 
   function toggleSort(key: SortKey) {
     if (sortBy === key) {
@@ -240,10 +277,20 @@ export function CarSelectPage({
           <button type="button" className={view === "list" ? "active" : ""} onClick={() => setView("list")}>
             {t("list")}
           </button>
+          <button
+            type="button"
+            className={`compare-btn ${compareOnly ? "active" : ""}`}
+            onClick={() => setCompareOnly((current) => !current)}
+          >
+            {t("compare")}{checkedIds.length ? ` (${checkedIds.length})` : ""}
+          </button>
         </div>
       </div>
 
       <p className="result-count">{filtered.length} {t("carsCount")}</p>
+      {compareOnly && filtered.length === 0 && (
+        <p className="compare-empty">{t("compareEmpty")}</p>
+      )}
 
       <div className={view === "tiles" ? "car-tiles" : "car-list"}>
         {filtered.map((car) => {

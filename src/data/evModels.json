@@ -186,7 +186,24 @@
     "imageUrl": "/cars/vw-id.7.webp",
     "priceListUrl": null,
     "heatPump": false,
-    "recommended": false
+    "recommended": false,
+    "specs": {
+      "drive": "RWD",
+      "peakPower": "210 kW (286 k)",
+      "power30min": "89 kW (121 k)",
+      "batteryType": "Li-Ion (NMC)",
+      "batteryNetGross": "86 (91) kWh",
+      "dcMax": "200 kW",
+      "dcTime": "0:26 h",
+      "acTime": "9 h",
+      "weight": "2232 kg",
+      "topSpeed": "180 km/h",
+      "acceleration": "6,6 s",
+      "turningCircle": "10,9 m",
+      "consumption": "13,7 kWh/100 km",
+      "range": "706 km",
+      "heatPump": "Nie"
+    }
   },
   {
     "id": "volkswagen-id.7-tourer",
