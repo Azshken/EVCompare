@@ -362,9 +362,6 @@ export function VoltCalcPage({
           {formatEuro(results.annualSavings, 2)} EUR
         </div>
       </section>
-
-
-      </div>
     </div>
   );
 }
