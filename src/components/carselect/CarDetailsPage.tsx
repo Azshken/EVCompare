@@ -100,8 +100,7 @@ function VariantColumn({
       <div className="spec-sections compact">
         <SpecRow label={t("drive")} value={specs.drive ?? "–"} />
         <SpecRow label={t("peakPower")} value={specs.peakPower ?? "–"} delta={powerDelta} />
-        <SpecRow label={t("power30min")} value={specs.power30min ?? "–"} />
-        <SpecRow label={t("topSpeed")} value={specs.topSpeed ?? "–"} />
+                <SpecRow label={t("topSpeed")} value={specs.topSpeed ?? "–"} />
         <SpecRow label={t("acceleration")} value={specs.acceleration ?? "–"} delta={accelDelta} />
         <SpecRow label={t("turningCircle")} value={specs.turningCircle ?? "–"} />
         <SpecRow label={t("batteryType")} value={specs.batteryType ?? "–"} />
@@ -254,8 +253,7 @@ export function CarDetailsPage({ carId, onBack, onNavigate }: CarDetailsPageProp
                 <h3>{t("specsTitle")}</h3>
                 <SpecRow label={t("drive")} value={specs.drive ?? "–"} />
                 <SpecRow label={t("peakPower")} value={specs.peakPower ?? "–"} delta={powerDelta} />
-                <SpecRow label={t("power30min")} value={specs.power30min ?? "–"} />
-                <SpecRow label={t("topSpeed")} value={specs.topSpeed ?? "–"} />
+                                <SpecRow label={t("topSpeed")} value={specs.topSpeed ?? "–"} />
                 <SpecRow label={t("acceleration")} value={specs.acceleration ?? "–"} delta={accelDelta} />
                 <SpecRow label={t("turningCircle")} value={specs.turningCircle ?? "–"} />
               </section>
@@ -349,8 +347,7 @@ export function CarDetailsPage({ carId, onBack, onNavigate }: CarDetailsPageProp
                     <h3>{t("specsTitle")}</h3>
                     <SpecRow label={t("drive")} value={expSpecs.drive ?? "–"} />
                     <SpecRow label={t("peakPower")} value={expSpecs.peakPower ?? "–"} delta={expPowerDelta} />
-                    <SpecRow label={t("power30min")} value={expSpecs.power30min ?? "–"} />
-                    <SpecRow label={t("topSpeed")} value={expSpecs.topSpeed ?? "–"} />
+                                        <SpecRow label={t("topSpeed")} value={expSpecs.topSpeed ?? "–"} />
                     <SpecRow label={t("acceleration")} value={expSpecs.acceleration ?? "–"} delta={expAccelDelta} />
                     <SpecRow label={t("turningCircle")} value={expSpecs.turningCircle ?? "–"} />
                   </section>

@@ -306,9 +306,36 @@ export function VoltCalcPage({
             </div>
           </div>
         </article>
+      
       </section>
+      <div className="running-stats-col">
+        <div className="section-kicker">{t("runningCostStats")}</div>
+        <section className="surface-card stats-card">
+          <div className="stats-grid">
+            <div className="stat-box">
+              <div className="metric-value ev">
+                {formatEuro(results.monthlySavings, 2)}
+              </div>
+              <div className="metric-label">{t("monthlyEvSaving")}</div>
+            </div>
+            <div className="stat-box">
+              <div className="metric-value primary">
+                {results.annualEvEnergy.toLocaleString(locale)} kWh
+              </div>
+              <div className="metric-label">{t("totalKwhPerYear")}</div>
+            </div>
+            <div className="stat-box">
+              <div className="metric-value ev">
+                {formatEuro(results.savingsFiveYears, 2)}
+              </div>
+              <div className="metric-label">{t("fiveYearSavings")}</div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
 
-      <section className="banner">
+    <section className="banner">
         <div className="banner-copy">
           <div className="banner-icon">
             <svg
@@ -336,30 +363,7 @@ export function VoltCalcPage({
         </div>
       </section>
 
-      <div className="section-kicker">{t("runningCostStats")}</div>
 
-      <section className="surface-card stats-card">
-        <div className="stats-grid">
-          <div className="stat-box">
-            <div className="metric-value ev">
-              {formatEuro(results.monthlySavings, 2)}
-            </div>
-            <div className="metric-label">{t("monthlyEvSaving")}</div>
-          </div>
-          <div className="stat-box">
-            <div className="metric-value primary">
-              {results.annualEvEnergy.toLocaleString(locale)} kWh
-            </div>
-            <div className="metric-label">{t("totalKwhPerYear")}</div>
-          </div>
-          <div className="stat-box">
-            <div className="metric-value ev">
-              {formatEuro(results.savingsFiveYears, 2)}
-            </div>
-            <div className="metric-label">{t("fiveYearSavings")}</div>
-          </div>
-        </div>
-      </section>
       </div>
     </div>
   );

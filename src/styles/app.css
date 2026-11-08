@@ -1547,13 +1547,15 @@ p {
   .comparison-and-stats .comparison-grid {
     grid-column: 1;
   }
-  .comparison-and-stats .section-kicker,
-  .comparison-and-stats .stats-card {
+  .running-stats-col {
     grid-column: 2;
   }
-  .comparison-and-stats .stats-grid {
+  .running-stats-col .stats-grid {
     grid-template-columns: 1fr;
     gap: 0.45rem;
+  }
+  .voltcalc-page > .banner {
+    margin-top: 0.6rem;
   }
 }
 @media (max-width: 1099px) {
