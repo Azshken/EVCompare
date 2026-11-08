@@ -1,5 +1,5 @@
 import { useRef, type TouchEvent } from "react";
-import { useI18n } from "../../i18n";
+import { useI18n, type DictKey } from "../../i18n";
 import { cars, type EvModel } from "./CarSelectPage";
 
 interface CarDetailsPageProps {
@@ -74,7 +74,7 @@ function VariantColumn({
   car: EvModel;
   prev: EvModel | null;
   formatPrice: (v: number | null) => string;
-  t: (k: string) => string;
+  t: (k: DictKey) => string;
 }) {
   const specs = car.specs;
   if (!specs) return null;
