@@ -566,17 +566,20 @@
 }
 
 @media (min-width: 1280px) {
-  .variant-switcher {
+  .has-family .variant-switcher {
     display: none;
   }
-  .single-view {
+  .has-family .single-view {
     display: none;
   }
-  .desktop-comparison {
+  .has-family .desktop-comparison {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1rem;
     margin-top: 1rem;
+  }
+  .desktop-comparison {
+    display: none; /* default hidden, shown only with has-family */
   }
   .variant-column {
     background: var(--color-surface-2);

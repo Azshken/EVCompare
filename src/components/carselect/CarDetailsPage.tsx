@@ -100,10 +100,15 @@ function VariantColumn({
       <div className="spec-sections compact">
         <SpecRow label={t("drive")} value={specs.drive ?? "–"} />
         <SpecRow label={t("peakPower")} value={specs.peakPower ?? "–"} delta={powerDelta} />
-        <SpecRow label={t("acceleration")} value={specs.acceleration ?? "–"} delta={accelDelta} />
+        <SpecRow label={t("power30min")} value={specs.power30min ?? "–"} />
         <SpecRow label={t("topSpeed")} value={specs.topSpeed ?? "–"} />
+        <SpecRow label={t("acceleration")} value={specs.acceleration ?? "–"} delta={accelDelta} />
+        <SpecRow label={t("turningCircle")} value={specs.turningCircle ?? "–"} />
+        <SpecRow label={t("batteryType")} value={specs.batteryType ?? "–"} />
         <SpecRow label={t("batteryCapacity")} value={specs.batteryNetGross ?? "–"} delta={batteryDelta} />
         <SpecRow label={t("dcMax")} value={specs.dcMax ?? "–"} />
+        <SpecRow label={t("dcTime")} value={specs.dcTime ?? "–"} />
+        <SpecRow label={t("acTime")} value={specs.acTime ?? "–"} />
         <SpecRow label={t("combinedConsumption")} value={specs.consumption ?? "–"} delta={wltpDelta} />
         <SpecRow label={t("combinedRange")} value={specs.range ?? "–"} delta={rangeDelta} />
         <SpecRow label={t("curbWeight")} value={specs.weight ?? "–"} />
@@ -211,7 +216,7 @@ export function CarDetailsPage({ carId, onBack, onNavigate }: CarDetailsPageProp
         ← {t("backToModels")}
       </button>
 
-      <section className="surface-card car-details-card">
+      <section className={`surface-card car-details-card${isFamily ? " has-family" : ""}`}>
         <div className="car-details-header">
           {car.imageUrl && (
             <img className="car-details-image" src={car.imageUrl} alt="" />
