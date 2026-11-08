@@ -1534,3 +1534,32 @@ p {
     gap: 0.8rem;
   }
 }
+
+
+/* Running costs: stats beside comparison on wide screens */
+@media (min-width: 1100px) {
+  .comparison-and-stats {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 0.8rem;
+    align-items: start;
+  }
+  .comparison-and-stats .comparison-grid {
+    grid-column: 1;
+  }
+  .comparison-and-stats .section-kicker,
+  .comparison-and-stats .stats-card {
+    grid-column: 2;
+  }
+  .comparison-and-stats .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+  }
+}
+@media (max-width: 1099px) {
+  .comparison-and-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+}

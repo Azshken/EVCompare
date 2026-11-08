@@ -180,6 +180,7 @@ export function LoanCalcPage({
         </div>
       </section>
 
+      <div className="section-kicker">{t("financingStats")}</div>
       <section className="surface-card loan-metrics-card">
         <div className="metrics-grid">
           <MetricCard

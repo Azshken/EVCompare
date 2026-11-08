@@ -100,6 +100,7 @@ export function VoltCalcPage({
 
       <div className="section-kicker">{t("annualComparison")}</div>
 
+      <div className="comparison-and-stats">
       <section className="comparison-grid">
         <article className="vehicle-card">
           <div className="vehicle-header">
@@ -359,6 +360,7 @@ export function VoltCalcPage({
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }

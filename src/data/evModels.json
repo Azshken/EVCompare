@@ -261,7 +261,22 @@
     "imageUrl": "/cars/vw-id.3-neo.webp",
     "priceListUrl": null,
     "heatPump": false,
-    "recommended": false
+    "recommended": false,
+    "specs": {
+      "drive": "RWD",
+      "peakPower": "140 kW (190 PS)",
+      "batteryType": "Li-Ion (NMC)",
+      "batteryNetGross": "58 (63) kWh",
+      "dcMax": "105 kW",
+      "dcTime": "0:35 h",
+      "acTime": "6 h",
+      "weight": "1815 kg",
+      "topSpeed": "160 km/h",
+      "acceleration": "7.6 s",
+      "consumption": "11.8 kWh/100 km",
+      "range": "492 km",
+      "heatPump": "Áno"
+    }
   },
   {
     "id": "volkswagen-id.4",
@@ -341,7 +356,22 @@
     "imageUrl": "/cars/vw-id.7-tourer.webp",
     "priceListUrl": null,
     "heatPump": false,
-    "recommended": false
+    "recommended": false,
+    "specs": {
+      "drive": "RWD",
+      "peakPower": "210 kW (286 PS)",
+      "batteryType": "Li-Ion (NMC)",
+      "batteryNetGross": "86 (91) kWh",
+      "dcMax": "200 kW",
+      "dcTime": "0:26 h",
+      "acTime": "8 h",
+      "weight": "2235 kg",
+      "topSpeed": "180 km/h",
+      "acceleration": "6.7 s",
+      "consumption": "12.5 kWh/100 km",
+      "range": "688 km",
+      "heatPump": "Áno"
+    }
   },
   {
     "id": "volkswagen-id.cross",
@@ -635,7 +665,22 @@
     "imageUrl": "/cars/hyundai-inster.webp",
     "priceListUrl": null,
     "heatPump": false,
-    "recommended": false
+    "recommended": false,
+    "specs": {
+      "drive": "FWD",
+      "peakPower": "84.5 kW (115 PS)",
+      "batteryType": "Li-Ion",
+      "batteryNetGross": "49 (49) kWh",
+      "dcMax": "85 kW",
+      "dcTime": "0:35 h",
+      "acTime": "7 h",
+      "weight": "1380 kg",
+      "topSpeed": "150 km/h",
+      "acceleration": "10.6 s",
+      "consumption": "13.2 kWh/100 km",
+      "range": "370 km",
+      "heatPump": "Nie"
+    }
   },
   {
     "id": "kia-ev3",
@@ -656,7 +701,22 @@
     "imageUrl": "/cars/kia-ev3.webp",
     "priceListUrl": null,
     "heatPump": false,
-    "recommended": false
+    "recommended": false,
+    "specs": {
+      "drive": "FWD",
+      "peakPower": "150 kW (204 PS)",
+      "batteryType": "Li-Ion (NMC)",
+      "batteryNetGross": "81 (84) kWh",
+      "dcMax": "128 kW",
+      "dcTime": "0:31 h",
+      "acTime": "8 h",
+      "weight": "1930 kg",
+      "topSpeed": "170 km/h",
+      "acceleration": "7.9 s",
+      "consumption": "13.4 kWh/100 km",
+      "range": "605 km",
+      "heatPump": "Áno"
+    }
   },
   {
     "id": "kia-ev6",
@@ -719,7 +779,22 @@
     "imageUrl": "/cars/byd-ds.webp",
     "priceListUrl": null,
     "heatPump": false,
-    "recommended": false
+    "recommended": false,
+    "specs": {
+      "drive": "FWD",
+      "peakPower": "115 kW (156 PS)",
+      "batteryType": "Li-Ion (LFP)",
+      "batteryNetGross": "43.2 (44) kWh",
+      "dcMax": "85 kW",
+      "dcTime": "0:30 h",
+      "acTime": "6 h",
+      "weight": "1400 kg",
+      "topSpeed": "150 km/h",
+      "acceleration": "9.5 s",
+      "consumption": "13.9 kWh/100 km",
+      "range": "310 km",
+      "heatPump": "Nie"
+    }
   },
   {
     "id": "byd-seal",
@@ -740,7 +815,22 @@
     "imageUrl": "/cars/byd-seal.webp",
     "priceListUrl": null,
     "heatPump": true,
-    "recommended": false
+    "recommended": false,
+    "specs": {
+      "drive": "RWD",
+      "peakPower": "230 kW (313 PS)",
+      "batteryType": "Li-Ion (LFP)",
+      "batteryNetGross": "82.5 (82.6) kWh",
+      "dcMax": "150 kW",
+      "dcTime": "0:26 h",
+      "acTime": "8 h",
+      "weight": "2030 kg",
+      "topSpeed": "180 km/h",
+      "acceleration": "5.9 s",
+      "consumption": "14.5 kWh/100 km",
+      "range": "570 km",
+      "heatPump": "Áno"
+    }
   },
   {
     "id": "byd-atto-2",
@@ -782,7 +872,22 @@
     "imageUrl": "/cars/byd-atto3.webp",
     "priceListUrl": null,
     "heatPump": true,
-    "recommended": false
+    "recommended": false,
+    "specs": {
+      "drive": "FWD",
+      "peakPower": "230 kW (313 PS)",
+      "batteryType": "Li-Ion (LFP)",
+      "batteryNetGross": "74.8 (75) kWh",
+      "dcMax": "150 kW",
+      "dcTime": "0:30 h",
+      "acTime": "8 h",
+      "weight": "1750 kg",
+      "topSpeed": "160 km/h",
+      "acceleration": "7.3 s",
+      "consumption": "14.7 kWh/100 km",
+      "range": "510 km",
+      "heatPump": "Áno"
+    }
   },
   {
     "id": "byd-sealion-7",
@@ -824,7 +929,22 @@
     "imageUrl": "/cars/renault-5.webp",
     "priceListUrl": null,
     "heatPump": true,
-    "recommended": false
+    "recommended": false,
+    "specs": {
+      "drive": "FWD",
+      "peakPower": "110 kW (150 PS)",
+      "batteryType": "Li-Ion",
+      "batteryNetGross": "52 (52) kWh",
+      "dcMax": "100 kW",
+      "dcTime": "0:30 h",
+      "acTime": "5 h",
+      "weight": "1450 kg",
+      "topSpeed": "150 km/h",
+      "acceleration": "7.9 s",
+      "consumption": "12.5 kWh/100 km",
+      "range": "415 km",
+      "heatPump": "Áno"
+    }
   },
   {
     "id": "renault-megane-e-tech",
@@ -845,7 +965,22 @@
     "imageUrl": "/cars/renault-megane-e-tech.webp",
     "priceListUrl": null,
     "heatPump": true,
-    "recommended": false
+    "recommended": false,
+    "specs": {
+      "drive": "FWD",
+      "peakPower": "160 kW (218 PS)",
+      "batteryType": "Li-Ion (NMC)",
+      "batteryNetGross": "67 (67) kWh",
+      "dcMax": "130 kW",
+      "dcTime": "0:30 h",
+      "acTime": "7 h",
+      "weight": "1650 kg",
+      "topSpeed": "160 km/h",
+      "acceleration": "7.4 s",
+      "consumption": "14.4 kWh/100 km",
+      "range": "467 km",
+      "heatPump": "Áno"
+    }
   },
   {
     "id": "renault-scenic-e-tech",
@@ -866,7 +1001,22 @@
     "imageUrl": "/cars/renault-scenic-e-tech.webp",
     "priceListUrl": null,
     "heatPump": true,
-    "recommended": false
+    "recommended": false,
+    "specs": {
+      "drive": "FWD",
+      "peakPower": "160 kW (218 PS)",
+      "batteryType": "Li-Ion (NMC)",
+      "batteryNetGross": "87 (87) kWh",
+      "dcMax": "150 kW",
+      "dcTime": "0:30 h",
+      "acTime": "8 h",
+      "weight": "1850 kg",
+      "topSpeed": "170 km/h",
+      "acceleration": "7.9 s",
+      "consumption": "13.6 kWh/100 km",
+      "range": "641 km",
+      "heatPump": "Áno"
+    }
   },
   {
     "id": "renault-twingo-e-tech",

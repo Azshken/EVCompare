@@ -108,6 +108,10 @@ const DICT = {
     en: "Running cost stats",
     sk: "Štatistiky prevádzkových nákladov",
   },
+  financingStats: {
+    en: "Financing stats",
+    sk: "Štatistiky financovania",
+  },
   monthlyEvSaving: {
     en: "Monthly EV saving",
     sk: "Mesačná úspora EV",
