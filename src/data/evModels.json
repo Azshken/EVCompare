@@ -166,7 +166,23 @@
     "imageUrl": "/cars/tesla-model-y-rwd.webp",
     "priceListUrl": null,
     "heatPump": true,
-    "recommended": false
+    "recommended": false,
+    "family": "tesla-model-y",
+    "specs": {
+      "drive": "RWD",
+      "peakPower": "140 kW (190 PS)",
+      "batteryType": "Li-Ion (LFP)",
+      "batteryNetGross": "60 (64) kWh",
+      "dcMax": "175 kW",
+      "dcTime": "0:25 h",
+      "acTime": "6 h",
+      "weight": "1920 kg",
+      "topSpeed": "201 km/h",
+      "acceleration": "5.9 s",
+      "consumption": "12.1 kWh/100 km",
+      "range": "498 km",
+      "heatPump": "Áno"
+    }
   },
   {
     "id": "tesla-model-y-2",
@@ -187,7 +203,23 @@
     "imageUrl": "/cars/tesla-model-y-lr.webp",
     "priceListUrl": null,
     "heatPump": true,
-    "recommended": true
+    "recommended": true,
+    "family": "tesla-model-y",
+    "specs": {
+      "drive": "RWD",
+      "peakPower": "350 kW (476 PS)",
+      "batteryType": "Li-Ion (NMC)",
+      "batteryNetGross": "79 (82) kWh",
+      "dcMax": "250 kW",
+      "dcTime": "0:27 h",
+      "acTime": "8 h",
+      "weight": "1980 kg",
+      "topSpeed": "201 km/h",
+      "acceleration": "5.6 s",
+      "consumption": "13.1 kWh/100 km",
+      "range": "603 km",
+      "heatPump": "Áno"
+    }
   },
   {
     "id": "volkswagen-id.3-old",
