@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState, type TouchEvent } from "react";
+import { useRef, type TouchEvent } from "react";
 import { useI18n } from "../../i18n";
 import { cars, type EvModel } from "./CarSelectPage";
 
 interface CarDetailsPageProps {
   carId: string | null;
   onBack: () => void;
+  onNavigate: (id: string) => void;
 }
 
 function SpecRow({
@@ -39,7 +40,7 @@ function parseAccel(s?: string): number | null {
   return parseFloat(m[1].replace(",", "."));
 }
 
-export function CarDetailsPage({ carId, onBack }: CarDetailsPageProps) {
+export function CarDetailsPage({ carId, onBack, onNavigate }: CarDetailsPageProps) {
   const { t, locale } = useI18n();
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
@@ -54,28 +55,17 @@ export function CarDetailsPage({ carId, onBack }: CarDetailsPageProps) {
       ? [initialCar]
       : [];
 
-  const initialIndex = Math.max(
-    0,
-    familyCars.findIndex((c) => c.id === carId),
-  );
-  const [index, setIndex] = useState(initialIndex);
-
-  useEffect(() => {
-    const nextIndex = familyCars.findIndex((c) => c.id === carId);
-    if (nextIndex >= 0) setIndex(nextIndex);
-  }, [carId, familyCars]);
-
+  const index = Math.max(0, familyCars.findIndex((c) => c.id === carId));
   const car = familyCars[index] ?? null;
-  const base = familyCars[0] ?? null;
+  const prev = index > 0 ? familyCars[index - 1] : null;
   const specs = car?.specs;
 
   function goTo(next: number) {
     if (next < 0 || next >= familyCars.length) return;
-    setIndex(next);
     const nextCar = familyCars[next];
-    if (nextCar) {
-      window.history.replaceState({}, "", `/car/${encodeURIComponent(nextCar.id)}`);
-    }
+    if (!nextCar) return;
+    window.history.replaceState({}, "", `/car/${encodeURIComponent(nextCar.id)}`);
+    onNavigate(nextCar.id);
   }
 
   function handleTouchStart(e: TouchEvent) {
@@ -88,8 +78,8 @@ export function CarDetailsPage({ carId, onBack }: CarDetailsPageProps) {
     if (touchStartX.current === null || touchStartY.current === null) return;
     const deltaX = e.changedTouches[0].clientX - touchStartX.current;
     const deltaY = e.changedTouches[0].clientY - touchStartY.current;
-    const threshold = 80;
-    const isHorizontal = Math.abs(deltaX) > Math.abs(deltaY) * 1.5;
+    const threshold = 60;
+    const isHorizontal = Math.abs(deltaX) > Math.abs(deltaY) * 1.4;
     if (isHorizontal && Math.abs(deltaX) > threshold) {
       if (deltaX < 0) goTo(index + 1);
       else goTo(index - 1);
@@ -109,20 +99,20 @@ export function CarDetailsPage({ carId, onBack }: CarDetailsPageProps) {
 
   function deltaNum(
     current: number | null | undefined,
-    baseVal: number | null | undefined,
+    previous: number | null | undefined,
     higherIsBetter: boolean,
     unit = "",
   ) {
     if (
       current == null ||
-      baseVal == null ||
+      previous == null ||
       !Number.isFinite(current) ||
-      !Number.isFinite(baseVal) ||
-      current === baseVal
+      !Number.isFinite(previous) ||
+      current === previous
     ) {
       return null;
     }
-    const diff = current - baseVal;
+    const diff = current - previous;
     const better = higherIsBetter ? diff > 0 : diff < 0;
     const sign = diff > 0 ? "+" : "";
     const formatted =
@@ -132,14 +122,14 @@ export function CarDetailsPage({ carId, onBack }: CarDetailsPageProps) {
     return { text: `(${formatted}${unit})`, better };
   }
 
-  const rangeDelta = deltaNum(car?.range, base?.range, true, " km");
-  const priceDelta = deltaNum(car?.price, base?.price, false, ""); // higher price is worse
-  const powerDelta = deltaNum(car?.power, base?.power, true, " kW");
-  const batteryDelta = deltaNum(car?.battery, base?.battery, true, " kWh");
-  const wltpDelta = deltaNum(car?.wltp, base?.wltp, false, ""); // lower consumption better
+  const rangeDelta = deltaNum(car?.range, prev?.range, true, " km");
+  const priceDelta = deltaNum(car?.price, prev?.price, false);
+  const powerDelta = deltaNum(car?.power, prev?.power, true, " kW");
+  const batteryDelta = deltaNum(car?.battery, prev?.battery, true, " kWh");
+  const wltpDelta = deltaNum(car?.wltp, prev?.wltp, false);
   const accelDelta = deltaNum(
     parseAccel(specs?.acceleration),
-    parseAccel(base?.specs?.acceleration),
+    parseAccel(prev?.specs?.acceleration),
     false,
     " s",
   );

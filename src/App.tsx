@@ -638,7 +638,7 @@ function App() {
   return (
     <AppShell>
       {carId ? (
-        <CarDetailsPage carId={carId} onBack={closeCar} />
+        <CarDetailsPage carId={carId} onBack={closeCar} onNavigate={(id) => setCarId(id)} />
       ) : (
         <>
           <section className="calculator-stage-shell" aria-live="polite">

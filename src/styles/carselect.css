@@ -439,10 +439,21 @@
 }
 
 .car-details-image {
+  display: block;
   width: 100%;
-  max-height: 220px;
+  max-width: 100%;
+  height: auto;
+  max-height: 180px;
   object-fit: contain;
-  margin-bottom: 0.8rem;
+  object-position: center;
+  margin: 0 auto 0.75rem;
+  border-radius: 8px;
+}
+.car-details-header {
+  text-align: left;
+}
+.car-details-header h2 {
+  margin: 0;
 }
 
 .spec-sections {
