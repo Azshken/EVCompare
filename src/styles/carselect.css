@@ -565,7 +565,7 @@
   display: block;
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 1280px) {
   .variant-switcher {
     display: none;
   }
@@ -574,8 +574,8 @@
   }
   .desktop-comparison {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.25rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
     margin-top: 1rem;
   }
   .variant-column {
@@ -608,9 +608,21 @@
   }
 }
 
-/* Fallback if even desktop columns don't fit (heavy zoom / narrow) */
-@media (min-width: 1100px) and (max-width: 1200px) {
-  .desktop-comparison {
-    grid-template-columns: repeat(2, 1fr);
-  }
+
+/* Keep stats readable — never compress/wrap values */
+.variant-column .spec-row {
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+.variant-column .spec-row span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.variant-column .spec-row strong {
+  flex-shrink: 0;
+  text-align: right;
+}
+.variant-column .spec-delta {
+  margin-left: 0.25rem;
 }

@@ -34,6 +34,7 @@
   --font-display: "Inter", "Helvetica Neue", sans-serif;
 
   --content-width: 980px;
+  --content-width-wide: 1400px;
   --transition: 220ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -1452,4 +1453,11 @@ p {
 .lead-message {
   min-height: 88px;
   resize: vertical;
+}
+
+
+@media (min-width: 1280px) {
+  .app-shell {
+    width: min(100% - 3rem, var(--content-width-wide));
+  }
 }
