@@ -631,9 +631,14 @@
 
 
 /* Keep stats readable — never compress/wrap values */
+.variant-column {
+  overflow: hidden;
+  box-sizing: border-box;
+}
 .variant-column .spec-row {
-  gap: 0.5rem;
+  gap: 0.4rem;
   white-space: nowrap;
+  overflow: hidden;
 }
 .variant-column .spec-row span {
   overflow: hidden;
@@ -666,5 +671,7 @@
 }
 .variant-column-wrap {
   display: block;
-  flex: 0 0 auto;
+  flex: 0 0 300px;
+  min-width: 300px;
+  max-width: 300px;
 }

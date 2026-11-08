@@ -162,7 +162,7 @@ export function LoanCalcPage({
         </div>
       </section>
 
-      <section className="surface-card loan-results-card">
+      <section className="surface-card loan-highlight-bar">
         <div className="loan-highlight">
           <div className="loan-highlight-copy">
             <div className="loan-highlight-label">{t("estimatedPayment")}</div>
@@ -178,9 +178,9 @@ export function LoanCalcPage({
             </div>
           </div>
         </div>
+      </section>
 
-        <div className="loan-results-spacer" />
-
+      <section className="surface-card loan-metrics-card">
         <div className="metrics-grid">
           <MetricCard
             label={t("totalInterest")}
