@@ -469,3 +469,78 @@
   text-align: right;
   font-weight: 700;
 }
+
+/* Family details: price, variant switcher, deltas */
+.car-details-price {
+  margin-top: 0.35rem;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+}
+
+.variant-switcher {
+  display: flex;
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding: 0.15rem 0.1rem 0.6rem;
+  margin-top: 0.4rem;
+  scrollbar-width: none;
+}
+.variant-switcher::-webkit-scrollbar {
+  display: none;
+}
+
+.variant-chip {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 92px;
+  text-align: left;
+}
+.variant-chip.is-active {
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
+  color: var(--color-primary);
+}
+.variant-name {
+  white-space: nowrap;
+}
+.variant-price {
+  font-size: 0.68rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.spec-delta {
+  margin-left: 0.35rem;
+  font-size: 0.78em;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.spec-delta.is-better {
+  color: #22c55e; /* green */
+}
+.spec-delta.is-worse {
+  color: #f97316; /* orange */
+}
+
+@media (max-width: 720px) {
+  .car-details-price {
+    font-size: 1.35rem;
+  }
+  .variant-chip {
+    min-width: 84px;
+    padding: 0.4rem 0.55rem;
+  }
+}

@@ -22,6 +22,7 @@ export type EvModel = {
   priceListUrl: string | null;
   heatPump: boolean;
   recommended: boolean;
+  family?: string | null;
   specs?: {
     drive?: string;
     peakPower?: string;
@@ -170,6 +171,32 @@ export function CarSelectPage({
     return result;
   }, [brand, type, ecoMin, search, sortBy, sortDir, scores, compareOnly, checkedIds]);
 
+  const displayCars = useMemo(() => {
+    const byFamily = new Map<string, EvModel>();
+    const singles: EvModel[] = [];
+    for (const car of filtered) {
+      if (car.family) {
+        const existing = byFamily.get(car.family);
+        if (!existing || (car.price ?? Infinity) < (existing.price ?? Infinity)) {
+          byFamily.set(car.family, car);
+        }
+      } else {
+        singles.push(car);
+      }
+    }
+    // Preserve sort order of the representatives
+    const representatives = [...byFamily.values(), ...singles];
+    const dir = sortDir === "asc" ? 1 : -1;
+    representatives.sort((a, b) => {
+      if (sortBy === "range") return ((a.range ?? 0) - (b.range ?? 0)) * dir;
+      if (sortBy === "efficiency") {
+        return ((consumption(a) ?? 999) - (consumption(b) ?? 999)) * dir;
+      }
+      return ((a.price ?? Infinity) - (b.price ?? Infinity)) * dir;
+    });
+    return representatives;
+  }, [filtered, sortBy, sortDir]);
+
   function toggleSort(key: SortKey) {
     if (sortBy === key) {
       setSortDir((current) => (current === "asc" ? "desc" : "asc"));
@@ -287,13 +314,13 @@ export function CarSelectPage({
         </div>
       </div>
 
-      <p className="result-count">{filtered.length} {t("carsCount")}</p>
-      {compareOnly && filtered.length === 0 && (
+      <p className="result-count">{displayCars.length} {t("carsCount")}</p>
+      {compareOnly && displayCars.length === 0 && (
         <p className="compare-empty">{t("compareEmpty")}</p>
       )}
 
       <div className={view === "tiles" ? "car-tiles" : "car-list"}>
-        {filtered.map((car) => {
+        {displayCars.map((car) => {
           const selected = selectedId === car.id;
           const checked = checkedIds.includes(car.id);
           const score = scores.get(car.id) ?? 0;
