@@ -331,7 +331,7 @@ export function CarDetailsPage({ carId, onBack, onNavigate }: CarDetailsPageProp
             " s",
           );
           return (
-            <div className="expanded-variant single-view">
+            <div className="expanded-variant">
               <button
                 type="button"
                 className="car-back-btn"

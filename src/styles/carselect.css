@@ -582,7 +582,9 @@
     scroll-snap-type: x mandatory;
   }
   .has-family .desktop-comparison .variant-column {
-    flex: 0 0 280px;
+    flex: 0 0 300px;
+    min-width: 300px;
+    max-width: 300px;
     scroll-snap-align: start;
     cursor: pointer;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -656,4 +658,13 @@
 }
 .variant-column-wrap {
   display: contents;
+}
+
+
+.has-family .expanded-variant {
+  display: block !important;
+}
+.variant-column-wrap {
+  display: block;
+  flex: 0 0 auto;
 }

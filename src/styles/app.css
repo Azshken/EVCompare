@@ -1500,3 +1500,35 @@ p {
     font-size: 1.3rem;
   }
 }
+
+
+/* Financing: metrics beside controls on wide screens */
+@media (min-width: 1100px) {
+  .loancalc-page {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1rem;
+    align-items: start;
+  }
+  .loan-setup-card {
+    grid-column: 1;
+  }
+  .loan-results-card {
+    grid-column: 2;
+    grid-row: 1;
+    margin-top: 0;
+  }
+  .loan-results-card .metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+@media (max-width: 1099px) {
+  .loancalc-page {
+    display: flex;
+    flex-direction: column;
+  }
+  .loan-results-card {
+    margin-top: 0.8rem;
+  }
+}
