@@ -573,10 +573,26 @@
     display: none;
   }
   .has-family .desktop-comparison {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1rem;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.85rem;
     margin-top: 1rem;
+    overflow-x: auto;
+    padding-bottom: 0.6rem;
+    scroll-snap-type: x mandatory;
+  }
+  .has-family .desktop-comparison .variant-column {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .has-family .desktop-comparison .variant-column:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .has-family .desktop-comparison .variant-column.is-expanded {
+    flex: 0 0 100%;
   }
   .desktop-comparison {
     display: none; /* default hidden, shown only with has-family */
@@ -621,6 +637,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
+  flex: 1;
 }
 .variant-column .spec-row strong {
   flex-shrink: 0;
@@ -628,4 +645,15 @@
 }
 .variant-column .spec-delta {
   margin-left: 0.25rem;
+}
+
+
+.expanded-variant {
+  margin-top: 0.5rem;
+}
+.expanded-variant .car-back-btn {
+  margin-bottom: 0.4rem;
+}
+.variant-column-wrap {
+  display: contents;
 }

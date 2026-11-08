@@ -119,7 +119,6 @@ export function AppShell({ children }: AppShellProps) {
 
       <section className="hero hero-static">
         <h1>{t('heroTitle')}</h1>
-        <p>{t('heroIntro')}</p>
       </section>
 
       <section className="page-section">{children}</section>

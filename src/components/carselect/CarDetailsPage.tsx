@@ -1,4 +1,4 @@
-import { useRef, type TouchEvent } from "react";
+import { useRef, useState, type TouchEvent } from "react";
 import { useI18n, type DictKey } from "../../i18n";
 import { cars, type EvModel } from "./CarSelectPage";
 
@@ -137,6 +137,7 @@ export function CarDetailsPage({ carId, onBack, onNavigate }: CarDetailsPageProp
       : [];
 
   const index = Math.max(0, familyCars.findIndex((c) => c.id === carId));
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const car = familyCars[index] ?? null;
   const prev = index > 0 ? familyCars[index - 1] : null;
   const specs = car?.specs;
@@ -192,7 +193,7 @@ export function CarDetailsPage({ carId, onBack, onNavigate }: CarDetailsPageProp
 
   if (!car) {
     return (
-      <div className="car-details-page">
+      <div className={`car-details-page${expandedId ? " is-expanded" : ""}`}>
         <button type="button" className="car-back-btn" onClick={onBack}>
           ← {t("backToModels")}
         </button>
@@ -208,7 +209,7 @@ export function CarDetailsPage({ carId, onBack, onNavigate }: CarDetailsPageProp
 
   return (
     <div
-      className="car-details-page"
+      className={`car-details-page${expandedId ? " is-expanded" : ""}`}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
@@ -285,19 +286,101 @@ export function CarDetailsPage({ carId, onBack, onNavigate }: CarDetailsPageProp
         </div>
 
         {/* Desktop: all variants side-by-side when they fit */}
-        {isFamily && (
+        {isFamily && !expandedId && (
           <div className="desktop-comparison">
             {familyCars.map((variant, i) => (
-              <VariantColumn
+              <div
                 key={variant.id}
-                car={variant}
-                prev={i > 0 ? familyCars[i - 1] : null}
-                formatPrice={formatPrice}
-                t={t}
-              />
+                className="variant-column-wrap"
+                onClick={() => setExpandedId(variant.id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setExpandedId(variant.id);
+                  }
+                }}
+              >
+                <VariantColumn
+                  car={variant}
+                  prev={i > 0 ? familyCars[i - 1] : null}
+                  formatPrice={formatPrice}
+                  t={t}
+                />
+              </div>
             ))}
           </div>
         )}
+
+        {isFamily && expandedId && (() => {
+          const expCar = familyCars.find((c) => c.id === expandedId);
+          if (!expCar) return null;
+          const expIdx = familyCars.findIndex((c) => c.id === expandedId);
+          const expPrev = expIdx > 0 ? familyCars[expIdx - 1] : null;
+          const expSpecs = expCar.specs;
+          const expRangeDelta = deltaNum(expCar.range, expPrev?.range, true, " km");
+          const expPriceDelta = deltaNum(expCar.price, expPrev?.price, false);
+          const expPowerDelta = deltaNum(expCar.power, expPrev?.power, true, " kW");
+          const expBatteryDelta = deltaNum(expCar.battery, expPrev?.battery, true, " kWh");
+          const expWltpDelta = deltaNum(expCar.wltp, expPrev?.wltp, false);
+          const expAccelDelta = deltaNum(
+            parseAccel(expSpecs?.acceleration),
+            parseAccel(expPrev?.specs?.acceleration),
+            false,
+            " s",
+          );
+          return (
+            <div className="expanded-variant single-view">
+              <button
+                type="button"
+                className="car-back-btn"
+                onClick={() => setExpandedId(null)}
+              >
+                ← Back to comparison
+              </button>
+              <h3 style={{ margin: "0.6rem 0 0.2rem" }}>
+                {expCar.variant || expCar.model}
+              </h3>
+              <div className="car-details-price">{formatPrice(expCar.price)}</div>
+              {expSpecs && (
+                <div className="spec-sections">
+                  <section className="spec-section">
+                    <h3>{t("specsTitle")}</h3>
+                    <SpecRow label={t("drive")} value={expSpecs.drive ?? "–"} />
+                    <SpecRow label={t("peakPower")} value={expSpecs.peakPower ?? "–"} delta={expPowerDelta} />
+                    <SpecRow label={t("power30min")} value={expSpecs.power30min ?? "–"} />
+                    <SpecRow label={t("topSpeed")} value={expSpecs.topSpeed ?? "–"} />
+                    <SpecRow label={t("acceleration")} value={expSpecs.acceleration ?? "–"} delta={expAccelDelta} />
+                    <SpecRow label={t("turningCircle")} value={expSpecs.turningCircle ?? "–"} />
+                  </section>
+                  <section className="spec-section">
+                    <h3>{t("batteryCharging")}</h3>
+                    <SpecRow label={t("batteryType")} value={expSpecs.batteryType ?? "–"} />
+                    <SpecRow label={t("batteryCapacity")} value={expSpecs.batteryNetGross ?? "–"} delta={expBatteryDelta} />
+                    <SpecRow label={t("dcMax")} value={expSpecs.dcMax ?? "–"} />
+                    <SpecRow label={t("dcTime")} value={expSpecs.dcTime ?? "–"} />
+                    <SpecRow label={t("acTime")} value={expSpecs.acTime ?? "–"} />
+                  </section>
+                  <section className="spec-section">
+                    <h3>{t("consumption")}</h3>
+                    <SpecRow label={t("combinedConsumption")} value={expSpecs.consumption ?? "–"} delta={expWltpDelta} />
+                    <SpecRow label={t("combinedRange")} value={expSpecs.range ?? "–"} delta={expRangeDelta} />
+                  </section>
+                  <section className="spec-section">
+                    <SpecRow label={t("curbWeight")} value={expSpecs.weight ?? "–"} />
+                    <SpecRow label={t("heatPump")} value={expSpecs.heatPump ?? "–"} />
+                  </section>
+                  {expPriceDelta && (
+                    <section className="spec-section">
+                      <SpecRow label={t("vehiclePrice")} value={formatPrice(expCar.price)} delta={expPriceDelta} />
+                    </section>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })()}
       </section>
     </div>
   );
