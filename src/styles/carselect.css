@@ -555,3 +555,62 @@
     padding: 0.4rem 0.55rem;
   }
 }
+
+
+/* Desktop side-by-side comparison (flagship) */
+.desktop-comparison {
+  display: none;
+}
+.single-view {
+  display: block;
+}
+
+@media (min-width: 1100px) {
+  .variant-switcher {
+    display: none;
+  }
+  .single-view {
+    display: none;
+  }
+  .desktop-comparison {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1rem;
+  }
+  .variant-column {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 0.85rem 0.9rem 1rem;
+  }
+  .variant-column-header h3 {
+    margin: 0 0 0.2rem;
+    font-size: 1rem;
+    font-weight: 800;
+  }
+  .variant-column-price {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.6rem;
+  }
+  .spec-sections.compact {
+    gap: 0.15rem;
+  }
+  .spec-sections.compact .spec-row {
+    padding: 0.3rem 0;
+    font-size: 0.8rem;
+  }
+  .car-details-image {
+    max-height: 240px;
+  }
+}
+
+/* Fallback if even desktop columns don't fit (heavy zoom / narrow) */
+@media (min-width: 1100px) and (max-width: 1200px) {
+  .desktop-comparison {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
