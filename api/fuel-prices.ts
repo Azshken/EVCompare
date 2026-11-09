@@ -19,8 +19,8 @@ export default async function handler(
 
     const html = await response.text();
 
-    // Parse the Slovnaft row: look for the brand link then the next two price spans (Evo 95 / Evo Diesel).
-    const match = html.match(/Slovnaft[\s\S]*?<span[^>]*>\s*([0-9]+\.[0-9]+)\s*<\/span>[\s\S]*?<span[^>]*>\s*([0-9]+\.[0-9]+)\s*<\/span>/i);
+    // Parse the Slovnaft row: look for the brand then the next two price cells (Evo 95 / Evo Diesel).
+    const match = html.match(/Slovnaft[\s\S]*?<td>\s*([0-9]+\.[0-9]+)\s*<\/td>[\s\S]*?<td>\s*([0-9]+\.[0-9]+)\s*<\/td>/i);
 
     if (!match) {
       res.status(500).json({ error: 'Could not parse Slovnaft prices' });
