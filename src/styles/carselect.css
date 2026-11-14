@@ -604,8 +604,8 @@
     transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
   .has-family .desktop-comparison .variant-column:hover {
-    transform: translateY(-2px);
     box-shadow: var(--shadow-md);
+    border-color: var(--color-border-strong);
   }
   .has-family .desktop-comparison .variant-column.is-expanded {
     flex: 0 0 100%;
@@ -700,4 +700,27 @@
   .car-list .car-card {
     padding: 0.8rem 1rem;
   }
+}
+
+
+/* Styled hover labels on car stats */
+.car-stats span {
+  position: relative;
+  cursor: help;
+}
+.car-stats span[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a2332;
+  color: #e8eef6;
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  z-index: 20;
+  pointer-events: none;
 }

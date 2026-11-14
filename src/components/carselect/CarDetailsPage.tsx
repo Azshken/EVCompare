@@ -99,7 +99,7 @@ function VariantColumn({
           {formatPrice(car.price)}
           {priceDelta && (
             <span className={`spec-delta ${priceDelta.better ? "is-better" : "is-worse"}`}>
-              ({priceDelta.text})
+              {priceDelta.text}
             </span>
           )}
         </div>
@@ -120,7 +120,6 @@ function VariantColumn({
         <SpecRow label={t("curbWeight")} value={specs.weight ?? "–"} />
         <SpecRow label={t("heatPump")} value={specs.heatPump ?? "–"} />
                 <SpecRow label="V2L" value={specs.v2l ?? "–"} />
-        <SpecRow label="V2L" value={specs.v2l ?? "–"} />
 
       </div>
     </div>

@@ -166,7 +166,7 @@ export function CarSelectPage({
       return;
     }
     setSortBy(key);
-    setSortDir(key === "price" ? "asc" : "desc");
+    setSortDir(key === "range" ? "desc" : "asc");
   }
 
   function selectCar(car: EvModel) {
