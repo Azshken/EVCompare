@@ -55,42 +55,8 @@ function consumption(car: EvModel): number | null {
   return null;
 }
 
-function minMax(values: number[]) {
-  const finite = values.filter((v) => Number.isFinite(v));
-  if (!finite.length) return { min: 0, max: 1 };
-  const min = Math.min(...finite);
-  const max = Math.max(...finite);
-  return { min, max: max === min ? min + 1 : max };
-}
 
-function norm(value: number, min: number, max: number, invert: boolean) {
-  const ratio = (value - min) / (max - min);
-  const clamped = Math.min(1, Math.max(0, ratio));
-  return invert ? 1 - clamped : clamped;
-}
 
-function computeScores(list: EvModel[]) {
-  const prices = list.map((c) => c.price ?? Infinity);
-  const ranges = list.map((c) => c.range ?? 0);
-  const consumptions = list.map((c) => consumption(c) ?? Infinity);
-  const priceMm = minMax(prices.filter((v) => v !== Infinity));
-  const rangeMm = minMax(ranges);
-  const consMm = minMax(consumptions.filter((v) => v !== Infinity));
-
-  const map = new Map<string, number>();
-  for (const car of list) {
-    const priceScore =
-      car.price == null ? 0 : norm(car.price, priceMm.min, priceMm.max, true);
-    const rangeScore =
-      car.range == null ? 0 : norm(car.range, rangeMm.min, rangeMm.max, false);
-    const cons = consumption(car);
-    const efficiencyScore =
-      cons == null ? 0 : norm(cons, consMm.min, consMm.max, true);
-    const score = 0.33 * priceScore + 0.34 * rangeScore + 0.33 * efficiencyScore;
-    map.set(car.id, Math.round(score * 100) / 10);
-  }
-  return map;
-}
 
 interface CarSelectPageProps {
   onSelectConsumption: (kwh: number) => void;
