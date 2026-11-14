@@ -332,6 +332,7 @@ export function CarDetailsPage({ carId, onBack, onNavigate }: CarDetailsPageProp
                   prev={i > 0 ? familyCars[i - 1] : null}
                   formatPrice={formatPrice}
                   t={t}
+                  locale={locale}
                 />
               </div>
             ))}
