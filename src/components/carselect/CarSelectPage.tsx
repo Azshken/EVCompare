@@ -305,10 +305,10 @@ export function CarSelectPage({
                   </span>
                 </div>
                 <div className="car-stats">
-                  <span title="Combined WLTP range">{car.range ?? "–"} km</span>
-                  <span title="Battery capacity">{car.battery ?? "–"} kWh</span>
-                  {car.wltp != null && <span title="Avg. consumption (WLTP)">{car.wltp.toFixed(1)} kWh/100km</span>}
-                  <span title="Peak power">{car.power ?? "–"} kW</span>
+                  <span data-tip="Combined WLTP range">{car.range ?? "–"} km</span>
+                  <span data-tip="Battery capacity">{car.battery ?? "–"} kWh</span>
+                  {car.wltp != null && <span data-tip="Avg. consumption (WLTP)">{car.wltp.toFixed(1)} kWh/100km</span>}
+                  <span data-tip="Peak power">{car.power ?? "–"} kW</span>
                 </div>
                 <div className="car-price">{formatPrice(car.price)}</div>
                 <div className="car-actions">
