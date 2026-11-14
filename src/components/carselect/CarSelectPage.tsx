@@ -39,6 +39,7 @@ export type EvModel = {
     consumption?: string;
     range?: string;
     heatPump?: string;
+    v2l?: string;
   } | null;
 };
 
@@ -120,15 +121,12 @@ export function CarSelectPage({
   const saved = readSelectState();
   const [brand, setBrand] = useState(saved?.brand ?? "all");
   const [type, setType] = useState(saved?.type ?? "all");
-  const [ecoMin, setEcoMin] = useState(saved?.ecoMin ?? 0);
   const [view, setView] = useState<ViewMode>(saved?.view === "list" ? "list" : "tiles");
   const [search, setSearch] = useState(saved?.search ?? "");
   const [sortBy, setSortBy] = useState<SortKey>(saved?.sortBy ?? "price");
   const [sortDir, setSortDir] = useState<SortDir>(saved?.sortDir === "desc" ? "desc" : "asc");
   const [selectedId, setSelectedId] = useState<string | null>(saved?.selectedId ?? null);
   const [compareOnly, setCompareOnly] = useState(false);
-
-  const scores = useMemo(() => computeScores(cars), []);
 
   const brands = useMemo(
     () => ["all", ...Array.from(new Set(cars.map((c) => c.brand))).sort()],
@@ -142,16 +140,15 @@ export function CarSelectPage({
   useEffect(() => {
     window.localStorage.setItem(
       "evcompare-carselect",
-      JSON.stringify({ brand, type, ecoMin, view, search, sortBy, sortDir, selectedId }),
+      JSON.stringify({ brand, type, view, search, sortBy, sortDir, selectedId }),
     );
-  }, [brand, type, ecoMin, view, search, sortBy, sortDir, selectedId]);
+  }, [brand, type, view, search, sortBy, sortDir, selectedId]);
 
   const filtered = useMemo(() => {
     const result = cars.filter((c) => {
       if (compareOnly && !checkedIds.includes(c.id)) return false;
       if (brand !== "all" && c.brand !== brand) return false;
       if (type !== "all" && c.type !== type) return false;
-      if ((scores.get(c.id) ?? 0) < ecoMin) return false;
       if (search) {
         const q = search.toLowerCase();
         const hay = `${c.brand} ${c.model} ${c.variant ?? ""}`.toLowerCase();
@@ -169,7 +166,7 @@ export function CarSelectPage({
       return ((a.price ?? Infinity) - (b.price ?? Infinity)) * dir;
     });
     return result;
-  }, [brand, type, ecoMin, search, sortBy, sortDir, scores, compareOnly, checkedIds]);
+  }, [brand, type, search, sortBy, sortDir, compareOnly, checkedIds]);
 
   const displayCars = useMemo(() => {
     const byFamily = new Map<string, EvModel>();
@@ -313,7 +310,6 @@ export function CarSelectPage({
         {displayCars.map((car) => {
           const selected = selectedId === car.id;
           const checked = checkedIds.includes(car.id);
-          const score = scores.get(car.id) ?? 0;
           return (
             <article
               key={car.id}

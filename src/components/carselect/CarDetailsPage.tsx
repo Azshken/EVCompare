@@ -95,7 +95,14 @@ function VariantColumn({
     <div className="variant-column">
       <div className="variant-column-header">
         <h3>{car.variant || car.model}</h3>
-        <div className="variant-column-price">{formatPrice(car.price)}</div>
+        <div className="variant-column-price">
+          {formatPrice(car.price)}
+          {priceDelta && (
+            <span className={`spec-delta ${priceDelta.better ? "is-better" : "is-worse"}`}>
+              ({priceDelta.text})
+            </span>
+          )}
+        </div>
       </div>
       <div className="spec-sections compact">
         <SpecRow label={t("drive")} value={specs.drive ?? "–"} />
