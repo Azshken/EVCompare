@@ -1521,6 +1521,12 @@ p {
   }
   .loan-metrics-col {
     grid-area: metrics;
+    margin-top: 0;
+  }
+  .loan-metrics-col .section-kicker {
+    margin-top: 0;
+    margin-bottom: 0.6rem;
+    padding-top: 0;
   }
   .loan-metrics-card {
     grid-area: auto;
