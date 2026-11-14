@@ -112,9 +112,9 @@ function VariantColumn({
         <SpecRow label={t("combinedRange")} value={specs.range ?? "–"} delta={rangeDelta} />
         <SpecRow label={t("curbWeight")} value={specs.weight ?? "–"} />
         <SpecRow label={t("heatPump")} value={specs.heatPump ?? "–"} />
-        {priceDelta && (
-          <SpecRow label={t("vehiclePrice")} value={formatPrice(car.price)} delta={priceDelta} />
-        )}
+                <SpecRow label="V2L" value={specs.v2l ?? "–"} />
+        <SpecRow label="V2L" value={specs.v2l ?? "–"} />
+
       </div>
     </div>
   );
@@ -273,6 +273,7 @@ export function CarDetailsPage({ carId, onBack, onNavigate }: CarDetailsPageProp
               <section className="spec-section">
                 <SpecRow label={t("curbWeight")} value={specs.weight ?? "–"} />
                 <SpecRow label={t("heatPump")} value={specs.heatPump ?? "–"} />
+                <SpecRow label="V2L" value={specs.v2l ?? "–"} />
               </section>
               {priceDelta && (
                 <section className="spec-section">
@@ -367,6 +368,7 @@ export function CarDetailsPage({ carId, onBack, onNavigate }: CarDetailsPageProp
                   <section className="spec-section">
                     <SpecRow label={t("curbWeight")} value={expSpecs.weight ?? "–"} />
                     <SpecRow label={t("heatPump")} value={expSpecs.heatPump ?? "–"} />
+                    <SpecRow label="V2L" value={expSpecs.v2l ?? "–"} />
                   </section>
                   {expPriceDelta && (
                     <section className="spec-section">

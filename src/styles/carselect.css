@@ -596,9 +596,9 @@
     scroll-snap-type: x mandatory;
   }
   .has-family .desktop-comparison .variant-column {
-    flex: 0 0 300px;
-    min-width: 300px;
-    max-width: 300px;
+    flex: 0 0 340px;
+    min-width: 340px;
+    max-width: 340px;
     scroll-snap-align: start;
     cursor: pointer;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -685,7 +685,19 @@
 }
 .variant-column-wrap {
   display: block;
-  flex: 0 0 300px;
-  min-width: 300px;
-  max-width: 300px;
+  flex: 0 0 340px;
+  min-width: 340px;
+  max-width: 340px;
+}
+
+
+/* Desktop list: more breathing room */
+@media (min-width: 1100px) {
+  .car-list .car-stats {
+    gap: 1.2rem;
+    font-size: 0.85rem;
+  }
+  .car-list .car-card {
+    padding: 0.8rem 1rem;
+  }
 }

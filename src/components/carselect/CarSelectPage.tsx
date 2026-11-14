@@ -271,17 +271,7 @@ export function CarSelectPage({
             </option>
           ))}
         </select>
-        <label className="eco-filter">
-          {t("ecoMin")} {ecoMin}
-          <input
-            type="range"
-            min={0}
-            max={10}
-            value={ecoMin}
-            onChange={(e) => setEcoMin(Number(e.target.value))}
-          />
-        </label>
-      </div>
+</div>
 
       <div className="car-toolbar">
         <div className="sort-buttons">
@@ -348,17 +338,15 @@ export function CarSelectPage({
                 </h3>
                 <div className="car-meta">
                   <span className="car-type">{car.type}</span>
-                  <span className="eco-badge">Eco {score.toFixed(1)}</span>
-                  {car.recommended && <span className="recommend-label">{t("recommended")}</span>}
                   <span className={`heatpump-mark ${car.heatPump ? "is-on" : "is-off"}`} title="TČ">
                     TČ
                   </span>
                 </div>
                 <div className="car-stats">
-                  <span>{car.range ?? "–"} km</span>
-                  <span>{car.battery ?? "–"} kWh</span>
-                  {car.wltp != null && <span>{car.wltp.toFixed(1)} kWh/100km</span>}
-                  <span>{car.power ?? "–"} kW</span>
+                  <span title="Combined WLTP range">{car.range ?? "–"} km</span>
+                  <span title="Battery capacity">{car.battery ?? "–"} kWh</span>
+                  {car.wltp != null && <span title="Avg. consumption (WLTP)">{car.wltp.toFixed(1)} kWh/100km</span>}
+                  <span title="Peak power">{car.power ?? "–"} kW</span>
                 </div>
                 <div className="car-price">{formatPrice(car.price)}</div>
                 <div className="car-actions">
