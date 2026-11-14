@@ -12,16 +12,18 @@ function SpecRow({
   label,
   value,
   delta,
+  extra,
 }: {
   label: string;
   value: string;
   delta?: { text: string; better: boolean } | null;
+  extra?: boolean;
 }) {
   return (
     <div className="spec-row">
       <span>{label}</span>
       <strong>
-        {value}
+        <span className={extra ? "v2l-extra" : undefined}>{value}</span>
         {delta && (
           <span className={`spec-delta ${delta.better ? "is-better" : "is-worse"}`}>
             {" "}
@@ -31,6 +33,22 @@ function SpecRow({
       </strong>
     </div>
   );
+}
+
+function translateSpec(v?: string, locale?: string): string {
+  if (!v) return "–";
+  const map: Record<string, Record<string, string>> = {
+    "Áno": { en: "Yes", sk: "Áno" },
+    "Nie": { en: "No", sk: "Nie" },
+    "Extra": { en: "Extra", sk: "Extra" },
+  };
+  const entry = map[v];
+  if (entry) return entry[locale ?? "en"] ?? v;
+  if (v.toLowerCase().startsWith("extra")) {
+    const m = v.match(/(\d+)/);
+    return m ? `Extra (+${m[1]}€)` : "Extra";
+  }
+  return v;
 }
 
 function parseAccel(s?: string): number | null {
@@ -70,11 +88,13 @@ function VariantColumn({
   prev,
   formatPrice,
   t,
+  locale,
 }: {
   car: EvModel;
   prev: EvModel | null;
   formatPrice: (v: number | null) => string;
   t: (k: DictKey) => string;
+  locale: string;
 }) {
   const specs = car.specs;
   if (!specs) return null;
@@ -118,8 +138,8 @@ function VariantColumn({
         <SpecRow label={t("combinedConsumption")} value={specs.consumption ?? "–"} delta={wltpDelta} />
         <SpecRow label={t("combinedRange")} value={specs.range ?? "–"} delta={rangeDelta} />
         <SpecRow label={t("curbWeight")} value={specs.weight ?? "–"} />
-        <SpecRow label={t("heatPump")} value={specs.heatPump ?? "–"} />
-                <SpecRow label="V2L" value={specs.v2l ?? "–"} />
+        <SpecRow label={t("heatPump")} value={translateSpec(specs.heatPump, locale)} />
+                <SpecRow label="V2L" value={translateSpec(specs.v2l, locale)} extra={specs.v2l?.toLowerCase().startsWith("extra")} />
 
       </div>
     </div>
@@ -278,8 +298,8 @@ export function CarDetailsPage({ carId, onBack, onNavigate }: CarDetailsPageProp
               </section>
               <section className="spec-section">
                 <SpecRow label={t("curbWeight")} value={specs.weight ?? "–"} />
-                <SpecRow label={t("heatPump")} value={specs.heatPump ?? "–"} />
-                <SpecRow label="V2L" value={specs.v2l ?? "–"} />
+                <SpecRow label={t("heatPump")} value={translateSpec(specs.heatPump, locale)} />
+                <SpecRow label="V2L" value={translateSpec(specs.v2l, locale)} extra={specs.v2l?.toLowerCase().startsWith("extra")} />
               </section>
               {priceDelta && (
                 <section className="spec-section">
@@ -373,8 +393,8 @@ export function CarDetailsPage({ carId, onBack, onNavigate }: CarDetailsPageProp
                   </section>
                   <section className="spec-section">
                     <SpecRow label={t("curbWeight")} value={expSpecs.weight ?? "–"} />
-                    <SpecRow label={t("heatPump")} value={expSpecs.heatPump ?? "–"} />
-                    <SpecRow label="V2L" value={expSpecs.v2l ?? "–"} />
+                    <SpecRow label={t("heatPump")} value={translateSpec(expSpecs.heatPump, locale)} />
+                    <SpecRow label="V2L" value={translateSpec(expSpecs.v2l, locale)} extra={expSpecs.v2l?.toLowerCase().startsWith("extra")} />
                   </section>
                   {expPriceDelta && (
                     <section className="spec-section">

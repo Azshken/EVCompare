@@ -300,8 +300,8 @@ export function CarSelectPage({
                 </h3>
                 <div className="car-meta">
                   <span className="car-type">{car.type}</span>
-                  <span className={`heatpump-mark ${car.heatPump ? "is-on" : "is-off"}`} title="TČ">
-                    TČ
+                  <span className={`heatpump-mark ${car.heatPump ? "is-on" : "is-off"}`} data-tip={t("heatPump")}>
+                    {locale === "sk" ? "TČ" : "HP"}
                   </span>
                 </div>
                 <div className="car-stats">

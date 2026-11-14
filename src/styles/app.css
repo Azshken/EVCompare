@@ -1519,8 +1519,11 @@ p {
   .loan-highlight-bar {
     grid-area: highlight;
   }
-  .loan-metrics-card {
+  .loan-metrics-col {
     grid-area: metrics;
+  }
+  .loan-metrics-card {
+    grid-area: auto;
   }
   .loan-metrics-card .metrics-grid {
     grid-template-columns: 1fr;
