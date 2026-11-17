@@ -36,16 +36,19 @@ interface LeadSubmission {
   };
 }
 
+// Simple dealer list. Expand as partners are onboarded.
+// All leads currently go to the main contact; matching can be added later.
 const DEALERS = [
   {
     id: 'main',
     name: 'EVCompare Admin',
     email: 'marianbottyan@gmail.com',
-    brands: ['*'],
+    brands: ['*'], // receives all
   },
 ];
 
 function matchDealers(lead: LeadSubmission) {
+  // For now return all. Later match on brand from models.
   return DEALERS;
 }
 
@@ -114,6 +117,7 @@ export default async function handler(
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
+    // Still accept the lead so the form works during setup; log for debugging.
     console.log('Lead received (no RESEND_API_KEY set):', JSON.stringify(lead, null, 2));
     res.status(200).json({ ok: true, warning: 'Email not configured' });
     return;
@@ -132,7 +136,7 @@ export default async function handler(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'EVCompare <onboarding@resend.dev>',
+        from: 'EVCompare <onboarding@resend.dev>', // Change to your verified domain later
         to: toEmails,
         subject: `New EV lead: ${lead.contact.name} (${lead.snapshot.models.selected || lead.snapshot.models.checked[0] || 'no model'})`,
         text: emailBody,
