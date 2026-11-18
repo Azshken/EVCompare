@@ -1,1 +1,6 @@
-PLACEHOLDER_WILL_FAIL
+[
+  {
+    "id": "tesla-model-3",
+    "brand": "Tesla"
+  }
+]
