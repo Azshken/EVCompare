@@ -91,7 +91,7 @@ export function CarSelectPage({
   onCompareModeChange,
   onCompareIdsChange,
 }: CarSelectPageProps) {
-  const { t, locale } = useI18n();
+  const { t, locale, lang } = useI18n();
   const saved = readSelectState();
   const [brand, setBrand] = useState(saved?.brand ?? "all");
   const [type, setType] = useState(saved?.type ?? "all");
@@ -369,14 +369,14 @@ export function CarSelectPage({
                 <div className="car-meta">
                   <span className="car-type">{car.type}</span>
                   <span className={`heatpump-mark ${car.heatPump ? "is-on" : "is-off"}`} data-tip={t("heatPump")}>
-                    {locale === "sk" ? "TČ" : "HP"}
+                    {lang === "sk" ? "TČ" : "HP"}
                   </span>
                 </div>
                 <div className="car-stats">
-                  <span data-tip="Combined WLTP range">{car.range ?? "–"} km</span>
-                  <span data-tip="Battery capacity">{car.battery ?? "–"} kWh</span>
-                  {car.wltp != null && <span data-tip="Avg. consumption (WLTP)">{car.wltp.toFixed(1)} kWh/100km</span>}
-                  <span data-tip="Peak power">{car.power ?? "–"} kW</span>
+                  <span data-tip={t("tipRange")}>{car.range ?? "–"} km</span>
+                  <span data-tip={t("tipBattery")}>{car.battery ?? "–"} kWh</span>
+                  {car.wltp != null && <span data-tip={t("tipConsumption")}>{car.wltp.toFixed(1)} kWh/100km</span>}
+                  <span data-tip={t("tipPower")}>{car.power ?? "–"} kW</span>
                 </div>
                 <div className="car-price">{formatPrice(car.price)}</div>
                 <div className="car-actions">
@@ -528,7 +528,7 @@ function CompareTable({ cars: compared }: { cars: (EvModel | null)[] }) {
     { label: "Power", get: (c) => (c.power != null ? `${c.power} kW` : "–") },
     { label: "Top speed", get: (c) => (c.topSpeed != null ? `${c.topSpeed} km/h` : "–") },
     { label: "Type", get: (c) => c.type || "–" },
-    { label: t("heatPump"), get: (c) => (c.heatPump ? (locale === "sk" ? "Áno" : "Yes") : locale === "sk" ? "Nie" : "No") },
+    { label: t("heatPump"), get: (c) => (c.heatPump ? (locale.startsWith("sk") ? "Áno" : "Yes") : locale.startsWith("sk") ? "Nie" : "No") },
   ];
 
   // Add common detailed specs if present

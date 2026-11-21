@@ -4,6 +4,10 @@ export type Lang = "sk" | "en";
 
 const DICT = {
   heroTitle: {
+    en: "Compare EV savings and monthly cost in one place",
+    sk: "Porovnajte úspory EV a mesačné náklady na jednom mieste",
+  },
+  heroTitleModels: {
     en: "Choose and Compare EVs",
     sk: "Vyber a porovnaj EV",
   },
@@ -43,6 +47,10 @@ const DICT = {
     en: "Check for comparison (max five cars)",
     sk: "Označ pre porovnanie (max päť áut)",
   },
+  tipRange: { en: "Combined WLTP range", sk: "Kombinovaný WLTP dojazd" },
+  tipBattery: { en: "Battery capacity", sk: "Kapacita batérie" },
+  tipConsumption: { en: "Avg. consumption (WLTP)", sk: "Priemerná spotreba (WLTP)" },
+  tipPower: { en: "Peak power", sk: "Najvyšší výkon" },
   compareEmpty: {
     en: "Check cars to compare them.",
     sk: "Označte autá pre porovnanie.",
@@ -68,7 +76,7 @@ const DICT = {
   consumption: { en: "Consumption", sk: "Spotreba" },
   combinedConsumption: { en: "Combined (WLTP)", sk: "Kombinovaná (WLTP)" },
   combinedRange: { en: "Combined range (WLTP)", sk: "Dojazd kombinovaný (WLTP)" },
-  heatPump: { en: "Heat pump", sk: "Tepelné čerpadlo" },
+  heatPump: { en: "Heat pump", sk: "Tepelné Čerpadlo" },
   financingTitle: { en: "Financing", sk: "Financovanie" },
   financingSubtitle: { en: "Adjust the down payment and term", sk: "Upravte akontáciu a dobu splácania" },
   vehiclePrice: { en: "Vehicle price", sk: "Cena vozidla" },

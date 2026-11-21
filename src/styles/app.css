@@ -314,26 +314,16 @@ p {
 
 .calculator-stage-frame {
   position: relative;
-  min-height: 838px;
   touch-action: pan-y;
 }
 
 .loancalc-page {
   min-height: 100%;
-  align-content: center;
 }
 
 .loancalc-page .loan-grid,
 .loancalc-page .loan-results-card {
   width: 100%;
-}
-
-@media (min-width: 681px) {
-  .calculator-stage:has(.loancalc-page) {
-    min-height: 838px;
-    display: grid;
-    align-items: center;
-  }
 }
 
 .calculator-stage {

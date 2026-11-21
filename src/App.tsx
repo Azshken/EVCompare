@@ -698,7 +698,7 @@ function App() {
   }
 
   return (
-    <AppShell>
+    <AppShell title={activeView === "carselect" && page === "main" && !carId ? t("heroTitleModels") : t("heroTitle")}>
       {page === "privacy" ? (
         <PrivacyPage onBack={closePage} />
       ) : page === "partners" ? (

@@ -5,6 +5,7 @@ type ThemeMode = 'light' | 'dark';
 
 interface AppShellProps {
   children: ReactNode;
+  title?: string;
 }
 
 function getInitialTheme(): ThemeMode {
@@ -39,7 +40,7 @@ function FlagUK() {
   );
 }
 
-export function AppShell({ children }: AppShellProps) {
+export function AppShell({ children, title }: AppShellProps) {
   const { t, lang, setLang } = useI18n();
   const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
 
@@ -123,7 +124,7 @@ export function AppShell({ children }: AppShellProps) {
       </header>
 
       <section className="hero hero-static">
-        <h1>{t('heroTitle')}</h1>
+        <h1>{title ?? t('heroTitle')}</h1>
       </section>
 
       <section className="page-section">{children}</section>

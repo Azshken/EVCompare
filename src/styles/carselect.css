@@ -86,7 +86,7 @@
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  overflow: visible;
   box-shadow: var(--shadow-sm);
   transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
   cursor: pointer;
@@ -704,15 +704,17 @@
 }
 
 
-/* Styled hover labels on car stats */
+/* Styled hover labels on car stats and heat pump badge */
 .car-stats {
   overflow: visible;
 }
-.car-stats span {
+.car-stats span,
+.heatpump-mark {
   position: relative;
   cursor: help;
 }
-.car-stats span[data-tip]:hover::after {
+.car-stats span[data-tip]:hover::after,
+.heatpump-mark[data-tip]:hover::after {
   content: attr(data-tip);
   position: absolute;
   bottom: calc(100% + 6px);
