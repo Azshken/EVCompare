@@ -211,7 +211,13 @@ function App() {
   } | null>(null);
   const [checkedCars, setCheckedCars] = useState<
     { id: string; label: string; price: number | null }[]
-  >([]);
+  >(() => readStorage("evcompare-checked-cars", []));
+  const [compareMode, setCompareMode] = useState(() =>
+    readStorage("evcompare-compare-mode", false),
+  );
+  const [compareIds, setCompareIds] = useState<string[]>(() =>
+    readStorage("evcompare-compare-ids", []),
+  );
   const [leadSubmitted, setLeadSubmitted] = useState(false);
   const [switchDirection, setSwitchDirection] =
     useState<SwitchDirection>("forward");
@@ -255,6 +261,27 @@ function App() {
   useEffect(() => {
     window.localStorage.setItem("evcompare-loancalc", JSON.stringify(loanCalc));
   }, [loanCalc]);
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      "evcompare-checked-cars",
+      JSON.stringify(checkedCars),
+    );
+  }, [checkedCars]);
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      "evcompare-compare-mode",
+      JSON.stringify(compareMode),
+    );
+  }, [compareMode]);
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      "evcompare-compare-ids",
+      JSON.stringify(compareIds),
+    );
+  }, [compareIds]);
 
   useEffect(() => {
     let cancelled = false;
@@ -497,11 +524,12 @@ function App() {
     label: string;
     price: number | null;
   }) {
-    setCheckedCars((prev) =>
-      prev.some((item) => item.id === car.id)
-        ? prev.filter((item) => item.id !== car.id)
-        : [...prev, car],
-    );
+    setCheckedCars((prev) => {
+      const exists = prev.some((item) => item.id === car.id);
+      if (exists) return prev.filter((item) => item.id !== car.id);
+      if (prev.length >= 5) return prev;
+      return [...prev, car];
+    });
   }
 
   function handleDownPaymentChange(value: number) {
@@ -747,6 +775,10 @@ function App() {
                     onSelectCar={handleSelectCar}
                     checkedIds={checkedCars.map((car) => car.id)}
                     onToggleChecked={handleToggleChecked}
+                    compareMode={compareMode}
+                    compareIds={compareIds}
+                    onCompareModeChange={setCompareMode}
+                    onCompareIdsChange={setCompareIds}
                   />
                 )}
               </div>

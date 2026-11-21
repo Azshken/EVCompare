@@ -4,8 +4,8 @@ export type Lang = "sk" | "en";
 
 const DICT = {
   heroTitle: {
-    en: "Compare EV savings and monthly cost in one place",
-    sk: "Porovnajte úspory EV a mesačné náklady na jednom mieste",
+    en: "Choose and Compare EVs",
+    sk: "Vyber a porovnaj EV",
   },
   heroIntro: {
     en: "Use the same result flow to compare yearly EV running costs, then switch into financing without losing your numbers or leaving the page.",
@@ -13,7 +13,7 @@ const DICT = {
   },
   tabRunning: { en: "Running costs", sk: "Prevádzkové náklady" },
   tabFinancing: { en: "Financing", sk: "Financovanie" },
-  tabModels: { en: "Choose and Compare EVs", sk: "Vyber a porovnaj EV" },
+  tabModels: { en: "EV models", sk: "EV modely" },
   switchToEn: { en: "Switch to English", sk: "Prepnúť na angličtinu" },
   switchToSk: { en: "Switch to Slovak", sk: "Prepnúť na slovenčinu" },
   searchPlaceholder: { en: "Search brand or model…", sk: "Hľadať značku alebo model…" },
@@ -39,6 +39,10 @@ const DICT = {
   addCar: { en: "Add car", sk: "Pridať auto" },
   searchCar: { en: "Search car…", sk: "Hľadať auto…" },
   noResults: { en: "No matches", sk: "Žiadne výsledky" },
+  checkForCompare: {
+    en: "Check for comparison (max five cars)",
+    sk: "Označ pre porovnanie (max päť áut)",
+  },
   compareEmpty: {
     en: "Check cars to compare them.",
     sk: "Označte autá pre porovnanie.",

@@ -64,6 +64,10 @@ interface CarSelectPageProps {
   onSelectCar: (car: { id: string; label: string; price: number | null } | null) => void;
   checkedIds: string[];
   onToggleChecked: (car: { id: string; label: string; price: number | null }) => void;
+  compareMode: boolean;
+  compareIds: string[];
+  onCompareModeChange: (mode: boolean) => void;
+  onCompareIdsChange: (ids: string[]) => void;
 }
 
 function readSelectState() {
@@ -82,6 +86,10 @@ export function CarSelectPage({
   onSelectCar,
   checkedIds,
   onToggleChecked,
+  compareMode,
+  compareIds,
+  onCompareModeChange,
+  onCompareIdsChange,
 }: CarSelectPageProps) {
   const { t, locale } = useI18n();
   const saved = readSelectState();
@@ -92,8 +100,6 @@ export function CarSelectPage({
   const [sortBy, setSortBy] = useState<SortKey>(saved?.sortBy ?? "price");
   const [sortDir, setSortDir] = useState<SortDir>(saved?.sortDir === "desc" ? "desc" : "asc");
   const [selectedId, setSelectedId] = useState<string | null>(saved?.selectedId ?? null);
-  const [compareMode, setCompareMode] = useState(false);
-  const [compareIds, setCompareIds] = useState<string[]>([]);
 
   const brands = useMemo(
     () => ["all", ...Array.from(new Set(cars.map((c) => c.brand))).sort()],
@@ -207,34 +213,32 @@ export function CarSelectPage({
   }
 
   function enterCompare() {
-    const fromChecked = checkedIds.slice(0, 4);
+    const fromChecked = checkedIds.slice(0, 5);
     const slots = fromChecked.length >= 2
       ? fromChecked
       : [...fromChecked, ...Array(2 - fromChecked.length).fill("")];
-    setCompareIds(slots);
-    setCompareMode(true);
+    onCompareIdsChange(slots);
+    onCompareModeChange(true);
   }
 
   function exitCompare() {
-    setCompareMode(false);
+    onCompareModeChange(false);
   }
 
   function setCompareSlot(index: number, id: string) {
-    setCompareIds((prev) => {
-      const next = [...prev];
-      next[index] = id;
-      return next;
-    });
+    const next = [...compareIds];
+    next[index] = id;
+    onCompareIdsChange(next);
   }
 
   function addCompareSlot() {
-    if (compareIds.length >= 4) return;
-    setCompareIds((prev) => [...prev, ""]);
+    if (compareIds.length >= 5) return;
+    onCompareIdsChange([...compareIds, ""]);
   }
 
   function removeCompareSlot(index: number) {
     if (compareIds.length <= 2) return;
-    setCompareIds((prev) => prev.filter((_, i) => i !== index));
+    onCompareIdsChange(compareIds.filter((_, i) => i !== index));
   }
 
   function sortArrow(key: SortKey) {
@@ -260,7 +264,7 @@ export function CarSelectPage({
                 onRemove={compareIds.length > 2 ? () => removeCompareSlot(index) : undefined}
               />
             ))}
-            {compareIds.length < 4 && (
+            {compareIds.length < 5 && (
               <button
                 type="button"
                 className="add-compare-slot"
@@ -409,6 +413,7 @@ export function CarSelectPage({
                 <label
                   className="car-check"
                   onClick={(event) => event.stopPropagation()}
+                  title={t("checkForCompare")}
                 >
                   <input
                     type="checkbox"
@@ -420,7 +425,7 @@ export function CarSelectPage({
                         price: car.price,
                       })
                     }
-                    aria-label={t("checkedCars")}
+                    aria-label={t("checkForCompare")}
                   />
                 </label>
               </div>
