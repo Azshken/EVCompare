@@ -92,7 +92,8 @@ export function CarSelectPage({
   const [sortBy, setSortBy] = useState<SortKey>(saved?.sortBy ?? "price");
   const [sortDir, setSortDir] = useState<SortDir>(saved?.sortDir === "desc" ? "desc" : "asc");
   const [selectedId, setSelectedId] = useState<string | null>(saved?.selectedId ?? null);
-  const [compareOnly, setCompareOnly] = useState(false);
+  const [compareMode, setCompareMode] = useState(false);
+  const [compareIds, setCompareIds] = useState<string[]>([]);
 
   const brands = useMemo(
     () => ["all", ...Array.from(new Set(cars.map((c) => c.brand))).sort()],
@@ -112,7 +113,6 @@ export function CarSelectPage({
 
   const filtered = useMemo(() => {
     const result = cars.filter((c) => {
-      if (compareOnly && !checkedIds.includes(c.id)) return false;
       if (brand !== "all" && c.brand !== brand) return false;
       if (type !== "all" && c.type !== type) return false;
       if (search) {
@@ -132,7 +132,7 @@ export function CarSelectPage({
       return ((a.price ?? Infinity) - (b.price ?? Infinity)) * dir;
     });
     return result;
-  }, [brand, type, search, sortBy, sortDir, compareOnly, checkedIds]);
+  }, [brand, type, search, sortBy, sortDir]);
 
   const displayCars = useMemo(() => {
     const byFamily = new Map<string, EvModel>();
@@ -206,9 +206,76 @@ export function CarSelectPage({
     }).format(value);
   }
 
+  function enterCompare() {
+    const fromChecked = checkedIds.slice(0, 4);
+    const slots = fromChecked.length >= 2
+      ? fromChecked
+      : [...fromChecked, ...Array(2 - fromChecked.length).fill("")];
+    setCompareIds(slots);
+    setCompareMode(true);
+  }
+
+  function exitCompare() {
+    setCompareMode(false);
+  }
+
+  function setCompareSlot(index: number, id: string) {
+    setCompareIds((prev) => {
+      const next = [...prev];
+      next[index] = id;
+      return next;
+    });
+  }
+
+  function addCompareSlot() {
+    if (compareIds.length >= 4) return;
+    setCompareIds((prev) => [...prev, ""]);
+  }
+
+  function removeCompareSlot(index: number) {
+    if (compareIds.length <= 2) return;
+    setCompareIds((prev) => prev.filter((_, i) => i !== index));
+  }
+
   function sortArrow(key: SortKey) {
     if (sortBy !== key) return "↕";
     return sortDir === "asc" ? "↑" : "↓";
+  }
+
+  if (compareMode) {
+    const comparedCars = compareIds.map((id) => cars.find((c) => c.id === id) ?? null);
+
+    return (
+      <div className="car-select-page compare-mode">
+        <div className="compare-toolbar">
+          <button type="button" className="compare-btn" onClick={exitCompare}>
+            {t("exitCompare")}
+          </button>
+          <div className="compare-slot-row">
+            {compareIds.map((id, index) => (
+              <CompareSlotSearch
+                key={index}
+                value={id}
+                onChange={(nextId) => setCompareSlot(index, nextId)}
+                onRemove={compareIds.length > 2 ? () => removeCompareSlot(index) : undefined}
+              />
+            ))}
+            {compareIds.length < 4 && (
+              <button
+                type="button"
+                className="add-compare-slot"
+                onClick={addCompareSlot}
+                aria-label={t("addCar")}
+                title={t("addCar")}
+              >
+                +
+              </button>
+            )}
+          </div>
+        </div>
+        <CompareTable cars={comparedCars} />
+      </div>
+    );
   }
 
   return (
@@ -234,7 +301,7 @@ export function CarSelectPage({
             </option>
           ))}
         </select>
-</div>
+      </div>
 
       <div className="car-toolbar">
         <div className="sort-buttons">
@@ -259,8 +326,8 @@ export function CarSelectPage({
           </button>
           <button
             type="button"
-            className={`compare-btn ${compareOnly ? "active" : ""}`}
-            onClick={() => setCompareOnly((current) => !current)}
+            className="compare-btn"
+            onClick={enterCompare}
           >
             {t("compare")}{checkedIds.length ? ` (${checkedIds.length})` : ""}
           </button>
@@ -268,9 +335,6 @@ export function CarSelectPage({
       </div>
 
       <p className="result-count">{displayCars.length} {t("carsCount")}</p>
-      {compareOnly && displayCars.length === 0 && (
-        <p className="compare-empty">{t("compareEmpty")}</p>
-      )}
 
       <div className={view === "tiles" ? "car-tiles" : "car-list"}>
         {displayCars.map((car) => {
@@ -364,6 +428,152 @@ export function CarSelectPage({
           );
         })}
       </div>
+    </div>
+  );
+}
+
+function CompareSlotSearch({
+  value,
+  onChange,
+  onRemove,
+}: {
+  value: string;
+  onChange: (id: string) => void;
+  onRemove?: () => void;
+}) {
+  const { t } = useI18n();
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const selected = cars.find((c) => c.id === value) ?? null;
+
+  const matches = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return cars.slice(0, 12);
+    return cars
+      .filter((c) => `${c.brand} ${c.model} ${c.variant ?? ""}`.toLowerCase().includes(q))
+      .slice(0, 12);
+  }, [query]);
+
+  return (
+    <div className="compare-slot">
+      <div className="compare-slot-input-wrap">
+        <input
+          className="text-input compare-slot-input"
+          placeholder={t("searchCar")}
+          value={open ? query : selected ? `${selected.brand} ${selected.model}${selected.variant ? ` ${selected.variant}` : ""}` : ""}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setOpen(true);
+          }}
+          onFocus={() => {
+            setQuery("");
+            setOpen(true);
+          }}
+          onBlur={() => setTimeout(() => setOpen(false), 150)}
+        />
+        {onRemove && (
+          <button type="button" className="compare-slot-remove" onClick={onRemove} aria-label="Remove">
+            ×
+          </button>
+        )}
+      </div>
+      {open && (
+        <ul className="compare-slot-dropdown">
+          {matches.length === 0 && <li className="compare-slot-empty">{t("noResults")}</li>}
+          {matches.map((car) => (
+            <li key={car.id}>
+              <button
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  onChange(car.id);
+                  setOpen(false);
+                  setQuery("");
+                }}
+              >
+                {car.brand} {car.model}
+                {car.variant ? ` ${car.variant}` : ""}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function CompareTable({ cars: compared }: { cars: (EvModel | null)[] }) {
+  const { t, locale } = useI18n();
+
+  function formatPrice(value: number | null) {
+    if (value == null) return "–";
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: "EUR",
+      maximumFractionDigits: 0,
+    }).format(value);
+  }
+
+  const rows: { label: string; get: (c: EvModel) => string }[] = [
+    { label: t("sortPrice"), get: (c) => formatPrice(c.price) },
+    { label: t("sortRange"), get: (c) => (c.range != null ? `${c.range} km` : "–") },
+    { label: "Battery", get: (c) => (c.battery != null ? `${c.battery} kWh` : "–") },
+    { label: "Consumption", get: (c) => (c.wltp != null ? `${c.wltp.toFixed(1)} kWh/100km` : "–") },
+    { label: "Power", get: (c) => (c.power != null ? `${c.power} kW` : "–") },
+    { label: "Top speed", get: (c) => (c.topSpeed != null ? `${c.topSpeed} km/h` : "–") },
+    { label: "Type", get: (c) => c.type || "–" },
+    { label: t("heatPump"), get: (c) => (c.heatPump ? (locale === "sk" ? "Áno" : "Yes") : locale === "sk" ? "Nie" : "No") },
+  ];
+
+  // Add common detailed specs if present
+  const specKeys = ["drive", "acceleration", "dcMax", "weight", "batteryType"] as const;
+  for (const key of specKeys) {
+    const anyHas = compared.some((c) => c?.specs?.[key]);
+    if (anyHas) {
+      rows.push({
+        label: key === "drive" ? t("drive") : key === "acceleration" ? "0-100" : key === "dcMax" ? "DC max" : key === "weight" ? "Weight" : "Battery type",
+        get: (c) => c.specs?.[key] ?? "–",
+      });
+    }
+  }
+
+  return (
+    <div className="compare-table-wrap">
+      <table className="compare-table">
+        <thead>
+          <tr>
+            <th className="compare-label-col" />
+            {compared.map((car, i) => (
+              <th key={i} className="compare-car-col">
+                {car ? (
+                  <>
+                    <div className="compare-car-image">
+                      {car.imageUrl ? <img src={car.imageUrl} alt="" /> : <span>{car.brand}</span>}
+                    </div>
+                    <div className="compare-car-name">
+                      {car.brand} {car.model}
+                      {car.variant ? ` ${car.variant}` : ""}
+                    </div>
+                  </>
+                ) : (
+                  <div className="compare-car-empty">—</div>
+                )}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.label}>
+              <th scope="row">{row.label}</th>
+              {compared.map((car, i) => (
+                <td key={i}>{car ? row.get(car) : "–"}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
