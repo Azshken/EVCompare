@@ -255,29 +255,23 @@ export function CarSelectPage({
           <button type="button" className="compare-btn" onClick={exitCompare}>
             {t("exitCompare")}
           </button>
-          <div className="compare-slot-row">
-            {compareIds.map((id, index) => (
-              <CompareSlotSearch
-                key={index}
-                value={id}
-                onChange={(nextId) => setCompareSlot(index, nextId)}
-                onRemove={compareIds.length > 2 ? () => removeCompareSlot(index) : undefined}
-              />
-            ))}
-            {compareIds.length < 5 && (
-              <button
-                type="button"
-                className="add-compare-slot"
-                onClick={addCompareSlot}
-                aria-label={t("addCar")}
-                title={t("addCar")}
-              >
-                +
-              </button>
-            )}
-          </div>
+          {compareIds.length < 5 && (
+            <button
+              type="button"
+              className="add-compare-slot"
+              onClick={addCompareSlot}
+              aria-label={t("addCar")}
+              title={t("addCar")}
+            >
+              +
+            </button>
+          )}
         </div>
-        <CompareTable cars={comparedCars} />
+        <CompareTable
+          cars={comparedCars}
+          onChangeSlot={setCompareSlot}
+          onRemoveSlot={compareIds.length > 2 ? removeCompareSlot : undefined}
+        />
       </div>
     );
   }
@@ -508,7 +502,15 @@ function CompareSlotSearch({
   );
 }
 
-function CompareTable({ cars: compared }: { cars: (EvModel | null)[] }) {
+function CompareTable({
+  cars: compared,
+  onChangeSlot,
+  onRemoveSlot,
+}: {
+  cars: (EvModel | null)[];
+  onChangeSlot: (index: number, id: string) => void;
+  onRemoveSlot?: (index: number) => void;
+}) {
   const { t, locale } = useI18n();
 
   function formatPrice(value: number | null) {
@@ -531,7 +533,6 @@ function CompareTable({ cars: compared }: { cars: (EvModel | null)[] }) {
     { label: t("heatPump"), get: (c) => (c.heatPump ? (locale.startsWith("sk") ? "Áno" : "Yes") : locale.startsWith("sk") ? "Nie" : "No") },
   ];
 
-  // Add common detailed specs if present
   const specKeys = ["drive", "acceleration", "dcMax", "weight", "batteryType"] as const;
   for (const key of specKeys) {
     const anyHas = compared.some((c) => c?.specs?.[key]);
@@ -543,6 +544,11 @@ function CompareTable({ cars: compared }: { cars: (EvModel | null)[] }) {
     }
   }
 
+  function familyVariants(car: EvModel): EvModel[] {
+    if (!car.family) return [];
+    return cars.filter((c) => c.family === car.family);
+  }
+
   return (
     <div className="compare-table-wrap">
       <table className="compare-table">
@@ -551,10 +557,32 @@ function CompareTable({ cars: compared }: { cars: (EvModel | null)[] }) {
             <th className="compare-label-col" />
             {compared.map((car, i) => (
               <th key={i} className="compare-car-col">
+                <CompareSlotSearch
+                  value={car?.id ?? ""}
+                  onChange={(nextId) => onChangeSlot(i, nextId)}
+                  onRemove={onRemoveSlot ? () => onRemoveSlot(i) : undefined}
+                />
                 {car ? (
                   <>
-                    <div className="compare-car-image">
-                      {car.imageUrl ? <img src={car.imageUrl} alt="" /> : <span>{car.brand}</span>}
+                    <div className="compare-car-header">
+                      <div className="compare-car-image">
+                        {car.imageUrl ? <img src={car.imageUrl} alt="" /> : <span>{car.brand}</span>}
+                      </div>
+                      {familyVariants(car).length > 1 && (
+                        <div className="compare-variant-btns">
+                          {familyVariants(car).map((v) => (
+                            <button
+                              key={v.id}
+                              type="button"
+                              className={`compare-variant-btn ${v.id === car.id ? "is-active" : ""}`}
+                              onClick={() => onChangeSlot(i, v.id)}
+                              title={v.variant ?? v.model}
+                            >
+                              {v.variant ?? v.model}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </div>
                     <div className="compare-car-name">
                       {car.brand} {car.model}

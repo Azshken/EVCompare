@@ -742,45 +742,156 @@
 /* Comparison mode */
 .compare-toolbar {
   display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.compare-slot-row {
+.compare-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  max-width: 100%;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  table-layout: fixed;
+}
+
+.compare-table th,
+.compare-table td {
+  padding: 0.55rem 0.65rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+.compare-table thead th {
+  background: var(--color-surface-2);
+  font-weight: 700;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.compare-label-col {
+  width: 22%;
+  min-width: 72px;
+}
+
+.compare-car-col {
+  width: auto;
+}
+
+.compare-car-header {
   display: flex;
-  gap: 0.55rem;
-  flex: 1;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
+}
+
+.compare-car-image {
+  flex: 1 1 auto;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border-radius: 8px;
+  overflow: hidden;
   min-width: 0;
-  flex-wrap: wrap;
+}
+
+.compare-car-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.compare-variant-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 0 0 auto;
+  max-width: 42%;
+}
+
+.compare-variant-btn {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 0.25rem 0.35rem;
+  text-align: left;
+  line-height: 1.2;
+  cursor: pointer;
+  white-space: normal;
+}
+
+.compare-variant-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-text);
+}
+
+.compare-variant-btn.is-active {
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
+  color: var(--color-primary);
+}
+
+.compare-car-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-top: 0.4rem;
+}
+
+.compare-car-empty {
+  color: var(--color-text-faint);
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.compare-table tbody th {
+  font-weight: 600;
+  color: var(--color-text-muted);
+  white-space: normal;
 }
 
 .compare-slot {
   position: relative;
-  flex: 1 1 180px;
-  min-width: 160px;
+  width: 100%;
+  margin-bottom: 0.35rem;
 }
 
 .compare-slot-input-wrap {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.2rem;
 }
 
 .compare-slot-input {
   flex: 1;
   min-width: 0;
+  font-size: 0.78rem;
+  padding: 0.4rem 0.55rem;
+  min-height: 34px;
 }
 
 .compare-slot-remove {
   flex: 0 0 auto;
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
   border: 1px solid var(--color-border);
   background: var(--color-surface-2);
   color: var(--color-text-muted);
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1;
   cursor: pointer;
 }
@@ -801,8 +912,6 @@
   font-size: 1.2rem;
   font-weight: 700;
   cursor: pointer;
-  align-self: flex-start;
-  margin-top: 1px;
 }
 
 .add-compare-slot:hover {
@@ -812,18 +921,18 @@
 
 .compare-slot-dropdown {
   position: absolute;
-  z-index: 20;
+  z-index: 30;
   top: 100%;
   left: 0;
   right: 0;
-  margin: 0.25rem 0 0;
+  margin: 0.2rem 0 0;
   padding: 0.25rem 0;
   list-style: none;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 10px;
   box-shadow: var(--shadow-md);
-  max-height: 240px;
+  max-height: 220px;
   overflow-y: auto;
 }
 
@@ -831,11 +940,11 @@
   display: block;
   width: 100%;
   text-align: left;
-  padding: 0.45rem 0.7rem;
+  padding: 0.4rem 0.6rem;
   background: none;
   border: none;
   color: var(--color-text);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   cursor: pointer;
 }
 
@@ -844,87 +953,38 @@
 }
 
 .compare-slot-empty {
-  padding: 0.45rem 0.7rem;
+  padding: 0.4rem 0.6rem;
   color: var(--color-text-muted);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 }
 
-.compare-table-wrap {
-  overflow-x: auto;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-}
-
-.compare-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.88rem;
-}
-
-.compare-table th,
-.compare-table td {
-  padding: 0.65rem 0.85rem;
-  border-bottom: 1px solid var(--color-border);
-  text-align: left;
-  vertical-align: top;
-}
-
-.compare-table thead th {
-  background: var(--color-surface-2);
-  font-weight: 700;
-  border-bottom: 2px solid var(--color-border);
-}
-
-.compare-label-col {
-  width: 120px;
-  min-width: 100px;
-}
-
-.compare-car-col {
-  min-width: 160px;
-}
-
-.compare-car-image {
-  height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0.4rem;
-  background: var(--color-surface);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.compare-car-image img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.compare-car-name {
-  font-size: 0.9rem;
-  font-weight: 700;
-  line-height: 1.25;
-}
-
-.compare-car-empty {
-  color: var(--color-text-faint);
-  text-align: center;
-  padding: 1rem 0;
-}
-
-.compare-table tbody th {
-  font-weight: 600;
-  color: var(--color-text-muted);
-  white-space: nowrap;
-}
-
-@media (max-width: 900px) {
+@media (max-width: 720px) {
+  .compare-table {
+    font-size: 0.72rem;
+  }
+  .compare-table th,
+  .compare-table td {
+    padding: 0.4rem 0.35rem;
+  }
+  .compare-label-col {
+    width: 26%;
+    min-width: 64px;
+  }
+  .compare-car-image {
+    height: 56px;
+  }
+  .compare-car-name {
+    font-size: 0.75rem;
+  }
+  .compare-variant-btn {
+    font-size: 0.58rem;
+    padding: 0.2rem 0.28rem;
+  }
+  .compare-mode {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
   .add-compare-slot {
     display: none;
-  }
-  .compare-slot {
-    flex: 1 1 140px;
   }
 }
