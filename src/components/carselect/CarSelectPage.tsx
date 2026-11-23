@@ -1,1 +1,652 @@
-PLACEHOLDER_CONTENT
+import { useEffect, useMemo, useState } from "react";
+import evModels from "../../data/evModels.json";
+import { useI18n } from "../../i18n";
+
+export type EvModel = {
+  id: string;
+  brand: string;
+  model: string;
+  variant: string | null;
+  type: string;
+  range: number | null;
+  battery: number | null;
+  power: number | null;
+  topSpeed: number | null;
+  price: number | null;
+  eco: number;
+  wltp: number | null;
+  kwh90: number | null;
+  kwh120: number | null;
+  affiliateUrl: string | null;
+  imageUrl: string | null;
+  priceListUrl: string | null;
+  heatPump: boolean;
+  recommended: boolean;
+  family?: string | null;
+  specs?: {
+    drive?: string;
+    peakPower?: string;
+    power30min?: string;
+    batteryType?: string;
+    batteryNetGross?: string;
+    dcMax?: string;
+    dcTime?: string;
+    acTime?: string;
+    weight?: string;
+    topSpeed?: string;
+    acceleration?: string;
+    turningCircle?: string;
+    consumption?: string;
+    range?: string;
+    heatPump?: string;
+    v2l?: string;
+  } | null;
+};
+
+export const cars = evModels as EvModel[];
+
+type ViewMode = "tiles" | "list";
+type SortKey = "range" | "efficiency" | "price";
+type SortDir = "asc" | "desc";
+
+function consumption(car: EvModel): number | null {
+  if (car.wltp && car.wltp > 0) return car.wltp;
+  if (car.range && car.battery && car.range > 0) return (car.battery / car.range) * 100;
+  return null;
+}
+
+
+
+
+interface CarSelectPageProps {
+  onSelectConsumption: (kwh: number) => void;
+  onOpenCar: (carId: string) => void;
+  onSelectCar: (car: { id: string; label: string; price: number | null } | null) => void;
+  checkedIds: string[];
+  onToggleChecked: (car: { id: string; label: string; price: number | null }) => void;
+  compareMode: boolean;
+  compareIds: string[];
+  onCompareModeChange: (mode: boolean) => void;
+  onCompareIdsChange: (ids: string[]) => void;
+}
+
+function readSelectState() {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem("evcompare-carselect");
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function CarSelectPage({
+  onSelectConsumption,
+  onOpenCar,
+  onSelectCar,
+  checkedIds,
+  onToggleChecked,
+  compareMode,
+  compareIds,
+  onCompareModeChange,
+  onCompareIdsChange,
+}: CarSelectPageProps) {
+  const { t, locale, lang } = useI18n();
+  const saved = readSelectState();
+  const [brand, setBrand] = useState(saved?.brand ?? "all");
+  const [type, setType] = useState(saved?.type ?? "all");
+  const [view, setView] = useState<ViewMode>(saved?.view === "list" ? "list" : "tiles");
+  const [search, setSearch] = useState(saved?.search ?? "");
+  const [sortBy, setSortBy] = useState<SortKey>(saved?.sortBy ?? "price");
+  const [sortDir, setSortDir] = useState<SortDir>(saved?.sortDir === "desc" ? "desc" : "asc");
+  const [selectedId, setSelectedId] = useState<string | null>(saved?.selectedId ?? null);
+
+  const brands = useMemo(
+    () => ["all", ...Array.from(new Set(cars.map((c) => c.brand))).sort()],
+    [],
+  );
+  const types = useMemo(
+    () => ["all", ...Array.from(new Set(cars.map((c) => c.type))).sort()],
+    [],
+  );
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      "evcompare-carselect",
+      JSON.stringify({ brand, type, view, search, sortBy, sortDir, selectedId }),
+    );
+  }, [brand, type, view, search, sortBy, sortDir, selectedId]);
+
+  const filtered = useMemo(() => {
+    const result = cars.filter((c) => {
+      if (brand !== "all" && c.brand !== brand) return false;
+      if (type !== "all" && c.type !== type) return false;
+      if (search) {
+        const q = search.toLowerCase();
+        const hay = `${c.brand} ${c.model} ${c.variant ?? ""}`.toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+
+    const dir = sortDir === "asc" ? 1 : -1;
+    result.sort((a, b) => {
+      if (sortBy === "range") return ((a.range ?? 0) - (b.range ?? 0)) * dir;
+      if (sortBy === "efficiency") {
+        return ((consumption(a) ?? 999) - (consumption(b) ?? 999)) * dir;
+      }
+      return ((a.price ?? Infinity) - (b.price ?? Infinity)) * dir;
+    });
+    return result;
+  }, [brand, type, search, sortBy, sortDir]);
+
+  const displayCars = useMemo(() => {
+    const byFamily = new Map<string, EvModel>();
+    const singles: EvModel[] = [];
+    for (const car of filtered) {
+      if (car.family) {
+        const existing = byFamily.get(car.family);
+        if (!existing || (car.price ?? Infinity) < (existing.price ?? Infinity)) {
+          byFamily.set(car.family, car);
+        }
+      } else {
+        singles.push(car);
+      }
+    }
+    // Preserve sort order of the representatives
+    const representatives = [...byFamily.values(), ...singles];
+    const dir = sortDir === "asc" ? 1 : -1;
+    representatives.sort((a, b) => {
+      if (sortBy === "range") return ((a.range ?? 0) - (b.range ?? 0)) * dir;
+      if (sortBy === "efficiency") {
+        return ((consumption(a) ?? 999) - (consumption(b) ?? 999)) * dir;
+      }
+      return ((a.price ?? Infinity) - (b.price ?? Infinity)) * dir;
+    });
+    return representatives;
+  }, [filtered, sortBy, sortDir]);
+
+  function toggleSort(key: SortKey) {
+    if (sortBy === key) {
+      setSortDir((current) => (current === "asc" ? "desc" : "asc"));
+      return;
+    }
+    setSortBy(key);
+    setSortDir(key === "range" ? "desc" : "asc");
+  }
+
+  function selectCar(car: EvModel) {
+    if (selectedId === car.id) {
+      setSelectedId(null);
+      onSelectCar(null);
+      return;
+    }
+    setSelectedId(car.id);
+    if (car.wltp && car.wltp > 0) onSelectConsumption(car.wltp);
+    onSelectCar({
+      id: car.id,
+      label: carLabel(car),
+      price: car.price,
+    });
+  }
+
+  function carLabel(car: EvModel) {
+    return `${car.brand} ${car.model}${car.variant ? ` ${car.variant}` : ""}`;
+  }
+
+  function handleCardClick(car: EvModel) {
+    selectCar(car);
+  }
+
+  function handleInfoClick(event: React.MouseEvent, car: EvModel) {
+    event.stopPropagation();
+    onOpenCar(car.id);
+  }
+
+  function formatPrice(value: number | null) {
+    if (value == null) return "–";
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: "EUR",
+      maximumFractionDigits: 0,
+    }).format(value);
+  }
+
+  function enterCompare() {
+    const fromChecked = checkedIds.slice(0, 5);
+    const slots = fromChecked.length >= 2
+      ? fromChecked
+      : [...fromChecked, ...Array(2 - fromChecked.length).fill("")];
+    onCompareIdsChange(slots);
+    onCompareModeChange(true);
+  }
+
+  function exitCompare() {
+    onCompareModeChange(false);
+  }
+
+  function setCompareSlot(index: number, id: string) {
+    const next = [...compareIds];
+    next[index] = id;
+    onCompareIdsChange(next);
+  }
+
+  function addCompareSlot() {
+    if (compareIds.length >= 5) return;
+    onCompareIdsChange([...compareIds, ""]);
+  }
+
+  function removeCompareSlot(index: number) {
+    if (compareIds.length <= 2) return;
+    onCompareIdsChange(compareIds.filter((_, i) => i !== index));
+  }
+
+  function sortArrow(key: SortKey) {
+    if (sortBy !== key) return "↕";
+    return sortDir === "asc" ? "↑" : "↓";
+  }
+
+  if (compareMode) {
+    const comparedCars = compareIds.map((id) => cars.find((c) => c.id === id) ?? null);
+
+    return (
+      <div className="car-select-page compare-mode">
+        <div className="compare-toolbar">
+          <button type="button" className="compare-btn" onClick={exitCompare}>
+            {t("exitCompare")}
+          </button>
+          {compareIds.length < 5 && (
+            <button
+              type="button"
+              className="add-compare-slot"
+              onClick={addCompareSlot}
+              aria-label={t("addCar")}
+              title={t("addCar")}
+            >
+              +
+            </button>
+          )}
+        </div>
+        <CompareTable
+          cars={comparedCars}
+          onChangeSlot={setCompareSlot}
+          onRemoveSlot={compareIds.length > 2 ? removeCompareSlot : undefined}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="car-select-page">
+      <div className="car-filters">
+        <input
+          className="text-input"
+          placeholder={t("searchPlaceholder")}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <select className="select-input" value={brand} onChange={(e) => setBrand(e.target.value)}>
+          {brands.map((b) => (
+            <option key={b} value={b}>
+              {b === "all" ? t("allBrands") : b}
+            </option>
+          ))}
+        </select>
+        <select className="select-input" value={type} onChange={(e) => setType(e.target.value)}>
+          {types.map((item) => (
+            <option key={item} value={item}>
+              {item === "all" ? t("allTypes") : item}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="car-toolbar">
+        <div className="sort-buttons">
+          {(["range", "efficiency", "price"] as const).map((key) => (
+            <button
+              key={key}
+              type="button"
+              className={sortBy === key ? "active" : ""}
+              onClick={() => toggleSort(key)}
+            >
+              {key === "range" ? t("sortRange") : key === "efficiency" ? t("sortEfficiency") : t("sortPrice")}
+              <span className="sort-arrow" aria-hidden="true">{sortArrow(key)}</span>
+            </button>
+          ))}
+        </div>
+        <div className="view-toggle">
+          <button type="button" className={view === "tiles" ? "active" : ""} onClick={() => setView("tiles")}>
+            {t("tiles")}
+          </button>
+          <button type="button" className={view === "list" ? "active" : ""} onClick={() => setView("list")}>
+            {t("list")}
+          </button>
+          <button
+            type="button"
+            className="compare-btn"
+            onClick={enterCompare}
+          >
+            {t("compare")}{checkedIds.length ? ` (${checkedIds.length})` : ""}
+          </button>
+        </div>
+      </div>
+
+      <p className="result-count">{displayCars.length} {t("carsCount")}</p>
+
+      <div className={view === "tiles" ? "car-tiles" : "car-list"}>
+        {displayCars.map((car) => {
+          const selected = selectedId === car.id;
+          const checked = checkedIds.includes(car.id);
+          return (
+            <article
+              key={car.id}
+              className={`car-card ${selected ? "is-selected" : ""} ${checked ? "is-checked" : ""}`}
+              onClick={() => handleCardClick(car)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  handleCardClick(car);
+                }
+              }}
+            >
+              <div className="car-image-placeholder">
+                {car.imageUrl ? <img src={car.imageUrl} alt="" /> : <span>{car.brand}</span>}
+              </div>
+              <div className="car-info">
+                <h3>
+                  {car.brand} {car.model}
+                  {car.variant ? ` ${car.variant}` : ""}
+                </h3>
+                <div className="car-meta">
+                  <span className="car-type">{car.type}</span>
+                  <span className={`heatpump-mark ${car.heatPump ? "is-on" : "is-off"}`} data-tip={t("heatPump")}>
+                    {lang === "sk" ? "TČ" : "HP"}
+                  </span>
+                </div>
+                <div className="car-stats">
+                  <span data-tip={t("tipRange")}>{car.range ?? "–"} km</span>
+                  <span data-tip={t("tipBattery")}>{car.battery ?? "–"} kWh</span>
+                  {car.wltp != null && <span data-tip={t("tipConsumption")}>{car.wltp.toFixed(1)} kWh/100km</span>}
+                  <span data-tip={t("tipPower")}>{car.power ?? "–"} kW</span>
+                </div>
+                <div className="car-price">{formatPrice(car.price)}</div>
+                <div className="car-actions">
+                  <button
+                    type="button"
+                    className="car-link-btn car-info-btn"
+                    onClick={(event) => handleInfoClick(event, car)}
+                  >
+                    {t("info")}
+                  </button>
+                  {car.priceListUrl && (
+                    <a
+                      className="car-link-btn"
+                      href={car.priceListUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(event) => event.stopPropagation()}
+                    >
+                      {t("priceList")}
+                    </a>
+                  )}
+                  {car.affiliateUrl && (
+                    <a
+                      className="car-link-btn"
+                      href={car.affiliateUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(event) => event.stopPropagation()}
+                    >
+                      {t("configurator")}
+                    </a>
+                  )}
+                </div>
+                <label
+                  className="car-check"
+                  onClick={(event) => event.stopPropagation()}
+                  title={t("checkForCompare")}
+                >
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() =>
+                      onToggleChecked({
+                        id: car.id,
+                        label: carLabel(car),
+                        price: car.price,
+                      })
+                    }
+                    aria-label={t("checkForCompare")}
+                  />
+                </label>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function CompareSlotSearch({
+  value,
+  onChange,
+  onRemove,
+}: {
+  value: string;
+  onChange: (id: string) => void;
+  onRemove?: () => void;
+}) {
+  const { t } = useI18n();
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const selected = cars.find((c) => c.id === value) ?? null;
+
+  const matches = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return cars.slice(0, 12);
+    return cars
+      .filter((c) => `${c.brand} ${c.model} ${c.variant ?? ""}`.toLowerCase().includes(q))
+      .slice(0, 12);
+  }, [query]);
+
+  return (
+    <div className="compare-slot">
+      <div className="compare-slot-input-wrap">
+        <input
+          className="text-input compare-slot-input"
+          placeholder={t("searchCar")}
+          value={open ? query : selected ? `${selected.brand} ${selected.model}${selected.variant ? ` ${selected.variant}` : ""}` : ""}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setOpen(true);
+          }}
+          onFocus={() => {
+            setQuery("");
+            setOpen(true);
+          }}
+          onBlur={() => setTimeout(() => setOpen(false), 150)}
+        />
+        {onRemove && (
+          <button type="button" className="compare-slot-remove" onClick={onRemove} aria-label="Remove">
+            ×
+          </button>
+        )}
+      </div>
+      {open && (
+        <ul className="compare-slot-dropdown">
+          {matches.length === 0 && <li className="compare-slot-empty">{t("noResults")}</li>}
+          {matches.map((car) => (
+            <li key={car.id}>
+              <button
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  onChange(car.id);
+                  setOpen(false);
+                  setQuery("");
+                }}
+              >
+                {car.brand} {car.model}
+                {car.variant ? ` ${car.variant}` : ""}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+
+function shortVariantName(variant: string | null | undefined): string {
+  if (!variant) return "";
+  const map: Record<string, string> = {
+    // Tesla Model 3 / Y
+    "RWD Standard": "Standard",
+    "Long Range RWD": "LR RWD",
+    "Long Range AWD": "LR AWD",
+    "Performance": "Perform.",
+    // BYD
+    "Excellence AWD": "Exc. AWD",
+    "Design AWD": "Des. AWD",
+    // Citroën
+    "Comfort Range": "Comfort",
+    "Urban Range": "Urban",
+    // Dacia Spring
+    "70 Essential": "Essential",
+    "electric 100 Extreme": "Extreme",
+    // Cupra Tavascan
+    "286/82 Advance": "Advance",
+    "286/82 Endurance": "Endurance",
+    "VZ 340/82 4Drive": "VZ 4Drive",
+    // Cupra Raval
+    "Plus 135/38": "Plus",
+    "Endurance 210/55": "Endurance",
+    "VZ 225/55": "VZ",
+    // Fiat 500e
+    "POP 42 kWh": "POP 42",
+    "POP 23.8 kWh": "POP 23.8",
+    // VW ID.3
+    "Neo 50 kWh": "50 kWh",
+    "Neo 58 kWh": "58 kWh",
+    "Neo 79 kWh": "79 kWh",
+    // VW ID.7
+    "GTX 4MOTION": "GTX",
+  };
+  return map[variant] ?? variant;
+}
+
+function CompareTable({
+  cars: compared,
+  onChangeSlot,
+  onRemoveSlot,
+}: {
+  cars: (EvModel | null)[];
+  onChangeSlot: (index: number, id: string) => void;
+  onRemoveSlot?: (index: number) => void;
+}) {
+  const { t, locale } = useI18n();
+
+  function formatPrice(value: number | null) {
+    if (value == null) return "–";
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: "EUR",
+      maximumFractionDigits: 0,
+    }).format(value);
+  }
+
+  const rows: { label: string; get: (c: EvModel) => string }[] = [
+    { label: t("sortPrice"), get: (c) => formatPrice(c.price) },
+    { label: t("sortRange"), get: (c) => (c.range != null ? `${c.range} km` : "–") },
+    { label: "Battery", get: (c) => (c.battery != null ? `${c.battery} kWh` : "–") },
+    { label: "Consumption", get: (c) => (c.wltp != null ? `${c.wltp.toFixed(1)} kWh/100km` : "–") },
+    { label: "Power", get: (c) => (c.power != null ? `${c.power} kW` : "–") },
+    { label: "Top speed", get: (c) => (c.topSpeed != null ? `${c.topSpeed} km/h` : "–") },
+    { label: "Type", get: (c) => c.type || "–" },
+    { label: t("heatPump"), get: (c) => (c.heatPump ? (locale.startsWith("sk") ? "Áno" : "Yes") : locale.startsWith("sk") ? "Nie" : "No") },
+  ];
+
+  const specKeys = ["drive", "acceleration", "dcMax", "weight", "batteryType"] as const;
+  for (const key of specKeys) {
+    const anyHas = compared.some((c) => c?.specs?.[key]);
+    if (anyHas) {
+      rows.push({
+        label: key === "drive" ? t("drive") : key === "acceleration" ? "0-100" : key === "dcMax" ? "DC max" : key === "weight" ? "Weight" : "Battery type",
+        get: (c) => c.specs?.[key] ?? "–",
+      });
+    }
+  }
+
+  function familyVariants(car: EvModel): EvModel[] {
+    if (!car.family) return [];
+    return cars.filter((c) => c.family === car.family);
+  }
+
+  return (
+    <div className="compare-table-wrap">
+      <table className="compare-table">
+        <thead>
+          <tr>
+            <th className="compare-label-col" />
+            {compared.map((car, i) => (
+              <th key={i} className="compare-car-col">
+                <CompareSlotSearch
+                  value={car?.id ?? ""}
+                  onChange={(nextId) => onChangeSlot(i, nextId)}
+                  onRemove={onRemoveSlot ? () => onRemoveSlot(i) : undefined}
+                />
+                {car ? (
+                  <>
+                    <div className="compare-car-header">
+                      <div className="compare-car-image">
+                        {car.imageUrl ? <img src={car.imageUrl} alt="" /> : <span>{car.brand}</span>}
+                      </div>
+                      {familyVariants(car).length > 1 && (
+                        <div className="compare-variant-btns">
+                          {familyVariants(car).map((v) => (
+                            <button
+                              key={v.id}
+                              type="button"
+                              className={`compare-variant-btn ${v.id === car.id ? "is-active" : ""}`}
+                              onClick={() => onChangeSlot(i, v.id)}
+                              title={v.variant ?? v.model}
+                            >
+                              {shortVariantName(v.variant) || v.model}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <div className="compare-car-name">
+                      {car.brand} {car.model}
+                      {car.variant ? ` ${car.variant}` : ""}
+                    </div>
+                  </>
+                ) : (
+                  <div className="compare-car-empty">—</div>
+                )}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.label}>
+              <th scope="row">{row.label}</th>
+              {compared.map((car, i) => (
+                <td key={i}>{car ? row.get(car) : "–"}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
