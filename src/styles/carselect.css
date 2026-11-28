@@ -250,10 +250,11 @@
 
 .car-list .car-info {
   display: grid;
-  grid-template-columns: auto auto 1fr auto auto;
+  grid-template-columns: 1fr auto auto;
   align-items: center;
   gap: 0.5rem;
   min-width: 0;
+  position: relative;
 }
 
 .car-list .car-meta {
@@ -269,6 +270,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   margin: 0;
+  max-width: 34%;
 }
 
 .car-list .car-actions {
@@ -280,21 +282,21 @@
 }
 
 .car-list .car-stats {
-  order: 3;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 0.72rem;
   color: var(--color-text-muted);
   white-space: nowrap;
   overflow: visible;
-  justify-self: center;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 0.5rem;
-  margin-right: 0;
   width: 380px;
   min-width: 380px;
   max-width: 380px;
-  flex: 0 0 380px;
+  pointer-events: auto;
 }
 
 .car-list .list-hp {
@@ -795,6 +797,9 @@
   .car-list .car-stats {
     gap: 0.7rem;
     font-size: 0.78rem;
+    width: 380px;
+    min-width: 380px;
+    max-width: 380px;
   }
   .car-list .car-card {
     padding: 0.35rem 0.7rem;
