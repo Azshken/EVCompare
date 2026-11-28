@@ -290,7 +290,7 @@
   align-items: center;
   gap: 0.5rem;
   margin-right: 0;
-  min-width: 260px;
+  width: 340px;
 }
 
 .car-list .list-hp {
