@@ -288,15 +288,21 @@
   justify-self: center;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 0.5rem;
   margin-right: 0;
-  width: 340px;
+  width: 380px;
+  min-width: 380px;
+  max-width: 380px;
+  flex: 0 0 380px;
 }
 
 .car-list .list-hp {
   display: inline-flex;
   margin: 0;
-  flex: 0 0 auto;
+  flex: 0 0 28px;
+  width: 28px;
+  justify-content: center;
 }
 
 .car-list .car-price {
