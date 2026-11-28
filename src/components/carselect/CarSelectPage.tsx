@@ -407,7 +407,7 @@ export function CarSelectPage({
                 <label
                   className="car-check"
                   onClick={(event) => event.stopPropagation()}
-                  title={t("checkForCompare")}
+                  data-tip={t("checkForCompare")}
                 >
                   <input
                     type="checkbox"
