@@ -250,7 +250,7 @@
 
 .car-list .car-info {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: auto auto 1fr auto auto;
   align-items: center;
   gap: 0.5rem;
   min-width: 0;
@@ -270,7 +270,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   margin: 0;
-  max-width: 34%;
 }
 
 .car-list .car-actions {
@@ -284,7 +283,8 @@
 .car-list .car-stats {
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   font-size: 0.72rem;
   color: var(--color-text-muted);
   white-space: nowrap;
@@ -297,6 +297,7 @@
   min-width: 380px;
   max-width: 380px;
   pointer-events: auto;
+  z-index: 1;
 }
 
 .car-list .list-hp {
