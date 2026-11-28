@@ -366,10 +366,10 @@ export function CarSelectPage({
                     {lang === "sk" ? "TČ" : "HP"}
                   </span>
                 </div>
-                <span className={`heatpump-mark list-hp ${car.heatPump ? "is-on" : "is-off"}`} data-tip={t("heatPump")}>
-                  {lang === "sk" ? "TČ" : "HP"}
-                </span>
                 <div className="car-stats">
+                  <span className={`heatpump-mark list-hp ${car.heatPump ? "is-on" : "is-off"}`} data-tip={t("heatPump")}>
+                    {lang === "sk" ? "TČ" : "HP"}
+                  </span>
                   <span data-tip={t("tipRange")}>{car.range ?? "–"} km</span>
                   <span data-tip={t("tipBattery")}>{car.battery ?? "–"} kWh</span>
                   {car.wltp != null && <span data-tip={t("tipConsumption")}>{car.wltp.toFixed(1)} kWh/100km</span>}
