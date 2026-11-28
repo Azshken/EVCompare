@@ -250,7 +250,7 @@
 
 .car-list .car-info {
   display: grid;
-  grid-template-columns: auto auto 1fr auto auto;
+  grid-template-columns: auto auto 36px 1fr 100px 28px;
   align-items: center;
   gap: 0.5rem;
   min-width: 0;
@@ -279,8 +279,15 @@
   gap: 0.3rem;
 }
 
-.car-list .car-stats {
+.car-list .list-hp {
   order: 3;
+  display: inline-flex;
+  justify-self: center;
+  margin: 0;
+}
+
+.car-list .car-stats {
+  order: 4;
   font-size: 0.72rem;
   color: var(--color-text-muted);
   white-space: nowrap;
@@ -289,10 +296,11 @@
   display: flex;
   align-items: center;
   gap: 0.45rem;
+  margin-right: 0.75rem;
 }
 
 .car-list .car-price {
-  order: 4;
+  order: 5;
   font-size: 0.95rem;
   margin: 0;
   white-space: nowrap;
@@ -300,17 +308,12 @@
 }
 
 .car-list .car-check {
-  order: 5;
+  order: 6;
   position: relative;
   right: auto;
   bottom: auto;
   margin: 0;
   justify-self: end;
-}
-
-.car-list .list-hp {
-  display: inline-flex;
-  margin-right: 0.15rem;
 }
 
 .car-tiles .list-hp {
@@ -448,6 +451,10 @@
     grid-column: 1;
   }
 
+  .car-list .list-hp {
+    display: none;
+  }
+
   .car-list .car-actions {
     grid-column: 1;
     order: 2;
@@ -457,6 +464,7 @@
     grid-column: 1;
     order: 3;
     justify-self: start;
+    margin-right: 0;
   }
 
   .car-list .car-price {
